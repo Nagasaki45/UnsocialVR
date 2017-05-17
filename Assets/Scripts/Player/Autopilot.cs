@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Net;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -8,10 +7,18 @@ public class Autopilot : NetworkBehaviour {
 
 	public string serverUrl;
 	public float smoothing;
+	[HideInInspector] public static uint localPlayerId;
 
 	private SerializableTransform targetTransform;
 
-	private void Start ()
+
+	public override void OnStartLocalPlayer()
+	{
+		localPlayerId = netId.Value;
+	}
+
+
+	private void Start()
 	{
 		if (isLocalPlayer)
 			StartCoroutine(SendTransformToServer ());
@@ -20,7 +27,7 @@ public class Autopilot : NetworkBehaviour {
 	}
 
 
-	private void Update ()
+	private void Update()
 	{
 		if (isLocalPlayer)
 			return;
@@ -39,7 +46,7 @@ public class Autopilot : NetworkBehaviour {
 		{
 			WWWForm form = new WWWForm ();
 			form.AddField("transform", SerializableTransform.ToJson (transform));
-			WWW postRequest = new WWW(serverUrl + netId, form);
+			WWW postRequest = new WWW(serverUrl + "/" + netId.Value, form);
 			yield return postRequest;
 		}
 	}
@@ -49,7 +56,7 @@ public class Autopilot : NetworkBehaviour {
 	{
 		while (true)
 		{
-			WWW getRequest = new WWW(serverUrl + netId);
+			WWW getRequest = new WWW(serverUrl + "/" + netId.Value + "/" + localPlayerId);
 			yield return getRequest;
 			if (string.IsNullOrEmpty (getRequest.error))
 			{

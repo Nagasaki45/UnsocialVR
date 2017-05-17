@@ -5,7 +5,7 @@ defmodule Server.HTTP do
   plug :match
   plug :dispatch
 
-  get "/:player_id" do
+  get "/:player_id/:requester_id" do
 	{:ok, transform} = Server.PlayersStash.fetch(player_id)
     resp(conn, 200, transform)
   end
@@ -15,10 +15,6 @@ defmodule Server.HTTP do
 	%{"transform" => transform} = URI.decode_query(body)
 	Server.PlayersStash.put(player_id, transform)
     send_resp(conn, 200, "Got your transform!")
-  end
-
-  match _ do
-    send_resp(conn, 404, "oops")
   end
 
 end
