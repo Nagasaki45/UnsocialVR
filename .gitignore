@@ -36,7 +36,7 @@ Icon?
 ehthumbs.db
 [Tt]humbs.db
 
-
-myriad-client/Assets/StreamingAssets.meta
-myriad-client/Build/
-myriad-server/Build/
+# ==== #
+# Mine #
+# ==== #
+Builds/
