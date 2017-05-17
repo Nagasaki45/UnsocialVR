@@ -51,7 +51,10 @@ public class Autopilot : NetworkBehaviour {
 		{
 			WWW getRequest = new WWW(serverUrl + netId);
 			yield return getRequest;
-			targetTransform = SerializableTransform.FromJson (getRequest.text);
+			if (string.IsNullOrEmpty (getRequest.error))
+			{
+				targetTransform = SerializableTransform.FromJson (getRequest.text);
+			}
 		}
 	}
 }
