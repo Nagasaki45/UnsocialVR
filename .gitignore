@@ -40,3 +40,6 @@ ehthumbs.db
 # Mine #
 # ==== #
 Builds/
+
+# Server
+Server/env

@@ -1,71 +1,74 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class Autopilot : NetworkBehaviour {
 
-	public static GameObject localPlayer;
-	[SyncVar]
-	public bool isOn = false;
+	public string serverUrl;
+	public float smoothing;
 
-	private bool previousIsOn = false;
+	private Vector3 targetPosition;
+	private Quaternion targetRotation;
 
-
-	// Caching the local player
-	public override void OnStartLocalPlayer()
+	private void Start ()
 	{
-		localPlayer = gameObject;
+		if (isLocalPlayer)
+			StartCoroutine(SendTransformToServer ());
+		else
+			StartUpdateTransformFromServer ();
 	}
 
 
-	// Update is called once per frame
-	void Update ()
+	private void Update ()
 	{
-		if (isLocalPlayer && Input.GetButtonUp ("Autopilot"))
-			CmdToggleAutopilot ();
+		if (isLocalPlayer)
+			return;
 
-		if (!isLocalPlayer)
+		transform.position = Vector3.Lerp (transform.position, targetPosition, smoothing);
+		transform.rotation = Quaternion.Lerp (transform.rotation, targetRotation, smoothing);
+	}
+		
+
+	private IEnumerator SendTransformToServer()
+	{
+		while (true)
 		{
-			if (!previousIsOn && isOn)
-			{
-				AutopilotSetup ();
-			}
-			else if (previousIsOn && isOn)
-			{
-				AutopilotUpdate ();
-			}
-			else if (previousIsOn && !isOn)
-			{
-				AutopilotTeardown();
-			}
+			WWWForm form = new WWWForm ();
+			form.AddField("position", JsonUtility.ToJson (transform.position));
+			form.AddField("rotation", JsonUtility.ToJson (transform.rotation));
+			WWW postRequest = new WWW(serverUrl + netId, form);
+			yield return postRequest;
 		}
-
-		previousIsOn = isOn;
 	}
 
 
-	[Command]
-	void CmdToggleAutopilot()
+	private void StartUpdateTransformFromServer()
 	{
-		isOn = !isOn;
+		StartCoroutine(UpdatePositionFromServer ());
+		StartCoroutine(UpdateRotationFromServer ());
 	}
 
 
-	void AutopilotSetup()
+	private IEnumerator UpdatePositionFromServer()
 	{
-		GetComponentInChildren<MeshRenderer> ().material.color = Color.red;
+		while (true)
+		{
+			WWW positionGetRequest = new WWW(serverUrl + netId + "/position");
+			yield return positionGetRequest;
+			targetPosition = JsonUtility.FromJson<Vector3> (positionGetRequest.text);
+		}
 	}
 
 
-	void AutopilotTeardown()
+	private IEnumerator UpdateRotationFromServer()
 	{
-		GetComponentInChildren<MeshRenderer> ().material.color = Color.white;
-	}
-
-
-	void AutopilotUpdate()
-	{
-		transform.position = Vector3.zero;
+		while (true)
+		{
+			WWW rotationGetRequest = new WWW(serverUrl + netId + "/rotation");
+			yield return rotationGetRequest;
+			targetRotation = JsonUtility.FromJson<Quaternion> (rotationGetRequest.text);
+		}
 	}
 }
