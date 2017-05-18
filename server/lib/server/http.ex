@@ -14,7 +14,11 @@ defmodule Server.HTTP do
     {:ok, body, conn} = read_body(conn)
     %{"transform" => transform} = URI.decode_query(body)
     Server.PlayersStash.put(player_id, transform)
-    send_resp(conn, 200, "Got your transform!")
+    resp(conn, 200, "Got your transform!")
+  end
+
+  match _ do
+    resp(conn, 404, "oops")
   end
 
 end

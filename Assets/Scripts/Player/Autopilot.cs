@@ -7,6 +7,7 @@ public class Autopilot : NetworkBehaviour {
 
 	public string serverUrl;
 	public float smoothing;
+	// Cache the local player
 	[HideInInspector] public static uint localPlayerId;
 
 	private SerializableTransform targetTransform;
