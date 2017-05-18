@@ -5,64 +5,72 @@ using UnityEngine.Networking;
 
 public class Autopilot : NetworkBehaviour {
 
-	public string serverUrl;
-	public float smoothing;
-	// Cache the local player
-	[HideInInspector] public static uint localPlayerId;
+	public const short TRANSFORM_MESSAGE_TYPE = MsgType.Highest + 1;
 
-	private SerializableTransform targetTransform;
-
-
-	public override void OnStartLocalPlayer()
-	{
-		localPlayerId = netId.Value;
+	public class TransformMessage : MessageBase {
+		public uint netId;
+		public Vector3 position;
+		public Quaternion rotation;
 	}
+
+
+	public float smoothing;
+
+
+	////////////
+	// Client //
+	////////////
+
+	private NetworkClient networkClient;
+	private TransformMessage targetTransform;
 
 
 	private void Start()
 	{
-		if (isLocalPlayer)
-			StartCoroutine(SendTransformToServer ());
-		else
-			StartCoroutine(UpdateTransformFromServer ());
+		if (!isLocalPlayer)
+		{
+			networkClient = new NetworkClient ();
+			networkClient.RegisterHandler (TRANSFORM_MESSAGE_TYPE, OnTransform);
+			networkClient.Connect (NetworkManager.singleton.networkAddress, NetworkManager.singleton.networkPort);
+		}
+	}
+
+
+	public void OnTransform(NetworkMessage netMsg)
+	{
+		var receivedTransform = netMsg.ReadMessage<TransformMessage> ();
+		if (receivedTransform.netId == netId.Value)
+		{
+			targetTransform = receivedTransform;
+		}
 	}
 
 
 	private void Update()
 	{
 		if (isLocalPlayer)
-			return;
-
-		if (targetTransform != null)
+		{
+			CmdSendTransformToServer (transform.position, transform.rotation);
+		}
+		else if (targetTransform != null)
 		{
 			transform.position = Vector3.Lerp (transform.position, targetTransform.position, smoothing);
 			transform.rotation = Quaternion.Lerp (transform.rotation, targetTransform.rotation, smoothing);
 		}
 	}
-		
 
-	private IEnumerator SendTransformToServer()
+
+	////////////
+	// Server //
+	////////////
+
+	[Command]
+	private void CmdSendTransformToServer(Vector3 position, Quaternion rotation)
 	{
-		while (true)
-		{
-			WWWForm form = new WWWForm ();
-			form.AddField("transform", SerializableTransform.ToJson (transform));
-			WWW postRequest = new WWW(serverUrl + "/" + netId.Value, form);
-			yield return postRequest;
-		}
-	}
-
-
-	private IEnumerator UpdateTransformFromServer()
-	{
-		while (true)
-		{
-			WWW getRequest = new WWW(serverUrl + "/" + netId.Value + "/" + localPlayerId);
-			yield return getRequest;
-			if (string.IsNullOrEmpty (getRequest.error))
-			{
-				targetTransform = SerializableTransform.FromJson (getRequest.text);
-			}
-		}
+		var transformMessage = new TransformMessage ();
+		transformMessage.netId = netId.Value;
+		transformMessage.position = position;
+		transformMessage.rotation = rotation;
+		NetworkServer.SendToAll (TRANSFORM_MESSAGE_TYPE, transformMessage);
 	}
 }
