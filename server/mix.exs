@@ -12,15 +12,15 @@ defmodule Server.Mixfile do
 
   def application do
     [
-	  extra_applications: [:logger],
-	  mod: {Server.Application, []},
-	]
+      extra_applications: [:logger],
+      mod: {Server.Application, []},
+    ]
   end
 
   defp deps do
     [
       {:cowboy, "~> 1.1"},
       {:plug, "~> 1.3"},
-	]
+    ]
   end
 end
