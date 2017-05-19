@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class LocalPlayerColor : NetworkBehaviour {
+public class LocalPlayerColor : MonoBehaviour {
 
 	public Color color;
 
 
-	public override void OnStartLocalPlayer()
+	public void Start ()
 	{
 		GetComponentInChildren<MeshRenderer> ().material.color = color;
 	}

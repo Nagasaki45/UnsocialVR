@@ -6,32 +6,18 @@ using UnityEngine.UI;
 
 public class PlayerMovement : NetworkBehaviour {
 
-	private Transform camera;
+	private Transform cameraTransform;
 
 
 	private void Start()
 	{
-		camera = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Transform> ();
+		cameraTransform = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Transform> ();
 	}
 
 
 	private void Update ()
 	{
-		if (isLocalPlayer)
-			LocalPlayerUpdate ();
-		else
-			RemotePlayerUpdate ();
-	}
-
-
-	private void LocalPlayerUpdate()
-	{
-		transform.position = camera.position;
-		transform.rotation = camera.rotation;
-	}
-
-
-	private void RemotePlayerUpdate()
-	{
+		transform.position = cameraTransform.position;
+		transform.rotation = cameraTransform.rotation;
 	}
 }
