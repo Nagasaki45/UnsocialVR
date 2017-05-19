@@ -2,23 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class PlayerMovement : NetworkBehaviour {
 
-	public float speed;
-	public float angularSpeed;
+	private Transform camera;
 
 
-	// Update is called once per frame
-	void Update ()
+	private void Start()
 	{
-		if (!isLocalPlayer)
-			return;
+		camera = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Transform> ();
+	}
 
-		float x = Input.GetAxis ("Horizontal") * angularSpeed * Time.deltaTime;
-		float z = Input.GetAxis ("Vertical") * speed * Time.deltaTime;
 
-		transform.Rotate (0, x, 0);
-		transform.Translate (0, 0, z);
+	private void Update ()
+	{
+		if (isLocalPlayer)
+			LocalPlayerUpdate ();
+		else
+			RemotePlayerUpdate ();
+	}
+
+
+	private void LocalPlayerUpdate()
+	{
+		transform.position = camera.position;
+		transform.rotation = camera.rotation;
+	}
+
+
+	private void RemotePlayerUpdate()
+	{
 	}
 }
