@@ -22,7 +22,6 @@ public class ReceiveTransformFromServer : NetworkBehaviour {
 	{
 		if (targetTransform != null)
 		{
-			Debug.Log ("Look mum, I'm upadting! " + isLocalPlayer + " " + netId.Value);
 			transform.position = Vector3.Lerp (transform.position, targetTransform.position, smoothing);
 			transform.rotation = Quaternion.Lerp (transform.rotation, targetTransform.rotation, smoothing);
 		}
