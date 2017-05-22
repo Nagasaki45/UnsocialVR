@@ -18,11 +18,6 @@ public class SerializableTransform {
 		return JsonUtility.ToJson(st);
 	}
 
-	public static SerializableTransform FromJson(string json)
-	{
-		return JsonUtility.FromJson<SerializableTransform> (json);
-	}
-
 	public static Dictionary<uint, SerializableTransform> FromDictJson(string json)
 	{
 		Dictionary<uint, SerializableTransform> d = new Dictionary<uint, SerializableTransform> ();

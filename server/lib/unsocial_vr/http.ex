@@ -5,11 +5,6 @@ defmodule UnsocialVR.HTTP do
   plug :match
   plug :dispatch
 
-  get "/:player_id/:requester_id" do
-    {:ok, transform} = UnsocialVR.PlayersStash.fetch(player_id)
-    resp(conn, 200, transform)
-  end
-
   post "/:player_id" do
     {:ok, body, conn} = read_body(conn)
     %{"transform" => transform} = URI.decode_query(body)
