@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class PlayerController : NetworkBehaviour {
 
 	public static uint localPlayerNetId;
-	// public static Dictionary<uint, SerializableTransform> remotePlayersTransforms;
+	public static Dictionary<uint, SerializableTransform> remotePlayersTransforms;
 
 	// Using keyboard in simulator
 	public float speed;
@@ -16,6 +16,7 @@ public class PlayerController : NetworkBehaviour {
 	public float defaultHeight;
 
 	// Local vs remote players
+	public Color color;
 	public string serverUrl;
 	public float smoothing;
 
@@ -30,6 +31,7 @@ public class PlayerController : NetworkBehaviour {
 		if (isLocalPlayer)
 		{
 			localPlayerNetId = netId.Value;
+			GetComponentInChildren<MeshRenderer> ().material.color = color;
 			StartCoroutine(CommunicateForever ());
 		}
 	}
@@ -57,7 +59,7 @@ public class PlayerController : NetworkBehaviour {
 		}
 		else
 		{
-			// remotePlayersTransforms.TryGetValue (netId.Value, out targetTransform);
+			remotePlayersTransforms.TryGetValue (netId.Value, out targetTransform);
 			if (targetTransform != null)
 			{
 				transform.position = Vector3.Lerp (transform.position, targetTransform.position, smoothing);
@@ -73,9 +75,14 @@ public class PlayerController : NetworkBehaviour {
 		{
 			WWWForm form = new WWWForm ();
 			form.AddField("transform", SerializableTransform.ToJson (transform));
-			WWW postRequest = new WWW(serverUrl + "/" + netId.Value, form);
+			WWW postRequest = new WWW(serverUrl + "/" + localPlayerNetId, form);
 			yield return postRequest;
-			if (!string.IsNullOrEmpty (postRequest.error))
+			if (string.IsNullOrEmpty (postRequest.error))
+			{
+				Debug.Log ("Got data from the server: " + SerializableTransform.FromDictJson (postRequest.text));
+				remotePlayersTransforms = SerializableTransform.FromDictJson (postRequest.text);
+			}
+			else
 			{
 				Debug.LogError ("Failed to POST to the server: " + postRequest.error);
 			}

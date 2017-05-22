@@ -21,6 +21,7 @@ defmodule UnsocialVR.Mixfile do
     [
       {:cowboy, "~> 1.1"},
       {:plug, "~> 1.3"},
+      {:poison, "~> 3.1"},
     ]
   end
 end
