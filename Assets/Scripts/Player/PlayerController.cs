@@ -7,19 +7,23 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : NetworkBehaviour {
 
+	// Keep local player info as static
+	// One instance of the class per app instance will work
 	public static uint localPlayerNetId;
 	public static Dictionary<uint, SerializableTransform> remotePlayersTransforms;
+
+	// Local player settings
+	public string serverUrl;
+	public float sleepBetweenRequests;
+
+	// Remote players settings
+	public Color color;
+	public float smoothing;
 
 	// Using keyboard in simulator
 	public float speed;
 	public float angularSpeed;
 	public float defaultHeight;
-
-	// Local vs remote players
-	public Color color;
-	public string serverUrl;
-	public float smoothing;
-
 
 	private Transform cameraTransform;
 	private SerializableTransform targetTransform;
@@ -79,13 +83,13 @@ public class PlayerController : NetworkBehaviour {
 			yield return postRequest;
 			if (string.IsNullOrEmpty (postRequest.error))
 			{
-				Debug.Log ("Got data from the server: " + SerializableTransform.FromDictJson (postRequest.text));
 				remotePlayersTransforms = SerializableTransform.FromDictJson (postRequest.text);
 			}
 			else
 			{
 				Debug.LogError ("Failed to POST to the server: " + postRequest.error);
 			}
+			yield return new WaitForSeconds (sleepBetweenRequests);
 		}
 	}
 }
