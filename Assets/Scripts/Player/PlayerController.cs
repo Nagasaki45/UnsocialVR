@@ -25,12 +25,14 @@ public class PlayerController : NetworkBehaviour {
 	public float angularSpeed;
 	public float defaultHeight;
 
+	private PlayerTalking playerTalking;
 	private Transform cameraTransform;
 	private SerializableTransform targetTransform;
 
 
 	private void Start()
 	{
+		playerTalking = GetComponent<PlayerTalking> ();
 		cameraTransform = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Transform> ();
 		if (isLocalPlayer)
 		{
@@ -54,11 +56,15 @@ public class PlayerController : NetworkBehaviour {
 				transform.Translate (0, 0, z);
 
 				transform.position = new Vector3 (transform.position.x, defaultHeight, transform.position.z);
+
+				playerTalking.isTalking = Input.GetButton ("Talk");
 			}
 			else
 			{
 				transform.position = cameraTransform.position;
 				transform.rotation = cameraTransform.rotation;
+
+				// TODO Set talking state for VR
 			}
 		}
 		else
@@ -68,6 +74,7 @@ public class PlayerController : NetworkBehaviour {
 			{
 				transform.position = Vector3.Lerp (transform.position, targetTransform.position, smoothing);
 				transform.rotation = Quaternion.Lerp (transform.rotation, targetTransform.rotation, smoothing);
+				playerTalking.isTalking = targetTransform.isTalking;
 			}
 		}
 	}
@@ -78,7 +85,7 @@ public class PlayerController : NetworkBehaviour {
 		while (true)
 		{
 			WWWForm form = new WWWForm ();
-			form.AddField("transform", SerializableTransform.ToJson (transform));
+			form.AddField("transform", SerializableTransform.ToJson (transform, playerTalking.isTalking));
 			WWW postRequest = new WWW(serverUrl + "/" + localPlayerNetId, form);
 			yield return postRequest;
 			if (string.IsNullOrEmpty (postRequest.error))
