@@ -26,6 +26,7 @@ public class PlayerController : NetworkBehaviour {
 	public float defaultHeight;
 
 	private PlayerTalking playerTalking;
+	private PlayerAttention playerAttention;
 	private Transform cameraTransform;
 	private SerializableTransform targetTransform;
 
@@ -33,6 +34,7 @@ public class PlayerController : NetworkBehaviour {
 	private void Start()
 	{
 		playerTalking = GetComponent<PlayerTalking> ();
+		playerAttention = GetComponent<PlayerAttention> ();
 		cameraTransform = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Transform> ();
 		if (isLocalPlayer)
 		{
@@ -57,7 +59,12 @@ public class PlayerController : NetworkBehaviour {
 
 				transform.position = new Vector3 (transform.position.x, defaultHeight, transform.position.z);
 
-				playerTalking.isTalking = Input.GetButton ("Talk");
+				// Overcomplicated to allow manual switching of isTalking for debuging
+				if (Input.GetButtonDown ("Talk"))
+					playerTalking.isTalking = true;
+				else if (Input.GetButtonUp ("Talk"))
+					playerTalking.isTalking = false;
+
 			}
 			else
 			{
@@ -85,7 +92,7 @@ public class PlayerController : NetworkBehaviour {
 		while (true)
 		{
 			WWWForm form = new WWWForm ();
-			form.AddField("transform", SerializableTransform.ToJson (transform, playerTalking.isTalking));
+			form.AddField("transform", SerializableTransform.ToJson (transform, playerTalking.isTalking, playerAttention.attentionTo));
 			WWW postRequest = new WWW(serverUrl + "/" + localPlayerNetId, form);
 			yield return postRequest;
 			if (string.IsNullOrEmpty (postRequest.error))

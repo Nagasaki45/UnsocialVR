@@ -9,24 +9,16 @@ defmodule UnsocialVR.PlayersStash do
 	GenServer.cast(__MODULE__, {:put, key, value})
   end
 
-  def fetch(key) do
-    GenServer.call(__MODULE__, {:fetch, key})
-  end
-
-  def keys() do
-    GenServer.call(__MODULE__, {:keys})
+  def data() do
+    GenServer.call(__MODULE__, {:data})
   end
 
   def handle_cast({:put, key, value}, stash) do
     {:noreply, Map.put(stash, key, value)}
   end
 
-  def handle_call({:fetch, key}, _from, stash) do
-    {:reply, Map.fetch(stash, key), stash}
-  end
-
-  def handle_call({:keys}, _from, stash) do
-    {:reply, Map.keys(stash), stash}
+  def handle_call({:data}, _from, stash) do
+    {:reply, stash, stash}
   end
 
 end
