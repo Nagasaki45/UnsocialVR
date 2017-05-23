@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerTalking : MonoBehaviour {
 
 	public GameObject mouth;
+	public AudioSource audioSource;
 	public float mouthClose;
 	public float mouthOpen;
 	public float speed;
@@ -29,6 +30,7 @@ public class PlayerTalking : MonoBehaviour {
 	{
 		if (isTalking)
 		{
+			audioSource.volume = 1f;
 			if (Vector3.Distance (mouth.transform.localScale, target) < 0.01f)
 			{
 				if (target.y == mouthOpen)
@@ -44,6 +46,7 @@ public class PlayerTalking : MonoBehaviour {
 		}
 		else
 		{
+			audioSource.volume = 0f;
 			mouth.transform.localScale = CreateTarget (mouthClose);
 		}
 	}
