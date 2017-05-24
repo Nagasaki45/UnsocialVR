@@ -13,10 +13,10 @@ defmodule UnsocialVR.HTTP do
     {:ok, transform} = Poison.decode(transform)
 
     # Upload player data
-    UnsocialVR.PlayersStash.put(player_id, transform)
+    ConCache.put(:cache, player_id, transform)
 
     # Reply with scenen analysis
-    all_players = UnsocialVR.PlayersStash.data()
+    all_players = ConCache.ets(:cache) |> :ets.tab2list() |> Enum.into(%{})
     scene = UnsocialVR.SceneAnalysis.remote_players(player_id, all_players)
     {:ok, scene} = Poison.encode(scene)
     resp(conn, 200, scene)
