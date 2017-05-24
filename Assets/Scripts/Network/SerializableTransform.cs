@@ -11,6 +11,7 @@ public class SerializableTransform {
 	public Quaternion rotation;
 	public bool isTalking;
 	public int attentionTo;
+	public string state;
 
 	public static string ToJson(Transform transform, bool isTalking, int attentionTo)
 	{
@@ -35,6 +36,7 @@ public class SerializableTransform {
 			st.rotation = new Quaternion (current ["rotation"] ["x"].AsFloat, current ["rotation"] ["y"].AsFloat, current ["rotation"] ["z"].AsFloat, current ["rotation"] ["w"].AsFloat);
 			st.isTalking = current ["isTalking"].AsBool;
 			st.attentionTo = current ["attentionTo"].AsInt;
+			st.state = current ["state"];
 			d.Add ((uint) current ["id"].AsInt, st);
 		}
 		return d;

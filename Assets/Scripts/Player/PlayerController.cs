@@ -9,6 +9,7 @@ public class PlayerController : NetworkBehaviour {
 
 	// Keep local player info as static
 	// One instance of the class per app instance will work
+	public static Transform localPlayerTransform;
 	public static uint localPlayerNetId;
 	public static Dictionary<uint, SerializableTransform> remotePlayersTransforms;
 
@@ -18,7 +19,8 @@ public class PlayerController : NetworkBehaviour {
 
 	// Remote players settings
 	public Color color;
-	public float smoothing;
+	public float transformSmoothing;
+	public float autopilotSmoothing;
 
 	// Using keyboard in simulator
 	public float speed;
@@ -49,6 +51,7 @@ public class PlayerController : NetworkBehaviour {
 	{
 		if (isLocalPlayer)
 		{
+			localPlayerTransform = transform;
 			if (SceneManager.GetActiveScene ().name == "Simulator")
 			{
 				float x = Input.GetAxis ("Horizontal") * angularSpeed * Time.deltaTime;
@@ -79,9 +82,24 @@ public class PlayerController : NetworkBehaviour {
 			remotePlayersTransforms.TryGetValue (netId.Value, out targetTransform);
 			if (targetTransform != null)
 			{
-				transform.position = Vector3.Lerp (transform.position, targetTransform.position, smoothing);
-				transform.rotation = Quaternion.Lerp (transform.rotation, targetTransform.rotation, smoothing);
-				playerTalking.isTalking = targetTransform.isTalking;
+				Debug.Log (netId.Value + " state: " + targetTransform.state);
+				if (targetTransform.state == "real")
+				{
+					transform.position = Vector3.Lerp (transform.position, targetTransform.position, transformSmoothing);
+					transform.rotation = Quaternion.Lerp (transform.rotation, targetTransform.rotation, transformSmoothing);
+					playerTalking.isTalking = targetTransform.isTalking;
+				}
+				else if (targetTransform.state == "autopilot")
+				{
+					playerTalking.isTalking = false;
+					Vector3 targetDir = localPlayerTransform.position - transform.position;
+					Vector3 fakedRotation = Vector3.RotateTowards (transform.forward, targetDir, autopilotSmoothing, 0.0f);
+					transform.rotation = Quaternion.LookRotation (fakedRotation);
+				}
+				else if (targetTransform.state == "ignored")
+				{
+					playerTalking.isTalking = false;
+				}
 			}
 		}
 	}

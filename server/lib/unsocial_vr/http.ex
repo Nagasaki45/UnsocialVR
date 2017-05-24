@@ -16,7 +16,8 @@ defmodule UnsocialVR.HTTP do
     UnsocialVR.PlayersStash.put(player_id, transform)
 
     # Reply with scenen analysis
-    scene = UnsocialVR.SceneAnalysis.remote_players(player_id)
+    all_players = UnsocialVR.PlayersStash.data()
+    scene = UnsocialVR.SceneAnalysis.remote_players(player_id, all_players)
     {:ok, scene} = Poison.encode(scene)
     resp(conn, 200, scene)
   end
