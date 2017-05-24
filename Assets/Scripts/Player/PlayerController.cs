@@ -88,6 +88,7 @@ public class PlayerController : NetworkBehaviour {
 					transform.position = Vector3.Lerp (transform.position, targetTransform.position, transformSmoothing);
 					transform.rotation = Quaternion.Lerp (transform.rotation, targetTransform.rotation, transformSmoothing);
 					playerTalking.isTalking = targetTransform.isTalking;
+					SetChildrenRenderersEnabledState (true);
 				}
 				else if (targetTransform.state == "autopilot")
 				{
@@ -95,12 +96,23 @@ public class PlayerController : NetworkBehaviour {
 					Vector3 targetDir = localPlayerTransform.position - transform.position;
 					Vector3 fakedRotation = Vector3.RotateTowards (transform.forward, targetDir, autopilotSmoothing, 0.0f);
 					transform.rotation = Quaternion.LookRotation (fakedRotation);
+					SetChildrenRenderersEnabledState (true);
 				}
 				else if (targetTransform.state == "ignored")
 				{
 					playerTalking.isTalking = false;
+					SetChildrenRenderersEnabledState (false);
 				}
 			}
+		}
+	}
+
+
+	private void SetChildrenRenderersEnabledState(bool state)
+	{
+		foreach (Renderer r in GetComponentsInChildren<Renderer>())
+		{
+			r.enabled = state;
 		}
 	}
 
