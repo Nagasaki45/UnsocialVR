@@ -75,7 +75,7 @@ defmodule UnsocialVR.SceneAnalysis do
     |> Enum.uniq()
   end
 
-  @large_side_conversation 2
+  @large_conversation 2
 
   @doc """
   How the player see the world, based on his data, the other players,
@@ -84,10 +84,9 @@ defmodule UnsocialVR.SceneAnalysis do
   - If there are less than 2 side conversations or me not participating
     in any side conversation reply real state.
   - The players that are not in my side conversation:
+    - The player I'm talking too: autopilot.
     - If I'm a speaker and side conversation is large: autopilot.
     - Otherwise: ignored.
-  - TODO If the player I'm talking to is not in my side conversation set him to
-  autopilot.
   """
   def player_perspective(the_others, _me, side_conversations)
   when length(side_conversations) < 2 do
@@ -104,13 +103,15 @@ defmodule UnsocialVR.SceneAnalysis do
 
   def participate_perspective(the_others, me, side_conversation) do
     {attendies, the_rest} = group_by(the_others, &MapSet.member?(side_conversation, &1.id))
-    the_rest_state =
-      if me["isTalking"] && MapSet.size(side_conversation) > @large_side_conversation do
-        :autopilot
-      else
-        :ignored
+    large_conversation? = MapSet.size(side_conversation) > @large_conversation
+    the_rest = Enum.map(the_rest, fn other ->
+      state = cond do
+        me["isTalking"] && me["attentionTo"] == other.id -> :autopilot
+        me["isTalking"] && large_conversation? -> :autopilot
+        true -> :ignored
       end
-    the_rest = Enum.map(the_rest, &Map.put(&1, :state, the_rest_state))
+      Map.put(other, :state, state)
+    end)
     attendies ++ the_rest
   end
 
