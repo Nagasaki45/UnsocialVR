@@ -60,6 +60,9 @@ public class PlayerController : NetworkBehaviour {
 				transform.Rotate (0, x, 0);
 				transform.Translate (0, 0, z);
 
+				cameraTransform.position = transform.position;
+				cameraTransform.rotation = transform.rotation;
+
 				transform.position = new Vector3 (transform.position.x, defaultHeight, transform.position.z);
 
 				// Overcomplicated to allow manual switching of isTalking for debuging
