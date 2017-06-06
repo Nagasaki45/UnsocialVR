@@ -43,3 +43,6 @@ Builds/
 
 # Server
 Server/env
+
+# Blender
+*.blend1
