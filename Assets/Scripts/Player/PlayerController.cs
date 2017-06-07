@@ -9,9 +9,10 @@ public class PlayerController : NetworkBehaviour {
 
 	// Keep local player info as static
 	// One instance of the class per app instance will work
-	public static Transform localPlayerTransform;
-	public static uint localPlayerNetId;
-	public static Dictionary<uint, SerializableTransform> remotePlayersTransforms;
+	public static PlayerData localPlayerData;
+	public static Dictionary<uint, PlayerData> remotePlayersData;
+	public Transform leftHandTransform;
+	public Transform rightHandTransform;
 
 	// Local player settings
 	public string serverUrl;
@@ -28,19 +29,14 @@ public class PlayerController : NetworkBehaviour {
 	public float defaultHeight;
 
 	private PlayerTalking playerTalking;
-	private PlayerAttention playerAttention;
-	private Transform cameraTransform;
-	private SerializableTransform targetTransform;
 
 
 	private void Start()
 	{
 		playerTalking = GetComponent<PlayerTalking> ();
-		playerAttention = GetComponent<PlayerAttention> ();
-		cameraTransform = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Transform> ();
 		if (isLocalPlayer)
 		{
-			localPlayerNetId = netId.Value;
+			localPlayerData = new PlayerData ();
 			GetComponentInChildren<MeshRenderer> ().material.color = color;
 			StartCoroutine(CommunicateForever ());
 		}
@@ -51,7 +47,6 @@ public class PlayerController : NetworkBehaviour {
 	{
 		if (isLocalPlayer)
 		{
-			localPlayerTransform = transform;
 			if (SceneManager.GetActiveScene ().name == "Simulator")
 			{
 				float x = Input.GetAxis ("Horizontal") * angularSpeed * Time.deltaTime;
@@ -61,44 +56,40 @@ public class PlayerController : NetworkBehaviour {
 				transform.Translate (0, 0, z);
 
 				transform.position = new Vector3 (transform.position.x, defaultHeight, transform.position.z);
-
-				// Overcomplicated to allow manual switching of isTalking for debuging
-				if (Input.GetButtonDown ("Talk"))
-					playerTalking.isTalking = true;
-				else if (Input.GetButtonUp ("Talk"))
-					playerTalking.isTalking = false;
-
 			}
-			else
-			{
-				transform.position = cameraTransform.position;
-				transform.rotation = cameraTransform.rotation;
 
-				// TODO Set talking state for VR
-			}
+			UpdateLocalPlayerTransforms ();
 		}
-		else
+		else if (null != remotePlayersData)
 		{
-			remotePlayersTransforms.TryGetValue (netId.Value, out targetTransform);
-			if (targetTransform != null)
+			PlayerData received;
+			remotePlayersData.TryGetValue (netId.Value, out received);
+			if (null != received)
 			{
-				Debug.Log (netId.Value + " state: " + targetTransform.state);
-				if (targetTransform.state == "real")
+				Debug.Log (netId.Value + " state: " + received.state);
+				if (received.state == "real")
 				{
-					transform.position = Vector3.Lerp (transform.position, targetTransform.position, transformSmoothing);
-					transform.rotation = Quaternion.Lerp (transform.rotation, targetTransform.rotation, transformSmoothing);
-					playerTalking.isTalking = targetTransform.isTalking;
+					// Transforms
+					transform.position = Vector3.Lerp (transform.position, received.headPosition, transformSmoothing);
+					transform.rotation = Quaternion.Lerp (transform.rotation, received.headRotation, transformSmoothing);
+					leftHandTransform.position = Vector3.Lerp (leftHandTransform.position, received.leftHandPosition, transformSmoothing);
+					leftHandTransform.rotation = Quaternion.Lerp (leftHandTransform.rotation, received.leftHandRotation, transformSmoothing);
+					rightHandTransform.position = Vector3.Lerp (rightHandTransform.position, received.rightHandPosition, transformSmoothing);
+					rightHandTransform.rotation = Quaternion.Lerp (rightHandTransform.rotation, received.rightHandRotation, transformSmoothing);
+
+					// The rest
+					playerTalking.isTalking = received.isTalking;
 					SetChildrenRenderersEnabledState (true);
 				}
-				else if (targetTransform.state == "autopilot")
+				else if (received.state == "autopilot")
 				{
 					playerTalking.isTalking = false;
-					Vector3 targetDir = localPlayerTransform.position - transform.position;
+					Vector3 targetDir = localPlayerData.headPosition - transform.position;  // TODO change to chest position
 					Vector3 fakedRotation = Vector3.RotateTowards (transform.forward, targetDir, autopilotSmoothing, 0.0f);
 					transform.rotation = Quaternion.LookRotation (fakedRotation);
 					SetChildrenRenderersEnabledState (true);
 				}
-				else if (targetTransform.state == "ignored")
+				else if (received.state == "ignored")
 				{
 					playerTalking.isTalking = false;
 					SetChildrenRenderersEnabledState (false);
@@ -117,17 +108,28 @@ public class PlayerController : NetworkBehaviour {
 	}
 
 
+	private void UpdateLocalPlayerTransforms()
+	{
+		localPlayerData.headPosition = transform.position;
+		localPlayerData.headRotation = transform.rotation;
+		localPlayerData.leftHandPosition = leftHandTransform.position;
+		localPlayerData.leftHandRotation = leftHandTransform.rotation;
+		localPlayerData.rightHandPosition = rightHandTransform.position;
+		localPlayerData.rightHandRotation = rightHandTransform.rotation;
+	}
+
+
 	private IEnumerator CommunicateForever()
 	{
 		while (true)
 		{
 			WWWForm form = new WWWForm ();
-			form.AddField("transform", SerializableTransform.ToJson (transform, playerTalking.isTalking, playerAttention.attentionTo));
-			WWW postRequest = new WWW(serverUrl + "/" + localPlayerNetId, form);
+			form.AddField("transform", localPlayerData.ToJson());
+			WWW postRequest = new WWW(serverUrl + "/" + netId.Value, form);
 			yield return postRequest;
 			if (string.IsNullOrEmpty (postRequest.error))
 			{
-				remotePlayersTransforms = SerializableTransform.FromDictJson (postRequest.text);
+				remotePlayersData = PlayerData.FromDictJson (postRequest.text);
 			}
 			else
 			{

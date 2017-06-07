@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
-public class PlayerTalking : MonoBehaviour {
+
+public class PlayerTalking : NetworkBehaviour {
 
 	public GameObject mouth;
 	public AudioSource audioSource;
@@ -28,6 +31,17 @@ public class PlayerTalking : MonoBehaviour {
 
 	private void Update ()
 	{
+		if (isLocalPlayer)
+		{
+			// Overcomplicated to allow manual switching of isTalking for debuging
+			if (Input.GetButtonDown ("Talk"))
+				isTalking = true;
+			else if (Input.GetButtonUp ("Talk"))
+				isTalking = false;
+
+			PlayerController.localPlayerData.isTalking = isTalking;
+		}
+
 		if (isTalking)
 		{
 			audioSource.volume = 1f;

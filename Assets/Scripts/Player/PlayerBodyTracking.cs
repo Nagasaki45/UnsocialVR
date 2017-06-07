@@ -14,13 +14,16 @@ public class PlayerBodyTracking : NetworkBehaviour {
 
 	void Start ()
 	{
-		trackingDeviceTransform = GameObject.FindGameObjectWithTag (trackingDeviceTag).GetComponent<Transform> ();
+		if (isLocalPlayer && SceneManager.GetActiveScene ().name != "Simulator")
+		{
+			trackingDeviceTransform = GameObject.FindGameObjectWithTag (trackingDeviceTag).GetComponent<Transform> ();
+		}
 	}
 	
 
 	void Update ()
 	{
-		if (isLocalPlayer)
+		if (isLocalPlayer && SceneManager.GetActiveScene ().name != "Simulator")
 		{
 			gameObjectTransform.position = trackingDeviceTransform.position;
 			gameObjectTransform.rotation = trackingDeviceTransform.rotation;

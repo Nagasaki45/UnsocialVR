@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerAttention : MonoBehaviour {
 
 	public float rayDistance;
-	public int attentionTo;
 
 	private Ray attentionRay;
 	private RaycastHit attentionHit;
@@ -17,6 +16,7 @@ public class PlayerAttention : MonoBehaviour {
 	
 
 	void Update () {
+		int attentionTo = -1;
 
 		attentionRay.origin = transform.position;
 		attentionRay.direction = transform.forward;
@@ -29,9 +29,6 @@ public class PlayerAttention : MonoBehaviour {
 				attentionTo = (int) pc.netId.Value;
 			}
 		}
-		else
-		{
-			attentionTo = -1;
-		}
+		PlayerController.localPlayerData.attentionTo = attentionTo;
 	}
 }
