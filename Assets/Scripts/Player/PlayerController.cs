@@ -23,11 +23,6 @@ public class PlayerController : NetworkBehaviour {
 	public float transformSmoothing;
 	public float autopilotSmoothing;
 
-	// Using keyboard in simulator
-	public float speed;
-	public float angularSpeed;
-	public float defaultHeight;
-
 	private PlayerTalking playerTalking;
 
 
@@ -47,17 +42,6 @@ public class PlayerController : NetworkBehaviour {
 	{
 		if (isLocalPlayer)
 		{
-			if (SceneManager.GetActiveScene ().name == "Simulator")
-			{
-				float x = Input.GetAxis ("Horizontal") * angularSpeed * Time.deltaTime;
-				float z = Input.GetAxis ("Vertical") * speed * Time.deltaTime;
-
-				transform.Rotate (0, x, 0);
-				transform.Translate (0, 0, z);
-
-				transform.position = new Vector3 (transform.position.x, defaultHeight, transform.position.z);
-			}
-
 			UpdateLocalPlayerTransforms ();
 		}
 		else if (null != remotePlayersData)
@@ -69,24 +53,20 @@ public class PlayerController : NetworkBehaviour {
 				Debug.Log (netId.Value + " state: " + received.state);
 				if (received.state == "real")
 				{
-					// Transforms
-					transform.position = Vector3.Lerp (transform.position, received.headPosition, transformSmoothing);
-					transform.rotation = Quaternion.Lerp (transform.rotation, received.headRotation, transformSmoothing);
-					leftHandTransform.position = Vector3.Lerp (leftHandTransform.position, received.leftHandPosition, transformSmoothing);
-					leftHandTransform.rotation = Quaternion.Lerp (leftHandTransform.rotation, received.leftHandRotation, transformSmoothing);
-					rightHandTransform.position = Vector3.Lerp (rightHandTransform.position, received.rightHandPosition, transformSmoothing);
-					rightHandTransform.rotation = Quaternion.Lerp (rightHandTransform.rotation, received.rightHandRotation, transformSmoothing);
-
-					// The rest
+					UpdateRemotePlayerTransforms (received, transformSmoothing);
 					playerTalking.isTalking = received.isTalking;
 					SetChildrenRenderersEnabledState (true);
 				}
 				else if (received.state == "autopilot")
 				{
-					playerTalking.isTalking = false;
+					UpdateRemotePlayerTransforms (received, 0f);
+
+					// Rotate towards local player
 					Vector3 targetDir = localPlayerData.headPosition - transform.position;  // TODO change to chest position
 					Vector3 fakedRotation = Vector3.RotateTowards (transform.forward, targetDir, autopilotSmoothing, 0.0f);
 					transform.rotation = Quaternion.LookRotation (fakedRotation);
+
+					playerTalking.isTalking = false;
 					SetChildrenRenderersEnabledState (true);
 				}
 				else if (received.state == "ignored")
@@ -116,6 +96,17 @@ public class PlayerController : NetworkBehaviour {
 		localPlayerData.leftHandRotation = leftHandTransform.rotation;
 		localPlayerData.rightHandPosition = rightHandTransform.position;
 		localPlayerData.rightHandRotation = rightHandTransform.rotation;
+	}
+
+
+	private void UpdateRemotePlayerTransforms(PlayerData received, float smoothing)
+	{
+		transform.position = Vector3.Lerp (transform.position, received.headPosition, smoothing);
+		transform.rotation = Quaternion.Lerp (transform.rotation, received.headRotation, smoothing);
+		leftHandTransform.position = Vector3.Lerp (leftHandTransform.position, received.leftHandPosition, smoothing);
+		leftHandTransform.rotation = Quaternion.Lerp (leftHandTransform.rotation, received.leftHandRotation, smoothing);
+		rightHandTransform.position = Vector3.Lerp (rightHandTransform.position, received.rightHandPosition, smoothing);
+		rightHandTransform.rotation = Quaternion.Lerp (rightHandTransform.rotation, received.rightHandRotation, smoothing);
 	}
 
 

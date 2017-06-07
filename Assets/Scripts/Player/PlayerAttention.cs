@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class PlayerAttention : MonoBehaviour {
+public class PlayerAttention : NetworkBehaviour {
 
 	public float rayDistance;
 
@@ -16,19 +17,22 @@ public class PlayerAttention : MonoBehaviour {
 	
 
 	void Update () {
-		int attentionTo = -1;
-
-		attentionRay.origin = transform.position;
-		attentionRay.direction = transform.forward;
-
-		if (Physics.Raycast (attentionRay, out attentionHit, rayDistance))
+		if (isLocalPlayer)
 		{
-			PlayerController pc = attentionHit.collider.gameObject.GetComponent<PlayerController> ();
-			if (pc != null)
+			int attentionTo = -1;
+
+			attentionRay.origin = transform.position;
+			attentionRay.direction = transform.forward;
+
+			if (Physics.Raycast (attentionRay, out attentionHit, rayDistance))
 			{
-				attentionTo = (int) pc.netId.Value;
+				PlayerController pc = attentionHit.collider.gameObject.GetComponent<PlayerController> ();
+				if (pc != null)
+				{
+					attentionTo = (int) pc.netId.Value;
+				}
 			}
+			PlayerController.localPlayerData.attentionTo = attentionTo;
 		}
-		PlayerController.localPlayerData.attentionTo = attentionTo;
 	}
 }
