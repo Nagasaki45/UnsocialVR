@@ -29,18 +29,21 @@ ModelImporter:
     2300006: Head_MeshPart0
     2300008: Head_MeshPart1
     2300010: Head_MeshPart2
+    2300012: Head
     3300000: Body_MeshPart0
     3300002: Body_MeshPart1
     3300004: Hand
     3300006: Head_MeshPart0
     3300008: Head_MeshPart1
     3300010: Head_MeshPart2
+    3300012: Head
     4300000: Body_MeshPart0
     4300002: Body_MeshPart1
     4300004: Hand
     4300006: Head_MeshPart0
     4300008: Head_MeshPart1
     4300010: Head_MeshPart2
+    4300012: Head
   materials:
     importMaterials: 1
     materialName: 0
