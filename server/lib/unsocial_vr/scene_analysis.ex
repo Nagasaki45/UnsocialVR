@@ -10,7 +10,23 @@ defmodule UnsocialVR.SceneAnalysis do
     the_others
     |> Enum.map(fn {id, value} -> Map.put(value, :id, id) end)
     |> player_perspective(me, side_conversations)
-    |> Enum.map(&set_default(&1, :state, :real))
+    |> Stream.map(&set_default(&1, :state, :real))
+    |> Enum.map(&apply_autopilot/1)
+  end
+
+  @doc """
+  If the state of the player is autopilot, replace its positions
+  with autopilot positions
+  """
+  def apply_autopilot(%{state: :autopilot, id: id} = player_data) do
+    head_position = player_data["headPosition"]
+    position_shift = {head_position["x"], head_position["z"]}
+    time_shift = id * 4321  # Just to cause difference between players
+    autopilot_data = UnsocialVR.Autopilot.play(position_shift, time_shift)
+    Map.merge(player_data, autopilot_data)
+  end
+  def apply_autopilot(non_autopilot_player_data) do
+    non_autopilot_player_data
   end
 
   @doc """

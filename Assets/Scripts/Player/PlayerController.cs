@@ -21,7 +21,6 @@ public class PlayerController : NetworkBehaviour {
 	// Remote players settings
 	public Color color;
 	public float transformSmoothing;
-	public float autopilotSmoothing;
 
 	private PlayerTalking playerTalking;
 
@@ -53,19 +52,13 @@ public class PlayerController : NetworkBehaviour {
 				Debug.Log (netId.Value + " state: " + received.state);
 				if (received.state == "real")
 				{
-					UpdateRemotePlayerTransforms (received, transformSmoothing);
+					UpdateRemotePlayerTransforms (received, false);
 					playerTalking.isTalking = received.isTalking;
 					SetChildrenRenderersEnabledState (true);
 				}
 				else if (received.state == "autopilot")
 				{
-					UpdateRemotePlayerTransforms (received, 0f);
-
-					// Rotate towards local player
-					Vector3 targetDir = localPlayerData.headPosition - transform.position;  // TODO change to chest position
-					Vector3 fakedRotation = Vector3.RotateTowards (transform.forward, targetDir, autopilotSmoothing, 0.0f);
-					transform.rotation = Quaternion.LookRotation (fakedRotation);
-
+					UpdateRemotePlayerTransforms (received, true);
 					playerTalking.isTalking = false;
 					SetChildrenRenderersEnabledState (true);
 				}
@@ -92,21 +85,29 @@ public class PlayerController : NetworkBehaviour {
 	{
 		localPlayerData.headPosition = transform.position;
 		localPlayerData.headRotation = transform.rotation;
-		localPlayerData.leftHandPosition = leftHandTransform.position;
-		localPlayerData.leftHandRotation = leftHandTransform.rotation;
-		localPlayerData.rightHandPosition = rightHandTransform.position;
-		localPlayerData.rightHandRotation = rightHandTransform.rotation;
+		localPlayerData.leftHandPosition = leftHandTransform.localPosition;
+		localPlayerData.leftHandRotation = leftHandTransform.localRotation;
+		localPlayerData.rightHandPosition = rightHandTransform.localPosition;
+		localPlayerData.rightHandRotation = rightHandTransform.localRotation;
 	}
 
 
-	private void UpdateRemotePlayerTransforms(PlayerData received, float smoothing)
+	private void UpdateRemotePlayerTransforms(PlayerData received, bool autopilotRotation)
 	{
-		transform.position = Vector3.Lerp (transform.position, received.headPosition, smoothing);
-		transform.rotation = Quaternion.Lerp (transform.rotation, received.headRotation, smoothing);
-		leftHandTransform.position = Vector3.Lerp (leftHandTransform.position, received.leftHandPosition, smoothing);
-		leftHandTransform.rotation = Quaternion.Lerp (leftHandTransform.rotation, received.leftHandRotation, smoothing);
-		rightHandTransform.position = Vector3.Lerp (rightHandTransform.position, received.rightHandPosition, smoothing);
-		rightHandTransform.rotation = Quaternion.Lerp (rightHandTransform.rotation, received.rightHandRotation, smoothing);
+		transform.position = Vector3.Lerp (transform.position, received.headPosition, transformSmoothing);
+		if (autopilotRotation)
+		{
+			// TODO change to chest position
+			transform.rotation = Quaternion.LookRotation (localPlayerData.headPosition - transform.position);
+		}
+		else
+		{
+			transform.rotation = Quaternion.Lerp (transform.rotation, received.headRotation, transformSmoothing);
+		}
+		leftHandTransform.localPosition = Vector3.Lerp (leftHandTransform.localPosition, received.leftHandPosition, transformSmoothing);
+		leftHandTransform.localRotation = Quaternion.Lerp (leftHandTransform.localRotation, received.leftHandRotation, transformSmoothing);
+		rightHandTransform.localPosition = Vector3.Lerp (rightHandTransform.localPosition, received.rightHandPosition, transformSmoothing);
+		rightHandTransform.localRotation = Quaternion.Lerp (rightHandTransform.localRotation, received.rightHandRotation, transformSmoothing);
 	}
 
 
