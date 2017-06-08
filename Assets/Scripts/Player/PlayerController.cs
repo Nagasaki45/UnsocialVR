@@ -21,6 +21,8 @@ public class PlayerController : NetworkBehaviour {
 	// Remote players settings
 	public Color color;
 	public float transformSmoothing;
+	public float slowSmoothing;
+	public float ignoredScale;
 
 	private PlayerTalking playerTalking;
 
@@ -52,32 +54,32 @@ public class PlayerController : NetworkBehaviour {
 				Debug.Log (netId.Value + " state: " + received.state);
 				if (received.state == "real")
 				{
-					UpdateRemotePlayerTransforms (received, false);
+					transform.rotation = Quaternion.Lerp (transform.rotation, received.headRotation, transformSmoothing);
+					UpdateRemotePlayerTransforms (received);
 					playerTalking.isTalking = received.isTalking;
-					SetChildrenRenderersEnabledState (true);
+					Scale (1f);
 				}
 				else if (received.state == "autopilot")
 				{
-					UpdateRemotePlayerTransforms (received, true);
+					Vector3 newDir = Vector3.RotateTowards(transform.forward, localPlayerData.headPosition - transform.position, slowSmoothing, 0.0F);
+					transform.rotation = Quaternion.LookRotation (newDir);
+					UpdateRemotePlayerTransforms (received);
 					playerTalking.isTalking = false;
-					SetChildrenRenderersEnabledState (true);
+					Scale (1f);
 				}
 				else if (received.state == "ignored")
 				{
 					playerTalking.isTalking = false;
-					SetChildrenRenderersEnabledState (false);
+					Scale (ignoredScale);
 				}
 			}
 		}
 	}
 
 
-	private void SetChildrenRenderersEnabledState(bool state)
+	private void Scale(float target)
 	{
-		foreach (Renderer r in GetComponentsInChildren<Renderer>())
-		{
-			r.enabled = state;
-		}
+		transform.localScale = Vector3.Lerp(transform.localScale, new Vector3 (target, target, target), slowSmoothing);
 	}
 
 
@@ -92,18 +94,10 @@ public class PlayerController : NetworkBehaviour {
 	}
 
 
-	private void UpdateRemotePlayerTransforms(PlayerData received, bool autopilotRotation)
+	private void UpdateRemotePlayerTransforms(PlayerData received)
 	{
 		transform.position = Vector3.Lerp (transform.position, received.headPosition, transformSmoothing);
-		if (autopilotRotation)
-		{
-			// TODO change to chest position
-			transform.rotation = Quaternion.LookRotation (localPlayerData.headPosition - transform.position);
-		}
-		else
-		{
-			transform.rotation = Quaternion.Lerp (transform.rotation, received.headRotation, transformSmoothing);
-		}
+		// Rotation is handled independently
 		leftHandTransform.localPosition = Vector3.Lerp (leftHandTransform.localPosition, received.leftHandPosition, transformSmoothing);
 		leftHandTransform.localRotation = Quaternion.Lerp (leftHandTransform.localRotation, received.leftHandRotation, transformSmoothing);
 		rightHandTransform.localPosition = Vector3.Lerp (rightHandTransform.localPosition, received.rightHandPosition, transformSmoothing);
