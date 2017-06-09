@@ -1,8 +1,6 @@
-Unsocial VR
-===========
+![logo](graphics/logo_low_res.png)
 
-Tom Gurion's Advance Project Placement at Inition.
-Part of the Media and Arts Technology doctoral programme, Queen Mary University of London.
+Advance Project Placement, Media and Arts Technology doctoral programme, Queen Mary University of London.
 
 ## What?
 
