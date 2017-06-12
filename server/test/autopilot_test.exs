@@ -4,12 +4,12 @@ defmodule AutopilotTest do
 
   import UnsocialVR.Autopilot
 
-  test "position shift" do
-    data = %{"somePosition" => %{"x" => 1, "y" => 1, "z" => 1}}
-    result = shift_positions(data, {1, 2})
-    assert result["somePosition"]["x"] == 2
-    assert result["somePosition"]["y"] == 1
-    assert result["somePosition"]["z"] == 3
+  test "character shift" do
+    data = %{"headPosition" => %{"x" => 1, "y" => 1, "z" => 1}}
+    result = shift_character(data, {1, 2})
+    assert result["headPosition"]["x"] == 2
+    assert result["headPosition"]["y"] == 1
+    assert result["headPosition"]["z"] == 3
   end
 
   test "finilize recording shift headPosition to origin" do

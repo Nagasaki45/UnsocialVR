@@ -24,6 +24,7 @@ defmodule UnsocialVR.Mixfile do
       {:poison, "~> 3.1"},
       {:con_cache, "~> 0.12.0"},
       {:persistent_ets, "~> 0.1.0"},
+      {:httpotion, "~> 3.0"},
     ]
   end
 end
