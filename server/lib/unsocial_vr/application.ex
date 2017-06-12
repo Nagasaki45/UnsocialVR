@@ -13,7 +13,8 @@ defmodule UnsocialVR.Application do
       [
         supervisor(ConCache, con_cache_opts),
         Plug.Adapters.Cowboy.child_spec(:http, UnsocialVR.HTTP, [], port: 8080),
-        worker(UnsocialVR.Autopilot, [])
+        worker(UnsocialVR.Autopilot, []),
+        worker(UnsocialVR.FFormations, []),
       ]
 
     opts = [strategy: :one_for_one, name: UnsocialVR.Supervisor]

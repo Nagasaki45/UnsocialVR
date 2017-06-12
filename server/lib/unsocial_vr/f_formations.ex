@@ -3,13 +3,44 @@ defmodule UnsocialVR.FFormations do
   Compute f-formations using the GCFF algorithm, running on a separate server.
   """
 
+  use GenServer
+
+  def start_link() do
+    GenServer.start_link(__MODULE__, [], name: __MODULE__)
+  end
+
+  def get() do
+    GenServer.call(__MODULE__, :get)
+  end
+
+  @analysis_period :timer.seconds(1)
+
+  def init(f_formations) do
+    schedule_analysis()
+    {:ok, f_formations}
+  end
+
+  def schedule_analysis() do
+    Process.send_after(__MODULE__, :analyze, @analysis_period)
+  end
+
+  def handle_call(:get, _from, f_formations) do
+    {:reply, f_formations, f_formations}
+  end
+
+  def handle_info(:analyze, _f_formations) do
+    f_formations = analyze()
+    schedule_analysis()
+    {:noreply, f_formations}
+  end
+
   @gcff_server "http://127.0.0.1:5000"
 
   @doc """
-  Get a list of players data and return a list of sets of IDs
-  representing participants in f-formations.
+  Using data from the cache analyze f-formations on GCFF server.
   """
-  def analyze(all_players) do
+  def analyze() do
+    all_players = UnsocialVR.Cache.get_players()
     all_players
     |> Stream.map(&prepare_data_for_gcff/1)
     |> Stream.map(&Enum.join(&1, ","))
@@ -17,7 +48,7 @@ defmodule UnsocialVR.FFormations do
     |> gcff()
     |> String.split(",")
     |> Enum.map(&String.to_integer/1)
-    |> chunk_by_ids(all_players)
+    |> group_by_ids(all_players)
     |> IO.inspect()
   end
 
@@ -65,17 +96,17 @@ defmodule UnsocialVR.FFormations do
     body
   end
 
-  def chunk_by_ids(gcff_output, all_players) do
+  def group_by_ids(gcff_output, all_players) do
     all_players
     |> Stream.map(fn player_data -> player_data.id end)
-    |> chunk_by_key(gcff_output)
+    |> group_by_key(gcff_output)
   end
 
-  def chunk_by_key(items, keys) do
+  def group_by_key(items, keys) do
     keys
-    |> Stream.zip(items)
-    |> Stream.chunk_by(fn {key, _item} -> key end)
-    |> Enum.map(fn keys_and_items ->
+    |> Enum.zip(items)
+    |> Enum.group_by(fn {key, _item} -> key end)
+    |> Enum.map(fn {_key, keys_and_items} ->
       keys_and_items |> Enum.map(fn {_key, item} -> item end)
     end)
   end

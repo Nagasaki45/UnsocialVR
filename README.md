@@ -19,10 +19,18 @@ You will need:
 - Unity 5.5.0f3
 - HTC Vive
 - elixir 1.4
+- Whatever required to run the GCFF (Graph-Cut for F-formations) server. See `GCFF/README.md`.
 
-### Elixir
+### Servers
 
-The social behaviour server is written in elixir, and runs alongside the Unity server.
+Run the GCFF server with appropriate `stride` and `mdl` values. It seems that 1 and 10 work fine:
+
+```bash
+cd GCFF
+python server.py 1 10
+```
+
+The social behaviour server is written in elixir. It communicate with the GCFF server to analyze the social scene, and runs alongside the Unity server.
 To run it:
 
 ```bash

@@ -3,11 +3,13 @@ defmodule UnsocialVR.SceneAnalysis do
   @doc """
   How I see the other players.
   """
-  def remote_players(local_id, all_players, scene_analysis) do
+  def remote_players(local_id) do
+    all_players = UnsocialVR.Cache.get_players()
     me = get_me(local_id, all_players)
+    f_formations = UnsocialVR.FFormations.get()
     the_others = Enum.filter(all_players, fn player -> player != me end)
     the_others
-    |> player_perspective(me, side_conversations)
+    |> player_perspective(me, f_formations)
     |> Stream.map(&set_default(&1, :state, :real))
     |> Enum.map(&apply_autopilot/1)
   end
@@ -33,39 +35,39 @@ defmodule UnsocialVR.SceneAnalysis do
     non_autopilot_player_data
   end
 
-  @large_conversation 2
+  @large_f_formation 2
 
   @doc """
   How the player see the world, based on his data, the other players,
-  and side conversations analysis.
+  and f-formation analysis.
 
-  - If there are less than 2 side conversations or me not participating
-    in any side conversation reply real state.
-  - The players that are not in my side conversation:
+  - If there are less than 2 f-formations or me not participating
+    in any f-formation reply real state.
+  - The players that are not in my f-formation:
     - The player I'm talking too: autopilot.
-    - If I'm a speaker and side conversation is large: autopilot.
+    - If I'm a speaker and f-formation is large: autopilot.
     - Otherwise: ignored.
   """
-  def player_perspective(the_others, _me, side_conversations)
-  when length(side_conversations) < 2 do
+  def player_perspective(the_others, _me, f_formations)
+  when length(f_formations) < 2 do
     the_others
   end
-  def player_perspective(the_others, me, side_conversations) do
-    case Enum.find(side_conversations, &Enum.member?(&1, me.id)) do
+  def player_perspective(the_others, me, f_formations) do
+    case Enum.find(f_formations, &Enum.member?(&1, me.id)) do
       nil ->
         the_others
-      side_conversation ->
-        participate_perspective(the_others, me, side_conversation)
+      f_formation ->
+        participate_perspective(the_others, me, f_formation)
     end
   end
 
-  def participate_perspective(the_others, me, side_conversation) do
-    {attendies, the_rest} = group_by(the_others, &Enum.member?(side_conversation, &1.id))
-    large_conversation? = length(side_conversation) > @large_conversation
+  def participate_perspective(the_others, me, f_formation) do
+    {attendies, the_rest} = group_by(the_others, &Enum.member?(f_formation, &1.id))
+    large_f_formation? = length(f_formation) > @large_f_formation
     the_rest = Enum.map(the_rest, fn other ->
       state = cond do
         me["isTalking"] && me["attentionTo"] == other.id -> :autopilot
-        me["isTalking"] && large_conversation? -> :autopilot
+        me["isTalking"] && large_f_formation? -> :autopilot
         true -> :ignored
       end
       Map.put(other, :state, state)
