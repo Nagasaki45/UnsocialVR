@@ -56,7 +56,6 @@ public class PlayerController : NetworkBehaviour {
 				if (received.state == "real")
 				{
 					transform.rotation = Quaternion.Lerp (transform.rotation, received.chestRotation, transformSmoothing);
-					UpdateRemotePlayerTransforms (received);
 					playerTalking.isTalking = received.isTalking;
 					Scale (1f);
 				}
@@ -64,15 +63,16 @@ public class PlayerController : NetworkBehaviour {
 				{
 					Vector3 newDir = Vector3.RotateTowards(transform.forward, localPlayerData.chestPosition - transform.position, slowSmoothing, 0.0F);
 					transform.rotation = Quaternion.LookRotation (newDir);
-					UpdateRemotePlayerTransforms (received);
 					playerTalking.isTalking = false;
 					Scale (1f);
 				}
 				else if (received.state == "ignored")
 				{
 					playerTalking.isTalking = false;
+					transform.rotation = Quaternion.Lerp (transform.rotation, received.chestRotation, transformSmoothing);
 					Scale (ignoredScale);
 				}
+				UpdateRemotePlayerTransforms (received);
 			}
 		}
 	}

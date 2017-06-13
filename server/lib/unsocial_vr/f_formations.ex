@@ -44,7 +44,6 @@ defmodule UnsocialVR.FFormations do
     |> String.split(",")
     |> Enum.map(&String.to_integer/1)
     |> group_by_ids(all_players)
-    |> IO.inspect()
   end
 
   @doc """

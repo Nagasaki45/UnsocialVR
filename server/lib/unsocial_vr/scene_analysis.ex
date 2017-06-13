@@ -25,8 +25,8 @@ defmodule UnsocialVR.SceneAnalysis do
   with autopilot positions
   """
   def apply_autopilot(%{state: :autopilot, id: id} = player_data) do
-    head_position = player_data["headPosition"]
-    position_shift = {head_position["x"], head_position["z"]}
+    chest_position = player_data["chestPosition"]
+    position_shift = {chest_position["x"], chest_position["z"]}
     time_shift = id * 4321  # Just to cause difference between players
     autopilot_data = UnsocialVR.Autopilot.play(position_shift, time_shift)
     Map.merge(player_data, autopilot_data)
