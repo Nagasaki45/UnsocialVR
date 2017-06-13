@@ -7,6 +7,8 @@ using SimpleJSON;
 [System.Serializable]
 public class PlayerData {
 
+	public Vector3 chestPosition;
+	public Quaternion chestRotation;
 	public Vector3 headPosition;
 	public Quaternion headRotation;
 	public Vector3 leftHandPosition;
@@ -33,6 +35,8 @@ public class PlayerData {
 		{
 			JSONNode current = (JSONNode)enumerator.Current;
 			PlayerData pd = new PlayerData ();
+			pd.chestPosition = new Vector3 (current ["chestPosition"] ["x"].AsFloat, current ["chestPosition"] ["y"].AsFloat, current ["chestPosition"] ["z"].AsFloat);
+			pd.chestRotation = new Quaternion (current ["chestRotation"] ["x"].AsFloat, current ["chestRotation"] ["y"].AsFloat, current ["chestRotation"] ["z"].AsFloat, current ["chestRotation"] ["w"].AsFloat);
 			pd.headPosition = new Vector3 (current ["headPosition"] ["x"].AsFloat, current ["headPosition"] ["y"].AsFloat, current ["headPosition"] ["z"].AsFloat);
 			pd.headRotation = new Quaternion (current ["headRotation"] ["x"].AsFloat, current ["headRotation"] ["y"].AsFloat, current ["headRotation"] ["z"].AsFloat, current ["headRotation"] ["w"].AsFloat);
 			pd.leftHandPosition = new Vector3 (current ["leftHandPosition"] ["x"].AsFloat, current ["leftHandPosition"] ["y"].AsFloat, current ["leftHandPosition"] ["z"].AsFloat);

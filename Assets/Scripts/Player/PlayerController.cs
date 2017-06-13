@@ -11,6 +11,7 @@ public class PlayerController : NetworkBehaviour {
 	// One instance of the class per app instance will work
 	public static PlayerData localPlayerData;
 	public static Dictionary<uint, PlayerData> remotePlayersData;
+	public Transform headTransform;
 	public Transform leftHandTransform;
 	public Transform rightHandTransform;
 
@@ -54,14 +55,14 @@ public class PlayerController : NetworkBehaviour {
 				Debug.Log (netId.Value + " state: " + received.state);
 				if (received.state == "real")
 				{
-					transform.rotation = Quaternion.Lerp (transform.rotation, received.headRotation, transformSmoothing);
+					transform.rotation = Quaternion.Lerp (transform.rotation, received.chestRotation, transformSmoothing);
 					UpdateRemotePlayerTransforms (received);
 					playerTalking.isTalking = received.isTalking;
 					Scale (1f);
 				}
 				else if (received.state == "autopilot")
 				{
-					Vector3 newDir = Vector3.RotateTowards(transform.forward, localPlayerData.headPosition - transform.position, slowSmoothing, 0.0F);
+					Vector3 newDir = Vector3.RotateTowards(transform.forward, localPlayerData.chestPosition - transform.position, slowSmoothing, 0.0F);
 					transform.rotation = Quaternion.LookRotation (newDir);
 					UpdateRemotePlayerTransforms (received);
 					playerTalking.isTalking = false;
@@ -85,8 +86,10 @@ public class PlayerController : NetworkBehaviour {
 
 	private void UpdateLocalPlayerTransforms()
 	{
-		localPlayerData.headPosition = transform.position;
-		localPlayerData.headRotation = transform.rotation;
+		localPlayerData.chestPosition = transform.position;
+		localPlayerData.chestRotation = transform.rotation;
+		localPlayerData.headPosition = headTransform.localPosition;
+		localPlayerData.headRotation = headTransform.localRotation;
 		localPlayerData.leftHandPosition = leftHandTransform.localPosition;
 		localPlayerData.leftHandRotation = leftHandTransform.localRotation;
 		localPlayerData.rightHandPosition = rightHandTransform.localPosition;
@@ -96,8 +99,10 @@ public class PlayerController : NetworkBehaviour {
 
 	private void UpdateRemotePlayerTransforms(PlayerData received)
 	{
-		transform.position = Vector3.Lerp (transform.position, received.headPosition, transformSmoothing);
+		transform.position = Vector3.Lerp (transform.position, received.chestPosition, transformSmoothing);
 		// Rotation is handled independently
+		headTransform.localPosition = Vector3.Lerp (headTransform.localPosition, received.headPosition, transformSmoothing);
+		headTransform.localRotation = Quaternion.Lerp (headTransform.localRotation, received.headRotation, transformSmoothing);
 		leftHandTransform.localPosition = Vector3.Lerp (leftHandTransform.localPosition, received.leftHandPosition, transformSmoothing);
 		leftHandTransform.localRotation = Quaternion.Lerp (leftHandTransform.localRotation, received.leftHandRotation, transformSmoothing);
 		rightHandTransform.localPosition = Vector3.Lerp (rightHandTransform.localPosition, received.rightHandPosition, transformSmoothing);
