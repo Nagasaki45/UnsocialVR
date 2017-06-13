@@ -6,7 +6,7 @@ defmodule UnsocialVR.SceneAnalysis do
   def remote_players(local_id) do
     all_players = UnsocialVR.Cache.get_players()
     me = get_me(local_id, all_players)
-    f_formations = UnsocialVR.FFormations.get()
+    f_formations = UnsocialVR.Cache.get_f_formations()
     the_others = Enum.filter(all_players, fn player -> player != me end)
     the_others
     |> player_perspective(me, f_formations)

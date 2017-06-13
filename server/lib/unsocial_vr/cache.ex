@@ -10,7 +10,15 @@ defmodule UnsocialVR.Cache do
     |> Enum.map(fn {id, player_data} -> Map.put(player_data, :id, id) end)
   end
 
-  def put(player_id, data) do
+  def put_player(player_id, data) do
     ConCache.put(:cache, player_id, data)
+  end
+
+  def get_f_formations() do
+    ConCache.get(:f_formations, :f_formations)
+  end
+
+  def put_f_formations(f_formations) do
+    ConCache.put(:f_formations, :f_formations, f_formations)
   end
 end

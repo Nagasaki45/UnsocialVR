@@ -9,38 +9,33 @@ defmodule UnsocialVR.FFormations do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  def get() do
-    GenServer.call(__MODULE__, :get)
+  def init(state) do
+    schedule_analysis()
+    {:ok, state}
   end
 
   @analysis_period :timer.seconds(1)
-
-  def init(f_formations) do
-    schedule_analysis()
-    {:ok, f_formations}
-  end
 
   def schedule_analysis() do
     Process.send_after(__MODULE__, :analyze, @analysis_period)
   end
 
-  def handle_call(:get, _from, f_formations) do
-    {:reply, f_formations, f_formations}
-  end
-
-  def handle_info(:analyze, _f_formations) do
-    f_formations = analyze()
+  def handle_info(:analyze, state) do
+    all_players = UnsocialVR.Cache.get_players()
+    f_formations = analyze(all_players)
+    UnsocialVR.Cache.put_f_formations(f_formations)
     schedule_analysis()
-    {:noreply, f_formations}
+    {:noreply, state}
   end
 
   @gcff_server "http://127.0.0.1:5000"
 
   @doc """
-  Using data from the cache analyze f-formations on GCFF server.
+  Analyze f-formations using the GCFF server.
   """
-  def analyze() do
-    all_players = UnsocialVR.Cache.get_players()
+  def analyze([]), do: []
+  def analyze([single_player]), do: [[single_player.id]]
+  def analyze(all_players) do
     all_players
     |> Stream.map(&prepare_data_for_gcff/1)
     |> Stream.map(&Enum.join(&1, ","))
