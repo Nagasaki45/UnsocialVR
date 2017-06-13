@@ -112,13 +112,13 @@ defmodule UnsocialVR.Autopilot do
   end
 
   @doc """
-  Shift the character to arbitrary position by changing the headPosition (TODO chest),
+  Shift the character to arbitrary position by changing the chestPosition,
   the rest are relative (localPositions).
   """
   def shift_character(player_data, {x, z}) do
     player_data
-    |> update_in(["headPosition", "x"], &(&1 + x))
-    |> update_in(["headPosition", "z"], &(&1 + z))
+    |> update_in(["chestPosition", "x"], &(&1 + x))
+    |> update_in(["chestPosition", "z"], &(&1 + z))
   end
 
   def finilize_recording(data) do
@@ -133,8 +133,7 @@ defmodule UnsocialVR.Autopilot do
 
   def calculate_mean(data, x_or_z) do
     data
-    # TODO change to chest position
-    |> Stream.map(fn {_frame, transforms} -> transforms["headPosition"][x_or_z] end)
+    |> Stream.map(fn {_frame, transforms} -> transforms["chestPosition"][x_or_z] end)
     |> Enum.sum()
     |> Kernel./(length(data))
   end

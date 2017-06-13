@@ -51,9 +51,8 @@ defmodule UnsocialVR.FFormations do
   Simplify the data from the server to the GCFF algorithm.
   """
   def prepare_data_for_gcff(player_data) do
-    # TODO change to chest
-    position_map = Map.fetch!(player_data, "headPosition")
-    rotation_map = Map.fetch!(player_data, "headRotation")
+    position_map = Map.fetch!(player_data, "chestPosition")
+    rotation_map = Map.fetch!(player_data, "chestRotation")
     [
       Map.fetch!(player_data, :id),
       Map.fetch!(position_map, "x"),
