@@ -16,7 +16,6 @@ public class PlayerController : NetworkBehaviour {
 	public Transform rightHandTransform;
 
 	// Local player settings
-	public string serverUrl;
 	public float sleepBetweenRequests;
 
 	// Remote players settings
@@ -25,14 +24,17 @@ public class PlayerController : NetworkBehaviour {
 	public float slowSmoothing;
 	public float ignoredScale;
 
+	private string serverUrl;
 	private PlayerTalking playerTalking;
 
 
 	private void Start()
 	{
+		serverUrl = Network.player.ipAddress + ":8080";
 		playerTalking = GetComponent<PlayerTalking> ();
 		if (isLocalPlayer)
 		{
+			Debug.Log ("Server address: " + serverUrl);
 			localPlayerData = new PlayerData ();
 			GetComponentInChildren<MeshRenderer> ().material.color = color;
 			StartCoroutine(CommunicateForever ());
