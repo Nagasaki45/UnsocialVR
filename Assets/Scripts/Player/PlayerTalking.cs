@@ -9,24 +9,21 @@ using Dissonance.VAD;
 
 public class PlayerTalking : NetworkBehaviour, IVoiceActivationListener {
 
-	public GameObject mouth;
+	public Transform mouth;
 	public float mouthClose;
 	public float mouthOpen;
 	public float speed;
 	public bool isTalking;
 
+	private float epsilon = 0.01f;
 	private DissonanceComms comms;
-	private Vector3 target;
-
-
-	private void Awake()
-	{
-		comms = GameObject.FindGameObjectWithTag ("DissonanceSetup").GetComponent<DissonanceComms> ();
-	}
+	private float target;
 
 
 	private void Start()
 	{
+		target = mouthClose;
+		comms = GameObject.FindGameObjectWithTag ("DissonanceSetup").GetComponent<DissonanceComms> ();
 		if (isLocalPlayer)
 		{
 			comms.SubcribeToVoiceActivation (this);
@@ -50,28 +47,20 @@ public class PlayerTalking : NetworkBehaviour, IVoiceActivationListener {
 	{
 		if (isTalking)
 		{
-			if (null != target && Vector3.Distance (mouth.transform.localScale, target) < 0.01f)
+			if (mouth.localScale.y > mouthOpen - epsilon)
 			{
-				if (target.y == mouthOpen)
-				{
-					target = CreateTarget (mouthClose);
-				}
-				else
-				{
-					target = CreateTarget (mouthOpen);
-				}
+				target = mouthClose;
+			}
+			else if (mouth.localScale.y < mouthClose + epsilon)
+			{
+				target = mouthOpen;
 			}
 		}
 		else
 		{
-			target = CreateTarget (mouthClose);
+			target = mouthClose;
 		}
-		mouth.transform.localScale = Vector3.Lerp (mouth.transform.localScale, target, speed * Time.deltaTime);
-	}
-
-
-	private Vector3 CreateTarget(float position)
-	{
-		return new Vector3 (mouth.transform.localScale.x, position, mouth.transform.localScale.z);
+		Vector3 targetVector = new Vector3 (mouth.localScale.x, target, mouth.localScale.z);
+		mouth.localScale = Vector3.Lerp (mouth.localScale, targetVector, speed * Time.deltaTime);
 	}
 }
