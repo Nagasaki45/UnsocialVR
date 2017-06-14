@@ -16,7 +16,8 @@ When participating in a side conversation, the other players will be either igno
 
 You will need:
 
-- Unity 5.5.0f3
+- Unity 5.6.0f3
+  - Dissonance Voice Chat 1.1.0. You will need to buy it from the assets store.
 - HTC Vive
 - elixir 1.4
 - Whatever required to run the GCFF (Graph-Cut for F-formations) server. See `GCFF/README.md`.

@@ -36,13 +36,14 @@ Icon?
 ehthumbs.db
 [Tt]humbs.db
 
+# =========== #
+# Paid assets #
+# =========== #
+Assets/Dissonance*
+Assets/Plugins/Dissonance*
+
 # ==== #
 # Mine #
 # ==== #
-Builds/
-
-# Server
-Server/env
-
 # Blender
 *.blend1
