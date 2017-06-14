@@ -94,6 +94,7 @@ public class PlayerController : NetworkBehaviour {
 		localPlayerData.leftHandRotation = leftHandTransform.localRotation;
 		localPlayerData.rightHandPosition = rightHandTransform.localPosition;
 		localPlayerData.rightHandRotation = rightHandTransform.localRotation;
+		localPlayerData.isTalking = playerTalking.isTalking;
 	}
 
 

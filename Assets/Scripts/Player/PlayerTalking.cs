@@ -3,49 +3,54 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using Dissonance;
+using Dissonance.VAD;
 
 
-public class PlayerTalking : NetworkBehaviour {
+public class PlayerTalking : NetworkBehaviour, IVoiceActivationListener {
 
 	public GameObject mouth;
-	public AudioSource audioSource;
 	public float mouthClose;
 	public float mouthOpen;
 	public float speed;
 	public bool isTalking;
 
+	private DissonanceComms comms;
 	private Vector3 target;
 
 
 	private void Awake()
 	{
-		target = CreateTarget (mouthOpen);
+		comms = GameObject.FindGameObjectWithTag ("DissonanceSetup").GetComponent<DissonanceComms> ();
 	}
 
 
-	private Vector3 CreateTarget(float position)
+	private void Start()
 	{
-		return new Vector3 (mouth.transform.localScale.x, position, mouth.transform.localScale.z);
+		if (isLocalPlayer)
+		{
+			comms.SubcribeToVoiceActivation (this);
+		}
+	}
+
+
+	public void VoiceActivationStart()
+	{
+		isTalking = true;
+	}
+
+
+	public void VoiceActivationStop()
+	{
+		isTalking = false;
 	}
 
 
 	private void Update ()
 	{
-		if (isLocalPlayer)
-		{
-			// Overcomplicated to allow manual switching of isTalking for debuging
-			if (Input.GetButtonDown ("Talk"))
-				isTalking = true;
-			else if (Input.GetButtonUp ("Talk"))
-				isTalking = false;
-
-			PlayerController.localPlayerData.isTalking = isTalking;
-		}
-
 		if (isTalking)
 		{
-			audioSource.volume = 1f;
-			if (Vector3.Distance (mouth.transform.localScale, target) < 0.01f)
+			if (null != target && Vector3.Distance (mouth.transform.localScale, target) < 0.01f)
 			{
 				if (target.y == mouthOpen)
 				{
@@ -56,12 +61,17 @@ public class PlayerTalking : NetworkBehaviour {
 					target = CreateTarget (mouthOpen);
 				}
 			}
-			mouth.transform.localScale = Vector3.Lerp (mouth.transform.localScale, target, speed * Time.deltaTime);
 		}
 		else
 		{
-			audioSource.volume = 0f;
-			mouth.transform.localScale = CreateTarget (mouthClose);
+			target = CreateTarget (mouthClose);
 		}
+		mouth.transform.localScale = Vector3.Lerp (mouth.transform.localScale, target, speed * Time.deltaTime);
+	}
+
+
+	private Vector3 CreateTarget(float position)
+	{
+		return new Vector3 (mouth.transform.localScale.x, position, mouth.transform.localScale.z);
 	}
 }
