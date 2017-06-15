@@ -24,7 +24,7 @@ public class PlayerTalking : NetworkBehaviour, IVoiceActivationListener {
 	{
 		target = mouthClose;
 		comms = GameObject.FindGameObjectWithTag ("DissonanceSetup").GetComponent<DissonanceComms> ();
-		if (isLocalPlayer)
+		if (isLocalPlayer && SceneManager.GetActiveScene ().name != "Simulator")
 		{
 			comms.SubcribeToVoiceActivation (this);
 		}
@@ -45,6 +45,14 @@ public class PlayerTalking : NetworkBehaviour, IVoiceActivationListener {
 
 	private void Update ()
 	{
+		if (isLocalPlayer && SceneManager.GetActiveScene ().name == "Simulator")
+		{
+			if (Input.GetButtonUp ("Talk"))
+			{
+				isTalking = !isTalking;
+			}
+		}
+
 		if (isTalking)
 		{
 			if (mouth.localScale.y > mouthOpen - epsilon)
