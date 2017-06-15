@@ -24,17 +24,16 @@ public class PlayerController : NetworkBehaviour {
 	public float slowSmoothing;
 	public float ignoredScale;
 
-	private string serverUrl;
+	private NetworkGui networkGui;
 	private PlayerTalking playerTalking;
 
 
 	private void Start()
 	{
-		serverUrl = Network.player.ipAddress + ":8080";
+		networkGui = GameObject.FindObjectOfType<NetworkGui> ();
 		playerTalking = GetComponent<PlayerTalking> ();
 		if (isLocalPlayer)
 		{
-			Debug.Log ("Server address: " + serverUrl);
 			localPlayerData = new PlayerData ();
 			GetComponentInChildren<MeshRenderer> ().material.color = color;
 			StartCoroutine(CommunicateForever ());
@@ -119,7 +118,7 @@ public class PlayerController : NetworkBehaviour {
 		{
 			WWWForm form = new WWWForm ();
 			form.AddField("transform", localPlayerData.ToJson());
-			WWW postRequest = new WWW(serverUrl + "/" + netId.Value, form);
+			WWW postRequest = new WWW(networkGui.serversAddress + ":8080/" + netId.Value, form);
 			yield return postRequest;
 			if (string.IsNullOrEmpty (postRequest.error))
 			{
