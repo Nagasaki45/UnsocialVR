@@ -21,6 +21,13 @@ defmodule UnsocialVR.HTTP do
     resp(conn, 200, scene)
   end
 
+  get "/:player_id/start_autopilot" do
+    player_id
+    |> String.to_integer()
+    |> UnsocialVR.SceneAnalysis.start_autopiloting()
+    resp(conn, 200, "Gotcha!")
+  end
+
   match _ do
     resp(conn, 404, "oops")
   end

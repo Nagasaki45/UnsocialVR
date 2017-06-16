@@ -56,6 +56,7 @@ public class PlayerController : NetworkBehaviour {
 				Debug.Log (netId.Value + " state: " + received.state);
 				if (received.state == "real")
 				{
+					transform.position = Vector3.Lerp (transform.position, received.chestPosition, transformSmoothing);
 					transform.rotation = Quaternion.Lerp (transform.rotation, received.chestRotation, transformSmoothing);
 					playerTalking.isTalking = received.isTalking;
 					Scale (1f);
@@ -70,6 +71,7 @@ public class PlayerController : NetworkBehaviour {
 				else if (received.state == "ignored")
 				{
 					playerTalking.isTalking = false;
+					transform.position = Vector3.Lerp (transform.position, received.chestPosition, transformSmoothing);
 					transform.rotation = Quaternion.Lerp (transform.rotation, received.chestRotation, transformSmoothing);
 					Scale (ignoredScale);
 				}
@@ -101,8 +103,6 @@ public class PlayerController : NetworkBehaviour {
 
 	private void UpdateRemotePlayerTransforms(PlayerData received)
 	{
-		transform.position = Vector3.Lerp (transform.position, received.chestPosition, transformSmoothing);
-		// Rotation is handled independently
 		headTransform.localPosition = Vector3.Lerp (headTransform.localPosition, received.headPosition, transformSmoothing);
 		headTransform.localRotation = Quaternion.Lerp (headTransform.localRotation, received.headRotation, transformSmoothing);
 		leftHandTransform.localPosition = Vector3.Lerp (leftHandTransform.localPosition, received.leftHandPosition, transformSmoothing);
