@@ -39,22 +39,26 @@ defmodule UnsocialVR.Cache do
   end
 
   def get_autopilots(f_formation_id) do
-    case ConCache.get(cache(), {:autopilots, f_formation_id}) do
-      nil -> []
-      otherwise -> otherwise
-    end
+    cache()
+    |> ConCache.ets()
+    |> :ets.match({{:autopilot, :"$1"}, f_formation_id})
+    |> Enum.map(fn [player_id] -> player_id end)
+    |> _touch()  # Necessary for keeping the data in cache
   end
 
-  def add_autopilot(f_formation_id, player_id) do
-    ConCache.update(cache(), {:autopilots, f_formation_id}, fn autopilots ->
-      autopilots = autopilots || []
-      {:ok, [player_id | autopilots]}
-    end)
+  def put_autopilot(player_id, f_formation_id) do
+    ConCache.put(cache(), {:autopilot, player_id}, f_formation_id)
   end
 
-  def remove_autopilot(f_formation_id, player_id) do
-    ConCache.update(cache(), {:autopilots, f_formation_id}, fn autopilots ->
-      {:ok, Enum.filter(autopilots, fn id -> id != player_id end)}
+  def delete_autopilot(player_id) do
+    ConCache.delete(cache(), {:autopilot, player_id})
+  end
+
+  def _touch(player_ids) do
+    Enum.each(player_ids, fn player_id ->
+      ConCache.touch(cache(), {:autopilot, player_id})
     end)
+
+    player_ids
   end
 end

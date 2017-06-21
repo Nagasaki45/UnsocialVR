@@ -1,5 +1,7 @@
 defmodule UnsocialVR.SceneAnalysis do
 
+  alias UnsocialVR.Cache
+
   @doc """
   How I see the other players.
 
@@ -8,10 +10,10 @@ defmodule UnsocialVR.SceneAnalysis do
   - The rest are real.
   """
   def remote_players(local_id) do
-    all_players = UnsocialVR.Cache.get_players()
-    my_f_formation_id = UnsocialVR.Cache.get_player_f_formation_id(local_id)
-    my_f_formation = UnsocialVR.Cache.get_f_formation(my_f_formation_id)
-    my_autopilots = UnsocialVR.Cache.get_autopilots(my_f_formation_id)
+    all_players = Cache.get_players()
+    my_f_formation_id = Cache.get_player_f_formation_id(local_id)
+    my_f_formation = Cache.get_f_formation(my_f_formation_id)
+    my_autopilots = Cache.get_autopilots(my_f_formation_id)
 
     all_players
     |> Stream.filter(fn player -> player.id != local_id end)
@@ -40,15 +42,15 @@ defmodule UnsocialVR.SceneAnalysis do
   @doc """
   Player start autopilot behaviour in the current f-formation.
   """
-  def start_autopiloting(local_id) do
-    my_f_formation_id = UnsocialVR.Cache.get_player_f_formation_id(local_id)
-    UnsocialVR.Cache.add_autopilot(my_f_formation_id, local_id)
+  def start_autopilot(local_id) do
+    my_f_formation_id = Cache.get_player_f_formation_id(local_id)
+    Cache.put_autopilot(local_id, my_f_formation_id)
   end
 
   @doc """
-  When stopped, drop myself from the autopilots of this f-formation.
+  Stop faking social behaviour.
   """
-  def stop_autopiloting(local_id, f_formation_id) do
-    UnsocialVR.Cache.remove_autopilot(f_formation_id, local_id)
+  def stop_autopilot(local_id) do
+    Cache.delete_autopilot(local_id)
   end
 end

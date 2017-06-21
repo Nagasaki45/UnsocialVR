@@ -36,25 +36,40 @@ public class PlayerAutopilot : NetworkBehaviour {
 			{
 				if (Controller.GetHairTriggerDown ())
 				{
-					StartCoroutine(StartAutopiloting ());
+					StartCoroutine (StartAutopilot ());
+				}
+				else if (Controller.GetHairTriggerUp ())
+				{
+					StartCoroutine (StopAutopilot ());
 				}
 			}
 			else
 			{
 				if (Input.GetButtonDown ("Autopilot"))
 				{
-					StartCoroutine(StartAutopiloting ());
+					StartCoroutine(StartAutopilot ());
+				}
+				else if (Input.GetButtonUp ("Autopilot"))
+				{
+					StartCoroutine(StopAutopilot ());
 				}
 			}
 		}
 	}
 
 
-	private IEnumerator StartAutopiloting()
+	private IEnumerator StartAutopilot()
 	{
-		Debug.Log("Player " + netId.Value + " starts autopiloting!");
+		Debug.Log("Player " + netId.Value + " starts autopilot!");
 		WWW getRequest = new WWW(networkGui.serversAddress + ":8080/" + netId.Value + "/start_autopilot");
 		yield return getRequest;
-		Debug.Log (getRequest.text);
+	}
+
+
+	private IEnumerator StopAutopilot()
+	{
+		Debug.Log("Player " + netId.Value + " stops autopilot!");
+		WWW getRequest = new WWW(networkGui.serversAddress + ":8080/" + netId.Value + "/stop_autopilot");
+		yield return getRequest;
 	}
 }
