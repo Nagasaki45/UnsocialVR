@@ -14,44 +14,47 @@ defmodule UnsocialVR.Cache do
     |> Enum.map(fn [id, player_data] -> Map.put(player_data, :id, id) end)
   end
 
+  def get_player(player_id) do
+    ConCache.get(cache(), {:player_data, player_id})
+  end
+
   def put_player(player_id, data) do
     ConCache.put(cache(), {:player_data, player_id}, data)
   end
 
-  def get_f_formation(player_id) do
-    cache()
-    |> ConCache.get(:f_formations)
-    |> Enum.find([], fn ff -> player_id in ff end)
+  def get_player_f_formation_id(player_id) do
+    ConCache.get(cache(), {:player_f_formation_id, player_id})
   end
 
-  def put_f_formations(f_formations) do
-    ConCache.put(cache(), :f_formations, f_formations)
+  def get_f_formation(id) do
+    ConCache.get(cache(), {:f_formation, id})
   end
 
-  def get_autopilots(id) do
-    autopilots = get_autopilots_from_ets(id)
-    # We must manually touch the autopilot data to keep it alive.
-    # There are no enough writes, and the reads bypass ConCache.
-    Enum.each(autopilots, &ConCache.touch(cache(), {:autopilot, &1, id}))
-    autopilots
-  end
-
-  def get_autopilots_from_ets(id) do
-    cache()
-    |> ConCache.ets()
-    |> :ets.match({{:autopilot, :"$1", id}, 1})
-    |> Enum.map(fn [id] -> id end)
-  end
-
-  def add_autopilots(faker_id, targets_ids) do
-    Enum.each(targets_ids, fn target_id ->
-      ConCache.put(cache(), {:autopilot, faker_id, target_id}, 1)
+  def put_f_formation(id, f_formation) do
+    ConCache.put(cache(), {:f_formation, id}, f_formation)
+    # Set the f-formation of each player
+    Enum.each(f_formation["members"], fn player_id ->
+      ConCache.put(cache(), {:player_f_formation_id, player_id}, id)
     end)
   end
 
-  def remove_autopilots(faker_id, targets_ids) do
-    Enum.each(targets_ids, fn target_id ->
-      ConCache.delete(cache(), {:autopilot, faker_id, target_id})
+  def get_autopilots(f_formation_id) do
+    case ConCache.get(cache(), {:autopilots, f_formation_id}) do
+      nil -> []
+      otherwise -> otherwise
+    end
+  end
+
+  def add_autopilot(f_formation_id, player_id) do
+    ConCache.update(cache(), {:autopilots, f_formation_id}, fn autopilots ->
+      autopilots = autopilots || []
+      {:ok, [player_id | autopilots]}
+    end)
+  end
+
+  def remove_autopilot(f_formation_id, player_id) do
+    ConCache.update(cache(), {:autopilots, f_formation_id}, fn autopilots ->
+      {:ok, Enum.filter(autopilots, fn id -> id != player_id end)}
     end)
   end
 end

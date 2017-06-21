@@ -21,29 +21,28 @@ defmodule UnsocialVR.FFormations do
   end
 
   def handle_info(:analyze, state) do
-    all_players = UnsocialVR.Cache.get_players()
-    f_formations = analyze(all_players)
-    UnsocialVR.Cache.put_f_formations(f_formations)
+    UnsocialVR.Cache.get_players()
+    |> analyze()
+    |> Enum.map(fn {id, ff} -> UnsocialVR.Cache.put_f_formation(id, ff) end)
+
     schedule_analysis()
     {:noreply, state}
   end
 
-  @gcff_server "http://127.0.0.1:5000"
+  @gcff_server "http://127.0.0.1:5000/continuous"
 
   @doc """
   Analyze f-formations using the GCFF server.
   """
   def analyze([]), do: []
-  def analyze([single_player]), do: [[single_player.id]]
   def analyze(all_players) do
     all_players
     |> Stream.map(&prepare_data_for_gcff/1)
     |> Stream.map(&Enum.join(&1, ","))
     |> Enum.join("\n")
     |> gcff()
-    |> String.split(",")
-    |> Enum.map(&String.to_integer/1)
-    |> group_by_ids(all_players)
+    |> Poison.decode!()
+    |> Enum.map(fn map -> Map.pop(map, "id") end)
   end
 
   @doc """
@@ -87,21 +86,6 @@ defmodule UnsocialVR.FFormations do
     opts = [body: features, headers: ["Content-Type": "text/csv"]]
     %{status_code: 200, body: body} = HTTPotion.post(@gcff_server, opts)
     body
-  end
-
-  def group_by_ids(gcff_output, all_players) do
-    all_players
-    |> Stream.map(fn player_data -> player_data.id end)
-    |> group_by_key(gcff_output)
-  end
-
-  def group_by_key(items, keys) do
-    keys
-    |> Enum.zip(items)
-    |> Enum.group_by(fn {key, _item} -> key end)
-    |> Enum.map(fn {_key, keys_and_items} ->
-      keys_and_items |> Enum.map(fn {_key, item} -> item end)
-    end)
   end
 
 end

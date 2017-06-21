@@ -9,15 +9,16 @@ defmodule UnsocialVR.SceneAnalysis do
   """
   def remote_players(local_id) do
     all_players = UnsocialVR.Cache.get_players()
-    my_autopilots = UnsocialVR.Cache.get_autopilots(local_id)
-    my_f_formation = UnsocialVR.Cache.get_f_formation(local_id)
+    my_f_formation_id = UnsocialVR.Cache.get_player_f_formation_id(local_id)
+    my_f_formation = UnsocialVR.Cache.get_f_formation(my_f_formation_id)
+    my_autopilots = UnsocialVR.Cache.get_autopilots(my_f_formation_id)
 
     all_players
     |> Stream.filter(fn player -> player.id != local_id end)
     |> Enum.map(fn p ->
       cond do
         (p.id in my_autopilots) -> autopilot(p)
-        !(p.id in my_f_formation) -> Map.put(p, :state, :ignored)
+        !(p.id in my_f_formation["members"]) -> Map.put(p, :state, :ignored)
         true -> Map.put(p, :state, :real)
       end
     end)
@@ -40,19 +41,14 @@ defmodule UnsocialVR.SceneAnalysis do
   Player start autopilot behaviour in the current f-formation.
   """
   def start_autopiloting(local_id) do
-    my_f_formation =
-      local_id
-      |> UnsocialVR.Cache.get_f_formation()
-      |> Enum.filter(fn id -> id != local_id end)
-    UnsocialVR.Cache.add_autopilots(local_id, my_f_formation)
+    my_f_formation_id = UnsocialVR.Cache.get_player_f_formation_id(local_id)
+    UnsocialVR.Cache.add_autopilot(my_f_formation_id, local_id)
   end
 
   @doc """
-  When stopped, there is a reference player that we stopped faking behaviour
-  to. We will also stop faking towards the entire f-formation of this player.
+  When stopped, drop myself from the autopilots of this f-formation.
   """
-  def stop_autopiloting(local_id, reference_player_id) do
-    f_formation = UnsocialVR.Cache.get_f_formation(reference_player_id)
-    UnsocialVR.Cache.remove_autopilots(local_id, f_formation)
+  def stop_autopiloting(local_id, f_formation_id) do
+    UnsocialVR.Cache.remove_autopilot(f_formation_id, local_id)
   end
 end
