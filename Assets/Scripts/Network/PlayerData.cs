@@ -16,7 +16,6 @@ public class PlayerData {
 	public Vector3 rightHandPosition;
 	public Quaternion rightHandRotation;
 	public bool isTalking;
-	public int attentionTo;
 	public string state;
 
 
@@ -44,7 +43,6 @@ public class PlayerData {
 			pd.rightHandPosition = new Vector3 (current ["rightHandPosition"] ["x"].AsFloat, current ["rightHandPosition"] ["y"].AsFloat, current ["rightHandPosition"] ["z"].AsFloat);
 			pd.rightHandRotation = new Quaternion (current ["rightHandRotation"] ["x"].AsFloat, current ["rightHandRotation"] ["y"].AsFloat, current ["rightHandRotation"] ["z"].AsFloat, current ["rightHandRotation"] ["w"].AsFloat);
 			pd.isTalking = current ["isTalking"].AsBool;
-			pd.attentionTo = current ["attentionTo"].AsInt;
 			pd.state = current ["state"];
 			d.Add ((uint) current ["id"].AsInt, pd);
 		}
