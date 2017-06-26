@@ -9,7 +9,7 @@ using UnityEngine.Networking;
 
 public class NetworkGui : MonoBehaviour
 {
-	public string serversAddress = "127.0.0.1";
+	public static string serversAddress = "127.0.0.1";
 	private NetworkManager manager;
 
     void Awake()

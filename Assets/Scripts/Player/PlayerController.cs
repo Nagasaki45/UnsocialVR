@@ -24,13 +24,11 @@ public class PlayerController : NetworkBehaviour {
 	public float slowSmoothing;
 	public float ignoredScale;
 
-	private NetworkGui networkGui;
 	private PlayerTalking playerTalking;
 
 
 	private void Start()
 	{
-		networkGui = GameObject.FindObjectOfType<NetworkGui> ();
 		playerTalking = GetComponent<PlayerTalking> ();
 		if (isLocalPlayer)
 		{
@@ -116,9 +114,7 @@ public class PlayerController : NetworkBehaviour {
 	{
 		while (true)
 		{
-			WWWForm form = new WWWForm ();
-			form.AddField("transform", localPlayerData.ToJson());
-			WWW postRequest = new WWW(networkGui.serversAddress + ":8080/" + netId.Value, form);
+			WWW postRequest = BuildUpdateRequest (netId.Value);
 			yield return postRequest;
 			if (string.IsNullOrEmpty (postRequest.error))
 			{
@@ -130,5 +126,13 @@ public class PlayerController : NetworkBehaviour {
 			}
 			yield return new WaitForSeconds (sleepBetweenRequests);
 		}
+	}
+
+
+	public static WWW BuildUpdateRequest(uint playerId)
+	{
+		WWWForm form = new WWWForm ();
+		form.AddField("transform", localPlayerData.ToJson());
+		return new WWW(NetworkGui.serversAddress + ":8080/" + playerId, form);
 	}
 }
