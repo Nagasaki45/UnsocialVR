@@ -12,6 +12,8 @@ Unsocial VR is designed for multiple remote participants that share the same vir
 Compared to real-life conversation the environment in Unsocial VR is not the same for all participants.
 When participating in a side conversation, the other players will be either ignored, or pretend to listen to you.
 
+A short introduction to the project is presented [here](https://www.youtube.com/watch?v=K39_wlQ60-Y).
+
 ## Running the project
 
 You will need:
