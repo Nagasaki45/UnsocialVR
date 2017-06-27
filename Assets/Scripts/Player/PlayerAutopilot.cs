@@ -8,14 +8,13 @@ using UnityEngine.SceneManagement;
 
 public class PlayerAutopilot : NetworkBehaviour {
 
+	public GameObject autopilotMarkerPrefab;
 	public string controllerTag;
-	public Color flashScreenIdleColor;
-	public Color flashScreenFlashingColor;
-	public float flashSpeed;
 
+	private GameObject autopilotMarker;
 	private SteamVR_TrackedObject trackedObj;
+	private FlashScreen flashScreen;
 	private Transform cameraRig;
-	private Image flashScreen;
 	private float autopilotXPosition;
 	private float autopilotZPosition;
 	private float autopilotYRotation;
@@ -28,7 +27,7 @@ public class PlayerAutopilot : NetworkBehaviour {
 
 	void Start()
 	{
-		flashScreen = GameObject.FindObjectOfType<Canvas> ().GetComponentInChildren<Image> ();
+		flashScreen = GameObject.FindGameObjectWithTag ("FlashScreen").GetComponent<FlashScreen> ();
 		if (isLocalPlayer && SceneManager.GetActiveScene ().name != "Simulator")
 		{
 			trackedObj = GameObject.FindGameObjectWithTag (controllerTag).GetComponent<SteamVR_TrackedObject> ();
@@ -63,8 +62,6 @@ public class PlayerAutopilot : NetworkBehaviour {
 					StartCoroutine(StopAutopilot ());
 				}
 			}
-
-			flashScreen.color = Color.Lerp (flashScreen.color, flashScreenIdleColor, flashSpeed * Time.deltaTime);
 		}
 	}
 
@@ -73,8 +70,11 @@ public class PlayerAutopilot : NetworkBehaviour {
 	{
 		Debug.Log("Player " + netId.Value + " starts autopilot!");
 
+		// Spawn the marker
+		autopilotMarker = Instantiate(autopilotMarkerPrefab, transform.position, transform.rotation);
+
 		// Flash the screen
-		flashScreen.color = flashScreenFlashingColor;
+		flashScreen.Flash();
 
 		// Keep the rotation and position for later recovery
 		autopilotXPosition = transform.position.x;
@@ -90,8 +90,14 @@ public class PlayerAutopilot : NetworkBehaviour {
 	{
 		Debug.Log("Player " + netId.Value + " stops autopilot!");
 
+		// Delete the marker
+		if (null != autopilotMarker)
+		{
+			Destroy (autopilotMarker);
+		}
+
 		// Flash the screen
-		flashScreen.color = flashScreenFlashingColor;
+		flashScreen.Flash();
 
 		// Restore transform
 		if (SceneManager.GetActiveScene ().name != "Simulator")
