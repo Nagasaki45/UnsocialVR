@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class PlayerApproaches : NetworkBehaviour {
 
 	public float rayDistance;
+	public Transform headTransform;
 
 	private PlayerTalking playerTalking;
 	private PlayerApproachedText playerApproachedText;
@@ -25,8 +26,8 @@ public class PlayerApproaches : NetworkBehaviour {
 	void Update () {
 		if (!isLocalPlayer)
 		{
-			attentionRay.origin = transform.position;
-			attentionRay.direction = transform.forward;
+			attentionRay.origin = headTransform.position;
+			attentionRay.direction = headTransform.forward;
 
 			if (Physics.Raycast (attentionRay, out attentionHit, rayDistance))
 			{
