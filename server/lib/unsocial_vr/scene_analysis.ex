@@ -1,4 +1,10 @@
 defmodule UnsocialVR.SceneAnalysis do
+  @moduledoc """
+  Players interact with the multiple 'social behaviour' modifications through
+  this module. Specifically, it caches the player data, provide information
+  about other player from the cache, which is updated with autopilots,
+  f-formation analysis, and automated nodding.
+  """
 
   alias UnsocialVR.Cache
 

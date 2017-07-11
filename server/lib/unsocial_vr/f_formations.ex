@@ -23,7 +23,7 @@ defmodule UnsocialVR.FFormations do
   def handle_info(:analyze, state) do
     UnsocialVR.Cache.get_players()
     |> analyze()
-    |> Enum.map(fn {id, ff} -> UnsocialVR.Cache.put_f_formation(id, ff) end)
+    |> Enum.each(fn {id, ff} -> UnsocialVR.Cache.put_f_formation(id, ff) end)
 
     schedule_analysis()
     {:noreply, state}

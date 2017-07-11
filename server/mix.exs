@@ -25,6 +25,7 @@ defmodule UnsocialVR.Mixfile do
       {:con_cache, "~> 0.12.0"},
       {:persistent_ets, "~> 0.1.0"},
       {:httpotion, "~> 3.0"},
+      {:credo, "~> 0.8.3"},
     ]
   end
 end

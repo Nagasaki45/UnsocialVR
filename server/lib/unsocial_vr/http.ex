@@ -1,4 +1,8 @@
 defmodule UnsocialVR.HTTP do
+  @moduledoc """
+  An HTTP endpoint for the social behaviour server.
+  """
+
   use Plug.Router
 
   # plug Plug.Logger

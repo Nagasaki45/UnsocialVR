@@ -1,4 +1,8 @@
 defmodule UnsocialVR.Application do
+  @moduledoc """
+  The social behaviour server OTP application.
+  """
+
   use Application
 
 

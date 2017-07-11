@@ -37,7 +37,8 @@ defmodule UnsocialVR.Autopilot do
                 players autopiloting look the same.
   """
   def play(position_shift, time_shift) do
-    System.monotonic_time(:milliseconds)
+    :milliseconds
+    |> System.monotonic_time()
     |> Kernel.+(time_shift)
     |> div(@recording_period)
     |> rem(:ets.info(__MODULE__, :size))
