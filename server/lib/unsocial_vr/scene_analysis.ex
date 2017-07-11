@@ -45,7 +45,6 @@ defmodule UnsocialVR.SceneAnalysis do
   """
   def autopilot(player, speaker) do
     UnsocialVR.Backchannel.add_prediction_job(player, speaker)
-    nodding = Cache.get_backchannel(player.id)
     chest_position = player["chestPosition"]
     position_shift = {chest_position["x"], chest_position["z"]}
     time_shift = player.id * 4321  # Just to cause difference between players
@@ -53,6 +52,7 @@ defmodule UnsocialVR.SceneAnalysis do
     player
     |> Map.merge(autopilot_data)
     |> Map.put(:state, :autopilot)
+    |> Map.put(:nodding, Cache.get_backchannel(player.id))
   end
 
   @doc """

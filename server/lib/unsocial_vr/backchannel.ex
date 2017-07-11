@@ -8,8 +8,6 @@ defmodule UnsocialVR.Backchannel do
 
   use GenServer
 
-  require Logger
-
   # INTERFACE
 
   def start_link() do
@@ -47,10 +45,8 @@ defmodule UnsocialVR.Backchannel do
 
   # INTERNALS
 
-  @period 200  # Millis
-
   def schedule_prediction() do
-    Process.send_after(__MODULE__, :predict, @period)
+    Process.send(__MODULE__, :predict, [])
   end
 
   @backchannel_server "http://127.0.0.1:5001/"
@@ -68,9 +64,6 @@ defmodule UnsocialVR.Backchannel do
 
   def cache_results(predictions) do
     Enum.each(predictions, fn {id, prediction} ->
-      if prediction do
-        Logger.debug("Autopilot #{id} nodding")
-      end
       UnsocialVR.Cache.put_backchannel(id, prediction)
     end)
   end
