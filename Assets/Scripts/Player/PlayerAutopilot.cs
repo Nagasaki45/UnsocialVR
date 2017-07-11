@@ -53,13 +53,16 @@ public class PlayerAutopilot : NetworkBehaviour {
 			}
 			else
 			{
-				if (Input.GetButtonDown ("Autopilot"))
+				if (Input.GetButtonUp ("Autopilot"))
 				{
-					StartCoroutine(StartAutopilot ());
-				}
-				else if (Input.GetButtonUp ("Autopilot"))
-				{
-					StartCoroutine(StopAutopilot ());
+					if (null == autopilotMarker)
+					{
+						StartCoroutine (StartAutopilot ());
+					}
+					else
+					{
+						StartCoroutine (StopAutopilot ());
+					}
 				}
 			}
 		}

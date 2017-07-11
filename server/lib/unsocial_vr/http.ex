@@ -12,8 +12,7 @@ defmodule UnsocialVR.HTTP do
     %{"transform" => transform} = URI.decode_query(body)
     {:ok, transform} = Poison.decode(transform)
 
-    # Upload player data
-    UnsocialVR.Cache.put_player(player_id, transform)
+    UnsocialVR.SceneAnalysis.cache_player(player_id, transform)
 
     # Reply with scenen analysis
     scene = UnsocialVR.SceneAnalysis.remote_players(player_id)

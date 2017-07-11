@@ -38,6 +38,20 @@ defmodule UnsocialVR.Cache do
     end)
   end
 
+  def get_f_formation_speaker_id(f_formation_id) do
+    ConCache.get(cache(), {:f_formation_speaker, f_formation_id})
+  end
+
+  def get_f_formation_speaker(f_formation_id) do
+    f_formation_id
+    |> get_f_formation_speaker_id()
+    |> get_player()
+  end
+
+  def put_f_formation_speaker_id(f_formation_id, player_id) do
+    ConCache.put(cache(), {:f_formation_speaker, f_formation_id}, player_id)
+  end
+
   def get_autopilots(f_formation_id) do
     cache()
     |> ConCache.ets()
@@ -52,6 +66,14 @@ defmodule UnsocialVR.Cache do
 
   def delete_autopilot(player_id) do
     ConCache.delete(cache(), {:autopilot, player_id})
+  end
+
+  def get_backchannel(autopilot_id) do
+    ConCache.get(cache(), {:backchannel, autopilot_id})
+  end
+
+  def put_backchannel(autopilot_id, prediction) do
+    ConCache.put(cache(), {:backchannel, autopilot_id}, prediction)
   end
 
   def _touch(player_ids) do

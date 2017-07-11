@@ -23,6 +23,7 @@ You will need:
 - HTC Vive
 - elixir 1.4
 - Whatever required to run the GCFF (Graph-Cut for F-formations) server. See `GCFF/README.md`.
+- Whatever required to run the backchannel server (predicting head nods). See `backchannel/README.md`.
 
 ### Servers
 
@@ -33,7 +34,16 @@ cd GCFF
 python server.py 1 10
 ```
 
-The social behaviour server is written in elixir. It communicate with the GCFF server to analyze the social scene, and runs alongside the Unity server.
+A separate python server is responsible for predicting listener backchannels (head nods), according to speaker behaviours (is the speaker talking, etc.).
+Run it with:
+
+```bash
+cd backchannel
+python server.py --port 5001  # Make sure it's on port 5001!
+```
+
+The social behaviour server is written in elixir. It communicate with the two other servers to pass positioning data between the clients, analyze the social scene, and generate appropriate backchannels when necessary.
+It runs alongside the Unity server.
 To run it:
 
 ```bash

@@ -16,27 +16,49 @@ public class PlayerApproaches : NetworkBehaviour {
 	private RaycastHit attentionHit;
 
 
-	void Start () {
+	private void Start () {
 		playerTalking = GetComponent<PlayerTalking> ();
 		playerApproachedText = GameObject.FindGameObjectWithTag ("PlayerApproachedText").GetComponent<PlayerApproachedText> ();
 		attentionRay = new Ray ();
 	}
 	
 
-	void Update () {
-		if (!isLocalPlayer)
-		{
-			attentionRay.origin = headTransform.position;
-			attentionRay.direction = headTransform.forward;
+	private void Update () {
+		attentionRay.origin = headTransform.position;
+		attentionRay.direction = headTransform.forward;
 
-			if (Physics.Raycast (attentionRay, out attentionHit, rayDistance))
+		if (isLocalPlayer)
+		{
+			LocalPlayerAttention ();
+		}
+		else
+		{
+			RemotePlayerAttention();
+		}
+	}
+
+
+	private void LocalPlayerAttention()
+	{
+		int attention = -1;
+		if (Physics.Raycast (attentionRay, out attentionHit, rayDistance))
+		{
+			PlayerController otherPlayer = attentionHit.collider.gameObject.GetComponent<PlayerController> ();
+			if (null != otherPlayer)
 			{
-				if (attentionHit.collider.gameObject.tag == "AutopilotMarker" && playerTalking.isTalking)
-				{
-					Debug.Log ("Someone is talking with localPlayer!");
-					playerApproachedText.Flash ();
-				}
+				attention = (int) otherPlayer.netId.Value;
 			}
+		}
+		PlayerController.localPlayerData.attention = attention;
+	}
+
+
+	private void RemotePlayerAttention()
+	{
+		if (attentionHit.collider.gameObject.tag == "AutopilotMarker" && playerTalking.isTalking)
+		{
+			Debug.Log ("Someone is talking with localPlayer!");
+			playerApproachedText.Flash ();
 		}
 	}
 }

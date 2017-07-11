@@ -13,6 +13,7 @@ defmodule UnsocialVR.Application do
         Plug.Adapters.Cowboy.child_spec(:http, UnsocialVR.HTTP, [], port: 8080),
         worker(UnsocialVR.Autopilot, []),
         worker(UnsocialVR.FFormations, []),
+        worker(UnsocialVR.Backchannel, []),
       ]
 
     opts = [strategy: :one_for_one, name: UnsocialVR.Supervisor]
