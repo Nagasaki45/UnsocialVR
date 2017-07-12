@@ -2,12 +2,15 @@ defmodule UnsocialVR.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :unsocial_vr,
-     version: "0.1.0",
-     elixir: "~> 1.4",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps()]
+    [
+      app: :unsocial_vr,
+      version: "0.1.0",
+      elixir: "~> 1.4",
+      build_embedded: Mix.env == :prod,
+      start_permanent: Mix.env == :prod,
+      deps: deps(),
+      aliases: aliases(),
+    ]
   end
 
   def application do
@@ -25,7 +28,13 @@ defmodule UnsocialVR.Mixfile do
       {:con_cache, "~> 0.12.0"},
       {:persistent_ets, "~> 0.1.0"},
       {:httpotion, "~> 3.0"},
-      {:credo, "~> 0.8.3"},
+      {:credo, "~> 0.8.3", only: [:dev, :test], runtime: false},
+    ]
+  end
+
+  defp aliases do
+    [
+      test: "test --no-start",
     ]
   end
 end

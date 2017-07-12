@@ -4,6 +4,11 @@ defmodule CacheTest do
 
   import UnsocialVR.Cache
 
+  setup_all do
+    ConCache.start_link([], name: :cache)
+    :ok
+  end
+
   test "get players" do
     assert get_players() == []
     put_player(1, %{name: :moshe})
