@@ -64,7 +64,7 @@ defmodule UnsocialVR.Backchannel do
 
   def cache_results(predictions) do
     Enum.each(predictions, fn {id, prediction} ->
-      UnsocialVR.Cache.put_backchannel(id, prediction)
+      UnsocialVR.Cache.put_backchannel(String.to_integer(id), prediction)
     end)
   end
 
