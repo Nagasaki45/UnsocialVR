@@ -18,6 +18,7 @@ public class PlayerData {
 	public int attention;
 	public bool isTalking;
 	public string state;
+	public bool nodding;
 
 
 	public string ToJson()
@@ -46,6 +47,7 @@ public class PlayerData {
 			pd.attention = current ["attention"].AsInt;
 			pd.isTalking = current ["isTalking"].AsBool;
 			pd.state = current ["state"];
+			pd.nodding = current ["nodding"].AsBool;
 			d.Add ((uint) current ["id"].AsInt, pd);
 		}
 		return d;

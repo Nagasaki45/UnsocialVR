@@ -25,11 +25,13 @@ public class PlayerController : NetworkBehaviour {
 	public float ignoredScale;
 
 	private PlayerTalking playerTalking;
+	private Animator animator;
 
 
 	private void Start()
 	{
 		playerTalking = GetComponent<PlayerTalking> ();
+		animator = GetComponent<Animator> ();
 		if (isLocalPlayer)
 		{
 			localPlayerData = new PlayerData ();
@@ -107,6 +109,7 @@ public class PlayerController : NetworkBehaviour {
 		leftHandTransform.localRotation = Quaternion.Lerp (leftHandTransform.localRotation, received.leftHandRotation, transformSmoothing);
 		rightHandTransform.localPosition = Vector3.Lerp (rightHandTransform.localPosition, received.rightHandPosition, transformSmoothing);
 		rightHandTransform.localRotation = Quaternion.Lerp (rightHandTransform.localRotation, received.rightHandRotation, transformSmoothing);
+		animator.SetBool ("nodding", received.nodding);
 	}
 
 
