@@ -55,10 +55,13 @@ public class PlayerApproaches : NetworkBehaviour {
 
 	private void RemotePlayerAttention()
 	{
-		if (attentionHit.collider.gameObject.tag == "AutopilotMarker" && playerTalking.isTalking)
+		if (Physics.Raycast (attentionRay, out attentionHit, rayDistance))
 		{
-			Debug.Log ("Someone is talking with localPlayer!");
-			playerApproachedText.Flash ();
+			if (attentionHit.collider.gameObject.tag == "AutopilotMarker" && playerTalking.isTalking)
+			{
+				Debug.Log ("Someone is talking with localPlayer!");
+				playerApproachedText.Flash ();
+			}
 		}
 	}
 }
