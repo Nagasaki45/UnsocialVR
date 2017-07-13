@@ -42,12 +42,6 @@ defmodule UnsocialVR.Cache do
     ConCache.get(cache(), {:f_formation_speaker, f_formation_id})
   end
 
-  def get_f_formation_speaker(f_formation_id) do
-    f_formation_id
-    |> get_f_formation_speaker_id()
-    |> get_player()
-  end
-
   def put_f_formation_speaker_id(f_formation_id, player_id) do
     ConCache.put(cache(), {:f_formation_speaker, f_formation_id}, player_id)
   end

@@ -63,8 +63,21 @@ public class PlayerController : NetworkBehaviour {
 				}
 				else if (received.state == "autopilot")
 				{
-					Vector3 newDir = Vector3.RotateTowards(transform.forward, localPlayerData.chestPosition - transform.position, slowSmoothing, 0.0F);
-					transform.rotation = Quaternion.LookRotation (newDir);
+					uint attention = (uint)received.attention;
+					if (attention > 0)
+					{
+						Vector3 target;
+						if (remotePlayersData.ContainsKey(attention))
+						{
+							target = remotePlayersData [attention].chestPosition;
+						}
+						else
+						{
+							target = localPlayerData.chestPosition;
+						}
+						Vector3 newDir = Vector3.RotateTowards(transform.forward, target - transform.position, slowSmoothing, 0.0F);
+						transform.rotation = Quaternion.LookRotation (newDir);
+					}
 					playerTalking.isTalking = false;
 					Scale (1f);
 				}

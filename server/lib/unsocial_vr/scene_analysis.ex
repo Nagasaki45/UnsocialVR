@@ -32,14 +32,14 @@ defmodule UnsocialVR.SceneAnalysis do
     all_players = Cache.get_players()
     my_f_formation_id = Cache.get_player_f_formation_id(local_id)
     my_f_formation = Cache.get_f_formation(my_f_formation_id)
-    my_f_formation_speaker = Cache.get_f_formation_speaker(my_f_formation_id)
+    speaker_id = Cache.get_f_formation_speaker_id(my_f_formation_id)
     my_autopilots = Cache.get_autopilots(my_f_formation_id)
 
     all_players
     |> Stream.filter(fn player -> player.id != local_id end)
     |> Enum.map(fn p ->
       cond do
-        (p.id in my_autopilots) -> autopilot(p, my_f_formation_speaker)
+        (p.id in my_autopilots) -> autopilot(p, speaker_id)
         !(p.id in my_f_formation["members"]) -> Map.put(p, :state, :ignored)
         true -> Map.put(p, :state, :real)
       end
@@ -49,8 +49,7 @@ defmodule UnsocialVR.SceneAnalysis do
   @doc """
   Replace the player transforms with recorded autopilot behaviour + nodding.
   """
-  def autopilot(player, speaker) do
-    UnsocialVR.Backchannel.add_prediction_job(player, speaker)
+  def autopilot(player, nil) do
     chest_position = player["chestPosition"]
     position_shift = {chest_position["x"], chest_position["z"]}
     time_shift = player.id * 4321  # Just to cause difference between players
@@ -58,7 +57,14 @@ defmodule UnsocialVR.SceneAnalysis do
     player
     |> Map.merge(autopilot_data)
     |> Map.put(:state, :autopilot)
+  end
+  def autopilot(player, speaker_id) do
+    speaker = Cache.get_player(speaker_id)
+    UnsocialVR.Backchannel.add_prediction_job(player, speaker)
+    player
+    |> Map.put(:attention, speaker_id)
     |> Map.put(:nodding, Cache.get_backchannel(player.id))
+    |> autopilot(nil)
   end
 
   @doc """
