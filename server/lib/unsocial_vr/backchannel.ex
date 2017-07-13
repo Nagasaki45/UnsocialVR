@@ -55,6 +55,7 @@ defmodule UnsocialVR.Backchannel do
   Call the server to generate prediction.
   """
   def predict(data) do
+    data = %{listeners: data, type: "dekok"}
     body = Poison.encode!(data)
     headers = ["Content-Type": "application/json"]
     resp = HTTPotion.post(@backchannel_server, body: body, headers: headers)
