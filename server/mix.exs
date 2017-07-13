@@ -29,6 +29,7 @@ defmodule UnsocialVR.Mixfile do
       {:persistent_ets, "~> 0.1.0"},
       {:httpotion, "~> 3.0"},
       {:credo, "~> 0.8.3", only: [:dev, :test], runtime: false},
+      {:exsync, "~> 0.1.4", only: :dev},
     ]
   end
 
