@@ -27,11 +27,11 @@ You will need:
 
 ### Servers
 
-Run the GCFF server with appropriate `stride` and `mdl` values. It seems that 1 and 10 work fine:
+Run the GCFF server with appropriate values for `stride`, `mdl`, and `max_change_per_second`. It seems that these values work fine:
 
 ```bash
 cd GCFF
-python server.py 1 10
+python server.py 1 10 3
 ```
 
 A separate python server is responsible for predicting listener backchannels (head nods), according to speaker behaviours (is the speaker talking, etc.).
