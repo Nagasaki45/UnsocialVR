@@ -133,17 +133,21 @@ In the current research I use the ICT Rapport dataset \citep{Gratch2007} to trai
 \citep{Chou2016}, TODO cite Pat recommendation.
 
 
-\chapter{System design and implementation}
+\chapter{System design and implementation}\label{system_design_and_implementation}
 
-TODO Requirements / targets.
+Whereas many studies explore active listening behaviours using automated agents \citep{Bevacqua2008, Huang2011, Poppe2013}, the current research aim to investigate how humans can start to pretend to listen to someone, how they stop faking and return to the conversation, and what are the social implication for such behaviours.
+Recently, social research see high opportunities in exploring social behaviours using virtual environments \citep{Bailenson2008}.
+Following the same trend, and inspired by the possibilities to fake attention in ways that are impossible in face-to-face conversation, the current research is based on a social virtual environment system.
 
-TODO General description.
-
-The code is available TODO after open sourcing.
+The main target of the system is to support exploration of faked active listening behaviours in a social context.
+As such, it implements a shared virtual environment, and uses a minimal user interface to let participants start and stop faking active listening behaviour towards the conversational group they belong to.
+In the background, a set of components analyze the social interaction and manipulate how each participant experience the environment.
 
 Figure \ref{fig:system:diagram} shows a schematic diagram of the system, and the paths and protocols of communication between the components.
 The components in blue represent client side code, those in green are the client facing servers, and the red ones are background servers that process behavioural data to instruct the client facing servers how to operate.
 A thorough description of each component in the system is presented bellow.
+
+The code-base for the entire project is open sourced and \fnurl{available online}{https://github.com/Nagasaki45/UnsocialVR}.
 
 \begin{figure}
   \includegraphics[width=\textwidth]{../graphics/system_diagram.pdf}
@@ -287,8 +291,8 @@ Second, Elixir is a high level language with terse syntax and have many high qua
 The Scene Analysis Server is used to analyze F-formations of the players in the virtual environment, based on their positioning and orientation.
 Figure \ref{fig:system:simulator_f_formation} shows an example of F-formation analysis for 5 Simulator Clients scenario.
 
-This server runs a modified version\footnote{Open source and available online at \url{https://github.com/nagasaki45/gcff}} of the open source Graph-Cuts for F-formation (GCFF) detection algorithm by \cite{Setti2015}.
-It is written in \fnurl{Matlab}{https://www.mathworks.com/products/matlab.html} and is \fnurl{available online}{https://github.com/franzsetti/GCFF}.
+This server runs a modified version\footnote{Open source and available online at \url{https://github.com/Nagasaki45/gcff}} of the open source Graph-Cuts for F-formation (GCFF) detection algorithm by \cite{Setti2015}.
+It is written in \fnurl{Matlab}{https://www.mathworks.com/products/matlab.html} and was recently \fnurl{open sourced}{https://github.com/franzsetti/GCFF}.
 Originally developed to analyze still images, the GCFF algorithm detects F-formations using only $(x, y)$ positioning and orientation information in 2 dimensional space.
 
 To integrate it into the system I had to slightly modify the code.
@@ -306,35 +310,37 @@ Second, to be able to call the algorithm from the Main Game Server I wrote a min
 \section{Active Listening Server}
 
 The Active Listening Server is responsible for predicting backchannel behaviours based on speaker talking state (is speaking or silence) and gaze (is looking at listener or not).
-Predicting listeners backchannel behaviours is usually done using either rule based systems, or more recently, data driven and machine learning (ML) approaches \citep{Morency2008}.
-Due to the better performance of the machine learning predictions I followed the same line and with the absence of openly available backchannel predictor decided to develop one myself.
-
-Training an ML model required a dataset of conversations with annotations for speaker talking state and gaze, and with listener backchannel annotations.
-The ICT Rapport Dataset \citep{Gratch2007} contains 126 annotated interactions between a speaker and listener, and is \fnurl{openly available online}{http://rapport.ict.usc.edu/}, making it ideal for training a backchannel predictor.
-Many of the interactions, however, were not properly annotated with the necessary data (files missing or blank columns).
-After filtering out interactions with missing data I had 48 interactions with average length of 138 seconds, ranging from 41 to 248 seconds.
+Predicting listeners backchannel behaviours is usually done using either hand-crafted rule based systems, or more recently, data driven and machine learning (ML) approaches \citep{Morency2008}.
+Due to the better performance of the later I followed the same path and with the absence of openly available solution decided to develop an ML based backchannel predictor myself.
+Using more features, such as prosody \citep{Ward2000} or speaker gestures (TODO reference), could probably improve the model.
+However, the simpler model described below was found to be accurate enough.
 
 It is important to note that there is an expected difference in social behaviour between an addressee and a side-participant \citep{Clark1982}.
-For the current system, the faked behaviour is usually the one of the side-participant, and not of the addressee.
-Although the addressee can fake active listening, it is more common for side-participants to fake and wonder around, as they are not required to provide verbal response to the speaker.
-However, there is much less literature about predicting side-participants active listening behaviours, and even less available resource to train such model.
-With that in mind, I settled for predicting the addressee backchannels and applied them to both addressees and side-participants.
+Although the addressee can fake active listening, in the context of the current research it is more common for side-participants to fake and wonder around, as they are not required to provide verbal response to the speaker.
+However, there is much less literature about predicting side-participants active listening behaviours, and even less available resource for training a data-driven model.
+With that in mind, I settled for predicting the addressee backchannels and applied them to both addressees and side-participants alike.
+
+Training an ML model required a dataset of conversations with annotations for speaker talking state, gaze, and listener backchannels.
+The ICT Rapport Dataset \citep{Gratch2007} contains 126 annotated interactions between a speaker and a listener, and is \fnurl{openly available online}{http://rapport.ict.usc.edu/}, making it ideal for training a backchannel predictor.
+Many of the interactions, however, were not properly annotated.
+Some of them doesn't contain all of the annotation files while other have blank columns for some of the features of interest.
+After filtering out interactions with missing data the remaining 48 interactions had an average length of 138 seconds, ranging from 41 to 248 seconds.
 
 To prepare the data for training I re-sampled the annotations every 100 milliseconds.
-Then, to create samples representing a moving time window I concatenate 30 samples (3 seconds) of the speaker talking state and gaze into one vector.
+Then, to create samples representing a window moving in time I concatenate 30 samples (3 seconds) of the speaker talking state and gaze into one vector.
 This vector, when fed into the ML model, should predict the listeners nodding of the last sample.
 As a last step of preparation I split the dataset into 3 to 1 train and test portions.
 
 I tried to train three different ML models.
-First I tried to train a Linear Support Vector Machine Classifier (LinearSVC) model using the open source package Scikit-learn \citep{Pedregosa2011}.
-Using the test portion of the dataset, this model presented high precision (percentage of correct predictions) was high.
-However, but the recall (correct predictions out of correct predictions and misses) was very low.
-In fact, the model learned never to almost never predict a backchannel.
+First I attempted to train a Linear Support Vector Machine Classifier (LinearSVC) model using the open source package Scikit-learn \citep{Pedregosa2011}.
+Using the test portion of the dataset, the model precision (percentage of correct predictions) was high.
+However, the recall (correct predictions out of correct predictions and misses) was very low.
+In fact, the model learned to almost never predict a backchannel.
 Visually comparing the predictions to the dataset reveals that the it failed to model the data correctly.
-Second, I attempted to train a Long Short-Term Memory (LSTM) deep neural network with the open source package Keras \citep{Chollet2015}.
+Second, I tried to train a Long Short-Term Memory (LSTM) deep neural network with the open source package Keras \citep{Chollet2015}.
 The results were similar to these of the LinearSVC model.
-Lastly, I trained a K Nearest Neighbors classifier with Scikit-learn.
-This time, it seems that the model manage to capture nature of the data.
+Lastly, I trained a K Nearest Neighbors classifier ($K = 5$) with Scikit-learn.
+This time, it seems that the model manage to capture nature of the data, as shown in figure \ref{fig:system:backchannel_predictions}.
 Using the test portion of the dataset the was lower than before (0.77), but the recall was higher (0.83).
 
 \begin{figure}
@@ -343,21 +349,23 @@ Using the test portion of the dataset the was lower than before (0.77), but the 
   \label{fig:system:backchannel_predictions}
 \end{figure}
 
-Figure \ref{fig:system:backchannel_predictions} shows an example of backchannels predictions for an interaction predicted from the dataset.
-
-
 Choosing between the models didn't follow a properly nor systematic evaluation.
-However, the K Nearest Neighbors classifier performed well enough on the test dataset.
+However, based on the performance on the test portion of the dataset and visual inspection the K Nearest Neighbors classifier seemed to performed well enough.
 It also provided fast predictions, as necessary by real-time system like this.
 
-TODO de Kok threshold.
+To make the backchannel predictions more robust to variations in the input data I implemented the variable threshold as suggested by \cite{Kok2012}.
+The K Nearest Neighbors classifier can be used not only to predict a backchannel, as a binary value, but also to predict the probability of a backchannel.
+This feature of the model is used, together with a variable threshold to provide predictions.
+Initially, the threshold is set to 1, and is decreased over time by 10 percent per second.
+When the predicted probability for a backchannel accedes the threshold, a backchannel is predicted and the threshold resets back to 1.
 
-The model, with the decreasing threshold algorithm, are written in Python and are exposed to the Main Gaim Server as an HTTP server.
-The code for this server is open sourced and \fnurl{available online}{https://github.com/nagasaki45/backchannel}.
+The model, with the variable threshold algorithm, is written in Python and is exposed to the Main Game Server as an HTTP server.
+The code for this server is open sourced and \fnurl{available online}{https://github.com/Nagasaki45/backchannel}.
 
 \section{Fake Behaviour Generator}\label{system:fake_behaviour_generator}
 
 TODO Fake behaviour baseline recorder.
+TODO why chest and not head.
 
 
 \chapter{Evaluation}
