@@ -6,6 +6,8 @@ defmodule UnsocialVR.SceneAnalysis do
   f-formation analysis, and automated nodding.
   """
 
+  alias UnsocialVR.Autopilot
+  alias UnsocialVR.Backchannel
   alias UnsocialVR.Cache
 
   @doc """
@@ -13,7 +15,9 @@ defmodule UnsocialVR.SceneAnalysis do
   f-formation.
   """
   def cache_player(local_id, player_data) do
-    UnsocialVR.Cache.put_player(local_id, player_data)
+    Cache.put_player(local_id, player_data)
+    transforms = get_transforms(player_data)
+    Autopilot.record(local_id, transforms)
     if player_data["isTalking"] do
       local_id
       |> Cache.get_player_f_formation_id()
@@ -50,17 +54,14 @@ defmodule UnsocialVR.SceneAnalysis do
   Replace the player transforms with recorded autopilot behaviour + nodding.
   """
   def autopilot(player, nil) do
-    chest_position = player["chestPosition"]
-    position_shift = {chest_position["x"], chest_position["z"]}
-    time_shift = player.id * 4321  # Just to cause difference between players
-    autopilot_data = UnsocialVR.Autopilot.play(position_shift, time_shift)
+    autopilot_data = Autopilot.play(player.id)
     player
     |> Map.merge(autopilot_data)
     |> Map.put(:state, :autopilot)
   end
   def autopilot(player, speaker_id) do
     speaker = Cache.get_player(speaker_id)
-    UnsocialVR.Backchannel.add_prediction_job(player, speaker)
+    Backchannel.add_prediction_job(player, speaker)
     player
     |> Map.put(:attention, speaker_id)
     |> Map.put(:nodding, Cache.get_backchannel(player.id))
@@ -73,6 +74,7 @@ defmodule UnsocialVR.SceneAnalysis do
   def start_autopilot(local_id) do
     my_f_formation_id = Cache.get_player_f_formation_id(local_id)
     Cache.put_autopilot(local_id, my_f_formation_id)
+    Autopilot.set_recording(local_id, false)
   end
 
   @doc """
@@ -80,5 +82,20 @@ defmodule UnsocialVR.SceneAnalysis do
   """
   def stop_autopilot(local_id) do
     Cache.delete_autopilot(local_id)
+    Autopilot.set_recording(local_id, true)
+  end
+
+  defp get_transforms(player_data) do
+    player_data
+    |> Stream.filter(&transform?/1)
+    |> Enum.into(Map.new())
+  end
+
+  defp transform?({key, _val}) do
+    cond do
+      String.ends_with?(key, "Position") -> true
+      String.ends_with?(key, "Rotation") -> true
+      true -> false
+    end
   end
 end

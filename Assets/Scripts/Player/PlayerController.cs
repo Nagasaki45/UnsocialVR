@@ -67,7 +67,9 @@ public class PlayerController : NetworkBehaviour {
 					if (attention > 0)
 					{
 						Vector3 target;
-						if (remotePlayersData.ContainsKey(attention))
+						// Rotate towards the speaker, if it's another remote player that is not the faker
+						// Or rotate towards me
+						if (remotePlayersData.ContainsKey(attention) && attention != netId.Value)
 						{
 							target = remotePlayersData [attention].chestPosition;
 						}
@@ -75,8 +77,8 @@ public class PlayerController : NetworkBehaviour {
 						{
 							target = localPlayerData.chestPosition;
 						}
-						Vector3 newDir = Vector3.RotateTowards(transform.forward, target - transform.position, slowSmoothing, 0.0F);
-						transform.rotation = Quaternion.LookRotation (newDir);
+						Quaternion newDir = Quaternion.LookRotation ((target - transform.position).normalized);
+						transform.rotation = Quaternion.Slerp (transform.rotation, newDir, Time.deltaTime * slowSmoothing);
 					}
 					playerTalking.isTalking = false;
 					Scale (1f);

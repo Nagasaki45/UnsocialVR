@@ -15,7 +15,6 @@ defmodule UnsocialVR.Application do
       [
         supervisor(ConCache, [concache_opts, [name: :cache]]),
         Plug.Adapters.Cowboy.child_spec(:http, UnsocialVR.HTTP, [], port: 8080),
-        worker(UnsocialVR.Autopilot, []),
         worker(UnsocialVR.FFormations, []),
         worker(UnsocialVR.Backchannel, []),
       ]
