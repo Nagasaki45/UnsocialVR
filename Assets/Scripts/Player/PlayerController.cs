@@ -98,7 +98,7 @@ public class PlayerController : NetworkBehaviour {
 
 	private void Scale(float target)
 	{
-		transform.localScale = Vector3.Lerp(transform.localScale, new Vector3 (target, target, target), slowSmoothing);
+		transform.localScale = Vector3.Lerp(transform.localScale, new Vector3 (target, target, target), Time.deltaTime * slowSmoothing);
 	}
 
 
