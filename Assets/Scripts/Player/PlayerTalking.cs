@@ -7,13 +7,14 @@ using Dissonance;
 using Dissonance.VAD;
 
 
-public class PlayerTalking : NetworkBehaviour, IVoiceActivationListener {
+public class PlayerTalking : NetworkBehaviour {
 
 	public Transform mouth;
 	public float mouthClose;
 	public float mouthOpen;
 	public float speed;
 	public bool isTalking;
+	public float talkingAmplitudeThreshold;
 
 	private float epsilon = 0.01f;
 	private DissonanceComms comms;
@@ -24,32 +25,31 @@ public class PlayerTalking : NetworkBehaviour, IVoiceActivationListener {
 	{
 		target = mouthClose;
 		comms = GameObject.FindGameObjectWithTag ("DissonanceSetup").GetComponent<DissonanceComms> ();
-		if (isLocalPlayer && SceneManager.GetActiveScene ().name != "Simulator")
-		{
-			comms.SubcribeToVoiceActivation (this);
-		}
-	}
-
-
-	public void VoiceActivationStart()
-	{
-		isTalking = true;
-	}
-
-
-	public void VoiceActivationStop()
-	{
-		isTalking = false;
 	}
 
 
 	private void Update ()
 	{
-		if (isLocalPlayer && SceneManager.GetActiveScene ().name == "Simulator")
+		if (isLocalPlayer)
 		{
-			if (Input.GetButtonUp ("Talk"))
+			if (SceneManager.GetActiveScene ().name == "Simulator")
 			{
-				isTalking = !isTalking;
+				if (Input.GetButtonUp ("Talk"))
+				{
+					isTalking = !isTalking;
+				}
+			}
+			else
+			{
+				foreach (VoicePlayerState voicePlayerState in comms.Players)
+				{
+					// UglyHack (c) to check the type of a private class.
+					if (voicePlayerState.GetType ().Name == "LocalVoicePlayerState")
+					{
+						isTalking = IsTalking (voicePlayerState);
+						break;
+					}
+				}
 			}
 		}
 
@@ -70,5 +70,11 @@ public class PlayerTalking : NetworkBehaviour, IVoiceActivationListener {
 		}
 		Vector3 targetVector = new Vector3 (mouth.localScale.x, target, mouth.localScale.z);
 		mouth.localScale = Vector3.Lerp (mouth.localScale, targetVector, speed * Time.deltaTime);
+	}
+
+
+	private bool IsTalking(VoicePlayerState state)
+	{
+		return state.IsSpeaking && (state.Amplitude > talkingAmplitudeThreshold);
 	}
 }
