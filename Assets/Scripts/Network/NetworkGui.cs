@@ -36,25 +36,19 @@ public class NetworkGui : MonoBehaviour
 				serversAddress = GUI.TextField(new Rect(xpos + 100, ypos, 100, 20), serversAddress);
 				ypos += spacing;
 
-                if (GUI.Button(new Rect(xpos, ypos, 200, 20), "LAN Host(H)"))
+                if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Start Server"))
                 {
                     manager.StartHost();
                 }
                 ypos += spacing;
 
-                if (GUI.Button(new Rect(xpos, ypos, 200, 20), "LAN Client(C)"))
+                if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Start Client"))
                 {
                     manager.StartClient();
                 }
                 ypos += spacing;
 
-                if (GUI.Button(new Rect(xpos, ypos, 200, 20), "LAN Server Only(S)"))
-                {
-                    manager.StartServer();
-                }
-                ypos += spacing;
-
-				manager.networkAddress = serversAddress;
+                manager.networkAddress = serversAddress;
             }
             else
             {
@@ -89,7 +83,7 @@ public class NetworkGui : MonoBehaviour
 
         if (NetworkServer.active || manager.IsClientConnected())
         {
-            if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Stop (X)"))
+            if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Stop"))
             {
                 manager.StopHost();
                 // Restart scene to make sure no garbage is kept (issue #4)
