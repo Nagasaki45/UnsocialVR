@@ -53,7 +53,6 @@ public class PlayerController : NetworkBehaviour {
 			remotePlayersData.TryGetValue (netId.Value, out received);
 			if (null != received)
 			{
-				Debug.Log (netId.Value + " state: " + received.state);
 				if (received.state == "real")
 				{
 					transform.position = Vector3.Lerp (transform.position, received.chestPosition, transformSmoothing);
