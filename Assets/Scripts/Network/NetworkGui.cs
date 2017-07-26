@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class NetworkGui : MonoBehaviour
 {
@@ -91,6 +92,9 @@ public class NetworkGui : MonoBehaviour
             if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Stop (X)"))
             {
                 manager.StopHost();
+                // Restart scene to make sure no garbage is kept (issue #4)
+                Scene scene = SceneManager.GetActiveScene ();
+                SceneManager.LoadScene (scene.name);
             }
         }
     }
