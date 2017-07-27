@@ -312,7 +312,7 @@ If the distance of a new F-formation from an old one is bellow an arbitrary thre
 Otherwise, it is a new F-formation.
 Second, to be able to call the algorithm from the Main Game Server I wrote a minimal HTTP server in \fnurl{Python}{https://www.python.org/}, that uses \fnurl{Octave}{https://www.gnu.org/software/octave/} and \fnurl{oct2py}{https://github.com/blink1073/oct2py} to invoke the Matlab code.
 
-\section{Active Listening Server}
+\section{Active Listening Server}\label{system:active_listening_server}
 
 The Active Listening Server is responsible for predicting backchannel behaviours based on speaker talking state (is speaking or silence) and gaze (is looking at listener or not).
 Predicting listeners backchannel behaviours is usually done using either hand-crafted rule based systems, or more recently, data driven and machine learning (ML) approaches \citep{Morency2008}.
@@ -375,23 +375,71 @@ TODO why chest and not head.
 
 \chapter{Evaluation}\label{evaluation}
 
-What I want to check?
+The system developed in the current study suggests several interesting evaluation paths.
+The first goes back to the comparison with traditional telephony.
+Participants in phone conversation can always decide that it's time to end the call.
+It is not the same as the decision to stop listening and start doing something else during the phone call.
+Therefore, we may assume that when participants fake attention they do so with the intent to keep the conversation going.
+This idea is transferable to the virtual environment developed in this study:
+Participants can either leave the conversation by walking away, or start faking active listening and do whatever they want.
+With that in mind, the system can be used to understand if faking active listening affect the level of conversations, and if so, how.
+Extending this idea further, it might be interesting to check how the possibilities exposed by the system affect the overall group dynamics in the cocktail party context.
 
-Can participants detect the fake, automated behaviour of an active listener?
-Is the level of communication suffer from listeners dropping out of the conversation?
+Another possibility is to add to the extensive research already done in the field of embodied conversational agents (ECAs) \citep{Nishimura2007, Bevacqua2008, Gratch2007, Huang2011, Lee2006}.
+Whereas all of these studies assess interaction with an automated agent, in the current study the interaction is with an avatar that switches between human control and automated control.
+This difference opens up ways to explore the properties of the transition between the two modes.
+More specifically, can the current methods that are used for ECAs can seamlessly replace humans, even for short periods of time?
+And more important, what are the limitations of such methods and what can they tell us about active listening behaviours?
 
-How air balloon task with varied number of participants.
-All participants are informed that they need to search for ``tokens'' in the virtual environment, while autopiloting towards the main conversation.
-
-How do I record when someone is caught faking? One option is to do it automatically when someone is approached while autopiloting.
-How do I record the success rate of participants in finding the tokens?
-How to assess the level of discussion?
+Due to the complexity of assessing the level of a conversation, this chapter present the evaluation of the automated active listening properties of the system, with emphasis on the properties of the transition into automated behaviour.
+Specifically, I evaluate the time it takes for participants to notice a faked behaviour, and how this measurement is affected by the size of the conversational group.
 
 \section{Pilot}
 
-The transition from ``real'' to ``fake'' behaviour is too noticeable.
+I ran an unofficial pilot study with 3 co-workers participating during the early development phases of the system.
+The faked behaviour at that time was a pre-recorded movement with different time lag between participants to make sure no two fakers look the same.
+The pilot attempted to expose user experience issues with the system.
+Participants in the pilot were not instructed to do any specific task in the virtual environment, nor fill any questionnaire before or after the experience.
+In addition, no measurements were recorded.
+Instead, I was interested to hear from the participants about their experience with the system, and probed them to emphasis their experience of the faking mechanism.
+
+The results clearly showed that the transitions into automated behaviour are noticeable.
+First, the automated behaviuor didn't responded properly to the social interaction.
+This finding are not surprising considering the research in the field of backcahnnel behaviours.
+Second, and with equal importance, the change of body posture and the relationship between the body parts between the real and the faked behaviour were significantly noticeable.
+Using the hands controllers and the chest tracker, the physical differences between people are recreated in the virtual environment.
+In addition, people posture is different, and these differences are also presented in the virtual world.
+Ignoring these and using the same behaviour for everyone allowed the participants to learn it quickly and easily notice it.
+Much of the design of the Fake Behaviour Generator and the necessity of the Active Listening Server described in \ref{system:fake_behaviour_generator} and \ref{system:active_listening_server} is inspired by these findings.
 
 \section{Methods}
+
+TODO X participants (Y males and Z females) were recruited to the experiment through mailing lists, social media, and prior familiarity (TODO how to describe friends).
+The participants were randomly allocated to 3 groups, of 3, 4, and 5 participants.
+
+The participants were asked to participate in a balloon task \citep{Howes2012} in the virtual environment:
+They were presented with a scenario of an hot air balloon that is about to crash, unless one passenger will be sacrificed.
+They had to come to an agreement, and choose between scarifying a doctor that is about to find a cure for cancer, a 7 months pregnant woman, or her husband, the balloon pilot.
+They were also instructed that there are tokens hidden in the virtual environment that they need to find and collect, whilst still progressing towards their shared goal of the balloon task.
+To do this they will have to fake participation in the conversation.
+Meanwhile, participants in the conversation can accuse others if they think that they are faking active listening.
+If a participant is rightfully accused for faking he or she loses one token, but if the accusation is wrong, the accuser loses one token instead.
+This mechanism should motivate the participants to maximize the number of tokens they have by the end of the experiment.
+
+Before and after the experience each participant filled a pre and post questionnaires (see appendices TODO and TODO respectively).
+The experience itself was conducted in three network connected rooms with audio conference between them using Skype instead of the system voice chat.
+Ideally, each participate would be located in a separate room and will use the Vive headset microphone and a pair of headphones.
+This ideal solution, however, was not possible due to technical restrictions.
+I decided to replace the system voice chat for the experiment with audio conference to prevent participants in the same room to be confused from hearing the others both through the headphones and through the air.
+
+During the experiment the following events were logged and kept for further analysis:
+
+\begin{itemize}
+  \item Transitions to and from faked behaviours.
+  \item Accusations for faking active listening.
+  \item Every time a participant talk with a someone that is faking (the speaker head is directed to the head of a faking participant).
+  \item Collection of a token.
+\end{itemize}
 
 \section{Results}
 
