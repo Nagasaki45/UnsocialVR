@@ -369,8 +369,20 @@ The code for this server is open sourced and \fnurl{available online}{https://gi
 
 \section{Fake Behaviour Generator}\label{system:fake_behaviour_generator}
 
-TODO Fake behaviour baseline recorder.
-TODO why chest and not head.
+The Fake Behaviour Generator integrate the predictions from the Active Listening Sever to provide a smooth and socially appropriate movement for the automated behaviour.
+For each participant, the position and orientation of the head and hands, relatively to the chest, is always recorded.
+This data is kept in a 2 seconds buffer.
+The decision to keep the last 2 seconds is arbitrary and found via trial and error.
+This aimed to give a long enough recording to make the faked behaviour look natural, but in the same time not to include two old movements (e.g. when the faker was the speaker or before the F-formation was formed).
+When a participant start to fake active listening a playback of this buffer start from the last recorded sample and goes backwards until it reaches the beginning of the buffer, and then forwards again, repeatedly.
+This ensure that there are no jumps in the playback of the recorded behaviour.
+
+The chest of an automated active listening agent is always directed to the chest of the speaker in the F-formation.
+In case that there is no speaker, the latest speaker is chosen instead.
+The chest movement are automated to rotate slowly and smoothly between speakers.
+
+Lastly, the predicted head nods from the Active Listening Server are generating head nods animation that was created in Unity3D.
+This animation is merged (position vectors are added together) with the rest of the faked behaviour.
 
 
 \chapter{Evaluation}\label{evaluation}
