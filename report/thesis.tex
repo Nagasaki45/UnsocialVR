@@ -128,10 +128,58 @@ Data driven approaches \citep{Morency2008, Huang2011, Kok2012}.
 Most research in backchannel behaviours is concentrated on two party conversations.
 In the case of three party conversation, the role of the side-participant was less investigated in terms of automated analysis and generation.
 Excluding \citep{Matsusaka2003, Fujie2009}.
+\section{Active listening}
 
-State of the art research often based on close datasets \citep{Kok2011}.
-Publicly available datasets \citep{Aubrey2013, Oertel2013}.
-In the current research I use the ICT Rapport dataset \citep{Gratch2007} to train a backchannel model.
+In order to make a conversation natural and engaging, conversing parties use a wide array of social cues.
+These signals can indicate the parties interest in keeping the conversation going, show mutual understanding, or the attempt to take the speaker turn.
+Whereas conversations are usually considered to be a lingual phenomena, many of these social signals are non-verbal (e.g.\ head nods and facial expressions), or extra-linguistic (e.g.\ utterances like ``uh-huh'').
+In the context of active listening behaviours they are known as backchannels \citep{Yngve1970}.
+They are important for establishing rapport \citep{Gratch2007} and have significant effect on the speaker behaviour \citep{Bavelas2000}.
+Not surprisingly, one of the main application of backchannels research is the implementation of automated agents that can provide socially appropriate responses in free conversation \citep{Morency2008, Bevacqua2008}.
+There are reasons to believe that backchannels can be predicted without attending the content of the conversation \citep{Yngve1970}.
+Therefore, researchers consistently attempt to use surface features like speaker-listener eye contact, speaker voice level, and prosody to model backchannels.
+
+\citeauthor{Ward2000} suggested a backchannel prediction model that is based on the speaker prosody (\citeyear{Ward2000}).
+Their model used a small set of features and simple hand-crafted rules.
+Specifically, speaker ``talking state'' (speaking or silent) and the pitch of the speaker voice were taken into account.
+\citeauthor{Gratch2006} propose to incorporate the speaker head moves and body pose into a similar model (\citeyear{Gratch2006}).
+Another approach is to use surface text features to model backchannels \citep{Lee2006}.
+In this study, the model is based on a bag-of-words technique, with different spoken words triggering different listener responses.
+They based their rules on manual analysis of video recorded conversations with embodied conversational agents.
+All of these studies used a set of carefully chosen hand-crafted rules to build their backchannel prediction models.
+
+Recent studies suggest that data-driven approaches for modeling backchannels improve the model performance.
+\citeauthor{Nishimura2007} predict listener responses using the pitch and power of the speaker voice (\citeyear{Nishimura2007}).
+Their model, however, isn't constrained to predict backchannels only.
+A response generator uses audio features to choose between types of responses, like backchannels, collaborative completion (e.g. suggesting a keyword for the speaker), and more.
+Their decision-tree model was trained using audio-recorded and annotated conversations of the RWC multimodal database \citep{Hayamizu1996}.
+\citeauthor{Morency2008} followed a similar path but with a more exhaustive set of audio-based features, and speaker-listener gaze annotations (\citeyear{Morency2008}).
+In addition, they encoded each feature with a set of encoding templates that modified the appearance of the feature over time.
+Then, they applied probabilistic methods to choose the feature with the most predictive power to incorporate into the model.
+\citeauthor{Huang2011} uses a simplified model that is based only on non-verbal information (\citeyear{Huang2011}).
+Their model uses the speaker talking state, speaker-listener eye contact, and, interestingly, the speaker smile, to predict listener backchannels.
+A year later, \citeauthor{Kok2012} suggested some improvements to the same model to make it more robust to different speaker behaviours (\citeyear{Kok2012}).
+Note that there is almost no direct comparison between the different models, mainly due to the use of different datasets and different evaluation methods \citep{Morency2008}.
+
+Another interesting approach to elicit rapport with automated conversational agents is to use mimicry.
+\citeauthor{Bailenson2005} found that an automated agent is perceived as more persuasive if it's mimicking the speaker movement with four seconds lag (\citeyear{Bailenson2005}).
+TODO decide if it's worth mentioning. Use \cite{Gratch2007} as a baseline.
+
+Before ending this section, it is important to discuss the theoretical distinction between the different participants roles in a social interaction.
+Some of the roles are more obvious, like the role of the speaker in a conversation.
+The differences between other roles, however, might be harder to tell.
+According to \citeauthor{Clark1982}, apart from the speaker, participants in a conversation can take a role of addressees, side-participants, and over-hearers (\citeyear{Clark1982}).
+Put simply, addressees are the listeners that the speaker illocutionary act is directed to.
+Side-participants are the listeners that the speaker wish to inform about his/her illocutionary act towards the addressees.
+Although they usually not expected to take the floor, they are an important part of the conversation.
+The speaker must take the side-participants understanding in mind, and expected confirmation for their understanding, probably through non verbal cues (TODO find ref).
+Over-hearers are listeners that the speaker have no interest in them hearing the conversation.
+They are less relevant for the current study and thus won't be further discussed.
+The roles are usually assigned to the participants, implicitly, by the speaker.
+
+Most of the current research in backchannels and active listening behaviour is concentrated on two party conversations.
+Therefore, side-participants active listening behaviours are much less investigated, understood, and modeled.
+TODO excluding \citep{Matsusaka2003, Fujie2009}.
 
 \section{Asymmetric communication}
 
