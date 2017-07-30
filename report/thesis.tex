@@ -112,22 +112,58 @@ Social VR.
 
 The GAZE systems \citep{Vertegaal1999, Vertegaal2003}.
 
+Transformed social interaction \citep{Bailenson2004, Bailenson2008}.
+
 \section{Multiparty social interaction}
 
-Spatial characteristics of face to face communication \citep{Schegloff1998}.
-F-formation theory \citep{Kendon1990} and automated analysis \citep{Setti2015}.
+%% TODO is it worth adding a more general intro using \citep{Hall1966} and \citep{Goffman1966}?
 
-\section{Active listening}
+Groups of people that interact in free standing conversations tend to form spatial clusters.
+Understanding these clusters, also known as F-formations, have several applications ranging from surveillance, through social robotics, and, as demonstrated in this study, to social VR.
+According to \citeauthor{Kendon1990} ``an F-formation arises whenever two or more people sustain a spatial and orientational relationship in which the space between them is one to which they have equal, direct, and exclusive access'' (\citeyear[p. 209]{Kendon1990}).
+F-formations can take many shapes.
+Common examples are circular, side-by-side, or L-shaped conversations.
+An F-formations system, however, doesn't solely describe the spatial organization of participants in a social interaction.
+It also implies a set of expected social behaviours.
+An L-shaped interaction, for example, suggests TODO, whereas a circular interaction may TODO.
+The most prominent spatial feature of an F-formation is probably its o-space: the area in the center of the cluster that captures the attention of the members in the F-formation.
 
-Speakers, addressees, and side-participants \citep{Clark1982}.
+Before moving to discuss ways to automate F-formation detection there are two definitions that are important to grasp.
+The \textit{transactional segment} is the area in front of the body that can be reached easily and into which we look and speak.
+The \textit{o-space} is the area that is surrounded by the members of the F-formation, and to which they have exclusive access.
+The o-space is often describe by means of the transactional segment of the F-formation members, and can be seen as the area in which the transactional segments overlap.
 
-Backchannels analysis and automated active listeners.
-Research based on set of rules \citep{Ward2000, Nishimura2007, Gratch2007}.
-Data driven approaches \citep{Morency2008, Huang2011, Kok2012}.
+Based on these characteristics, automatic detection of F-formations usually rely on the participants position and orientation.
+Whereas the position in space is usually well defined, there are different approaches to understand orientation.
+\citeauthor{Kendon1990} suggests that the orientation should be determined by the lower body (\citeyear{Kendon1990}).
+When standing, for example, the orientation should be calculated based on the position of the feet.
+He adds that this is not uncommon to rotate the head and look outside of the transactional segment.
+These head rotations are usually temporary anyway, so F-formation analysis can ignore them.
+In the case of actually moving the center of attention and transactional segment the head move will be followed by changing the lower body orientation as well.
+This idea is inline with \citeauthor{Schegloff1998}'s understanding of body pose in conversation (\citeyear{Schegloff1998}).
+In his paper, the \textit{home position} --- the sustained center of attention --- is defined by the lower body orientation.
+An upper body rotation is inherently unstable situation that should be resolved by either changing the lower body orientation or by returning to the home position.
+Recent empirical study provided evidence that F-formation are indeed best understood using lower body orientation by TODO (TODO find ref).
+Regardless of these theoretical arguments and evidence, many studies use the head direction to analyze F-formations \citep{Cristani2011, Setti2013, Vascon2014}.
+One possible reason is that most of these studies are done in the field of computer vision and it is harder to extract lower body information from video due to occlusion \citep{Yasuda2014, Vascon2014}.
 
-Most research in backchannel behaviours is concentrated on two party conversations.
-In the case of three party conversation, the role of the side-participant was less investigated in terms of automated analysis and generation.
-Excluding \citep{Matsusaka2003, Fujie2009}.
+Different methods were recently proposed for automating F-formation analysis.
+\citeauthor{Lin2010} applied a hidden Markov model to model relationships between people in video surveillance context (\citeyear{Lin2010}).
+In addition to group detection, their algorithm can detect hierarchical interactions and group activity.
+\citeauthor{Hung2011} suggested an algorithm for F-formation detection based on dominant sets (\citeyear{Hung2011}).
+They collected and annotated social interaction video footage, and compared the algorithm results to F-formation analysis that was done manually.
+This dataset is still used in later studies to assess the performance of F-formation detection algorithms.
+Another approach was presented by \citeauthor{Cristani2011} using a voting strategy based on the Hough transform (\citeyear{Cristani2011}).
+A comparison of the previous two studies is provided by \cite{Setti2013}.
+Recently, state of the art algorithms combine probabilistic approaches to model the transactional segment and present an even better predictive power compared to previous studies \citep{Vascon2014, Setti2015}.
+\citeauthor{Vascon2014} used socio-psychological inspired model to represent biological constrains of social attention (\citeyear{Vascon2014}).
+A game-theoretic framework embedded these constrained to find the most probable F-formations for the data.
+Interestingly, they also integrated temporal information to reduce noise in the data and therefore get more robust predictions.
+Lastly, \citeauthor{Setti2015} developed a similar model using graph cuts algorithm (\citeyear{Setti2015}).
+
+It is important to note that with a few exceptions \citep{Mead2011, Vascon2014}, F-formation detection are bounded to single-frame contexts.
+TODO shortly explain the idea.
+
 \section{Active listening}
 
 In order to make a conversation natural and engaging, conversing parties use a wide array of social cues.
