@@ -38,7 +38,7 @@
 \affiliationlogo{CollegeShields/QMUL}
 
 %% You can redefine the submission notice [optional]:
-\submissionnotice{Advanced placement project final report\\Supervisor: Patrick Heleay\\Host: Inition}
+\submissionnotice{Advanced placement project final report\\Supervisor: Patrick Healey\\Host: Inition}
 
 %% PDF meta-info:
 \hypersetup{pdfsubject={TODO subject},pdfkeywords={TODO keywords}}
@@ -58,8 +58,10 @@
 \acknowledgements{%
   TODO acknowledgments...
 
-  Inition.
   Patrick Healey.
+  Inition.
+  Pedro.
+  Stuart.
 }
 
 
@@ -86,8 +88,8 @@ They can converse freely and move around, and if they want to start faking liste
 The interface is very minimal, just hit a button on the controller to start faking active listening behaviours towards your current conversation, and release it when you want to stop faking.
 Players even get an on screen notification when someone is speaking directly to them, so they can return to the conversation elegantly.
 
-More generally...
-VR in general, and Social VR as new platform to investigate behaviours.
+TODO More generally...
+Social VR as an environment to investigate behaviours.
 
 Chapter \ref{literature_review} review the relevant literature on the topics relevant for the current study.
 Chapter \ref{system_design_and_implementation} present the system developed for the study, including detailed motivation for each decision.
@@ -97,12 +99,12 @@ Chapter \ref{conclusions} conclude this report with TODO and suggestions for fut
 
 
 \chapter{Literature review}\label{literature_review}
-This project is based on multidisciplinary research.
-It merges ideas from telepresence and mediated communication, that explore ways to represent non verbal cues in new communication technologies.
-It depends on multiparty social interaction analysis, which take spatial cues into account in understanding who is talking with whom in a "cocktail party" situation.
-It explores new ways to generate active listening signals (or "backchannel behaviours", as they called in the scientific literature), such as head nods, in automated agents.
 
-TODO Reread Beilenson and add here.
+This project is based on multidisciplinary research.
+It merges ideas from telepresence and mediated communication, that explore the representation of non verbal cues in new communication technologies;
+depends on multiparty social interaction analysis, which uses spatial cues to understand who is talking with whom in dynamic social environments;
+make use of new ways to generate active listening cues, such as head nods, in automated agents;
+and influenced by research in asymmetric social communication in virtual environments.
 
 \section{Telepresence and mediated communication}
 
@@ -197,9 +199,9 @@ Their model uses the speaker talking state, speaker-listener eye contact, and, i
 A year later, \citeauthor{Kok2012} suggested some improvements to the same model to make it more robust to different speaker behaviours (\citeyear{Kok2012}).
 Note that there is almost no direct comparison between the different models, mainly due to the use of different datasets and different evaluation methods \citep{Morency2008}.
 
-Another interesting approach to elicit rapport with automated conversational agents is to use mimicry.
-\citeauthor{Bailenson2005} found that an automated agent is perceived as more persuasive if it's mimicking the speaker movement with four seconds lag (\citeyear{Bailenson2005}).
-TODO decide if it's worth mentioning. Use \cite{Gratch2007} as a baseline.
+%% TODO decide if it's worth mentioning. Use \cite{Gratch2007} as a baseline.
+%% Another interesting approach to elicit rapport with automated conversational agents is to use mimicry.
+%% \citeauthor{Bailenson2005} found that an automated agent is perceived as more persuasive if it's mimicking the speaker movement with four seconds lag (\citeyear{Bailenson2005}).
 
 Before ending this section, it is important to discuss the theoretical distinction between the different participants roles in a social interaction.
 Some of the roles are more obvious, like the role of the speaker in a conversation.
@@ -215,16 +217,16 @@ The roles are usually assigned to the participants, implicitly, by the speaker.
 
 Most of the current research in backchannels and active listening behaviour is concentrated on two party conversations.
 Therefore, side-participants active listening behaviours are much less investigated, understood, and modeled.
-TODO excluding \citep{Matsusaka2003, Fujie2009}.
+TODO present \citep{Matsusaka2003, Fujie2009}.
 
 \section{Asymmetric communication}
 
-\citep{Chou2016}, TODO cite Pat recommendation.
+\citep{Chou2016, Yee2007, Dominguez2014}.
 
 
 \chapter{System design and implementation}\label{system_design_and_implementation}
 
-Whereas many studies explore active listening behaviours using automated agents \citep{Bevacqua2008, Huang2011, Poppe2013}, the current research aim to investigate how humans can start to pretend to listen to someone, how they stop faking and return to the conversation, and what are the social implication for such behaviours.
+Whereas many studies explore active listening behaviours using embodied conversational agents (ECAs) \citep{Nishimura2007, Bevacqua2008, Gratch2007, Huang2011, Lee2006, Poppe2013}, the current research aim to investigate how humans can start to pretend to listen to someone, how they stop faking and return to the conversation, and what are the social implication for such behaviours.
 Recently, social research see high opportunities in exploring social behaviours using virtual environments \citep{Bailenson2008}.
 Following the same trend, and inspired by the possibilities to fake attention in ways that are impossible in face-to-face conversation, the current research is based on a social virtual environment system.
 
@@ -271,7 +273,7 @@ I choose to contextualize the environment as a cocktail party on the beach.
 This decision is mainly influenced by the intent to create a shared space where people can interact and dynamically form conversational groups.
 Note that cocktail parties are common examples for such environments in the scientific literature \citep{Setti2015}.
 
-TODO uncanny valley and avatar design.
+TODO uncanny valley and avatar design (explain the chest + belt with F-formation theory).
 
 Most of the 3D models were designed by me using \fnurl{blender}{https://www.blender.org/}.
 I choose blender mainly because it is an open source project, whereas most of the alternatives are non-free commercial software.
@@ -392,7 +394,7 @@ It is especially noticeable when other players approaches the place were the fak
 Without the ability to identify F-formations over time the faker won't know that an F-formation broke and that faking active listening is not needed any more.
 My implementation of the F-formation tracking over time is based on movement of the F-formations centres.
 After each time the GCFF algorithm is called, the new F-formations are compared to the ones that were computed in the previous call.
-If the distance of a new F-formation from an old one is bellow an arbitrary threshold, it will be considered as the same.
+If the distance of a new F-formation from an old one is bellow an arbitrary threshold, they are considered as the same.
 Otherwise, it is a new F-formation.
 Second, to be able to call the algorithm from the Main Game Server I wrote a minimal HTTP server in \fnurl{Python}{https://www.python.org/}, that uses \fnurl{Octave}{https://www.gnu.org/software/octave/} and \fnurl{oct2py}{https://github.com/blink1073/oct2py} to invoke the Matlab code.
 
@@ -481,7 +483,7 @@ Participants can either leave the conversation by walking away, or start faking 
 With that in mind, the system can be used to understand if faking active listening affect the level of conversations, and if so, how.
 Extending this idea further, it might be interesting to check how the possibilities exposed by the system affect the overall group dynamics in the cocktail party context.
 
-Another possibility is to add to the extensive research already done in the field of embodied conversational agents (ECAs) \citep{Nishimura2007, Bevacqua2008, Gratch2007, Huang2011, Lee2006}.
+Another possibility is to add to the extensive research already done in the field of ECAs \citep{Nishimura2007, Bevacqua2008, Gratch2007, Huang2011, Lee2006, Poppe2013}.
 Whereas all of these studies assess interaction with an automated agent, in the current study the interaction is with an avatar that switches between human control and automated control.
 This difference opens up ways to explore the properties of the transition between the two modes.
 More specifically, can the current methods that are used for ECAs can seamlessly replace humans, even for short periods of time?
@@ -489,6 +491,8 @@ And more important, what are the limitations of such methods and what can they t
 
 Due to the complexity of assessing the level of a conversation, this chapter present the evaluation of the automated active listening properties of the system, with emphasis on the properties of the transition into automated behaviour.
 Specifically, I evaluate the time it takes for participants to notice a faked behaviour, and how this measurement is affected by the size of the conversational group.
+
+TODO Hypothesis: the more participants in an interaction the easier to fake. What else?
 
 \section{Pilot}
 
@@ -518,7 +522,7 @@ They were presented with a scenario of an hot air balloon that is about to crash
 They had to come to an agreement, and choose between scarifying a doctor that is about to find a cure for cancer, a 7 months pregnant woman, or her husband, the balloon pilot.
 They were also instructed that there are tokens hidden in the virtual environment that they need to find and collect, whilst still progressing towards their shared goal of the balloon task.
 To do this they will have to fake participation in the conversation.
-Meanwhile, participants in the conversation can accuse others if they think that they are faking active listening.
+Meanwhile, participants in the conversation can accuse others if they think that they are faking active listening by pointing at them and pressing a button on the hand controller.
 If a participant is rightfully accused for faking he or she loses one token, but if the accusation is wrong, the accuser loses one token instead.
 This mechanism should motivate the participants to maximize the number of tokens they have by the end of the experiment.
 
