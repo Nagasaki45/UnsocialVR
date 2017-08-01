@@ -14,6 +14,10 @@
 \usepackage{courier}
 \usepackage{listings}
 \usepackage[margin=1cm]{caption}
+\usepackage[toc]{appendix}
+\usepackage{array}
+\newcolumntype{C}{>{\centering\arraybackslash}p{2cm}}
+\renewcommand{\labelitemii}{$\circ$}  % Set the nested itemize style to empty circle.
 \lstset{
   basicstyle=\footnotesize\ttfamily,
   numbers=left
@@ -538,7 +542,7 @@ Meanwhile, participants in the conversation can accuse others if they think that
 If a participant is rightfully accused for faking he or she loses one token, but if the accusation is wrong, the accuser loses one token instead.
 This mechanism should motivate the participants to maximize the number of tokens they have by the end of the experiment.
 
-Before and after the experience each participant filled a pre and post questionnaires (see appendices TODO and TODO respectively).
+Before and after the experience each participant filled a pre and post questionnaires (see appendices \ref{appendix:questionnaire:pre} and \ref{appendix:questionnaire:post} respectively).
 The experience itself was conducted in three network connected rooms with audio conference between them using Skype instead of the system voice chat.
 Ideally, each participate would be located in a separate room and will use the Vive headset microphone and a pair of headphones.
 This ideal solution, however, was not possible due to technical restrictions.
@@ -587,6 +591,72 @@ Auto swap positioning.
 \addcontentsline{toc}{chapter}{Bibliography}
 \bibliographystyle{plainnat}
 \bibliography{thesis}
+
+
+\begin{appendices}
+
+
+\chapter{Pre-experience questionnaire}\label{appendix:questionnaire:pre}
+
+\begin{itemize}
+
+\item What is your age? $\rule{1cm}{0.1mm}$
+
+\item What is your gender?
+
+\begin{itemize}
+  \item Male
+  \item Female
+  \item Other $\rule{4cm}{0.1mm}$
+  \item Prefer not to say
+\end{itemize}
+
+\item Have you experienced virtual reality with a head mounted display?
+
+\begin{itemize}
+  \item Never
+  \item Once
+  \item A few times
+  \item Regularly
+\end{itemize}
+
+\item Please rate how well you know each of the two other participants.
+
+\begin{tabular}{c|C C C C}
+  & Do not know him/her at all & & & Know him/her very well \\
+  Participant ID $\rule{1cm}{0.1mm}$ & 1 & 2 & 3 & 4 \\
+  Participant ID $\rule{1cm}{0.1mm}$ & 1 & 2 & 3 & 4 \\
+\end{tabular}
+
+\end{itemize}
+
+
+\chapter{Post-experience questionnaire}\label{appendix:questionnaire:post}
+
+\begin{itemize}
+
+\item What were your strategies to detect that someone is faking attention?
+
+  \rule{\linewidth}{0.1mm}
+  \rule{\linewidth}{0.1mm}
+  \rule{\linewidth}{0.1mm}
+  \rule{\linewidth}{0.1mm}
+  \rule{\linewidth}{0.1mm}
+  \rule{\linewidth}{0.1mm}
+
+\item Any other comment?
+
+  \rule{\linewidth}{0.1mm}
+  \rule{\linewidth}{0.1mm}
+  \rule{\linewidth}{0.1mm}
+  \rule{\linewidth}{0.1mm}
+  \rule{\linewidth}{0.1mm}
+  \rule{\linewidth}{0.1mm}
+
+\end{itemize}
+
+
+\end{appendices}
 
 
 \end{document}
