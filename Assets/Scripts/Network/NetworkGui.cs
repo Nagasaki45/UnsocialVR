@@ -11,7 +11,10 @@ using UnityEngine.SceneManagement;
 public class NetworkGui : MonoBehaviour
 {
 	public static string serversAddress = "127.0.0.1";
+	public static int participantId;
 	private NetworkManager manager;
+	private string participantIdString = "";
+
 
     void Awake()
     {
@@ -32,21 +35,28 @@ public class NetworkGui : MonoBehaviour
 
             if (noConnection)
             {
+				GUI.Label (new Rect (xpos, ypos, 100, 20), "Participant ID");
+				participantIdString = GUI.TextField(new Rect(xpos + 100, ypos, 100, 20), participantIdString);
+				ypos += spacing;
+
 				GUI.Label (new Rect (xpos, ypos, 100, 20), "Servers address");
 				serversAddress = GUI.TextField(new Rect(xpos + 100, ypos, 100, 20), serversAddress);
 				ypos += spacing;
 
-                if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Start Server"))
-                {
-                    manager.StartHost();
-                }
-                ypos += spacing;
+				if (int.TryParse(participantIdString, out participantId))
+				{
+					if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Start Server"))
+					{
+						manager.StartHost();
+					}
+					ypos += spacing;
 
-                if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Start Client"))
-                {
-                    manager.StartClient();
-                }
-                ypos += spacing;
+					if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Start Client"))
+					{
+						manager.StartClient();
+					}
+					ypos += spacing;
+				}
 
                 manager.networkAddress = serversAddress;
             }

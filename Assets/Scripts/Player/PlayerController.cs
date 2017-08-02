@@ -129,6 +129,22 @@ public class PlayerController : NetworkBehaviour {
 
 	private IEnumerator CommunicateForever()
 	{
+		// Let the server know my participantId.
+		while (true)
+		{
+			WWW request = new WWW(NetworkGui.serversAddress + ":8080/" + netId.Value + "/participant-id/" + NetworkGui.participantId);
+			yield return request;
+			if (string.IsNullOrEmpty (request.error))
+			{
+				break;
+			}
+			else
+			{
+				Debug.LogError ("Failed to GET to the server: " + request.error);
+			}
+		}
+
+
 		while (true)
 		{
 			WWW postRequest = BuildUpdateRequest (netId.Value);

@@ -38,6 +38,13 @@ defmodule UnsocialVR.HTTP do
     resp(conn, 200, "Gotcha!")
   end
 
+  get "/:player_id/participant-id/:participant_id" do
+    player_id = String.to_integer(player_id)
+    participant_id = String.to_integer(participant_id)
+    UnsocialVR.Participants.put(player_id, participant_id)
+    resp(conn, 200, "Gotcha!")
+  end
+
   match _ do
     resp(conn, 404, "oops")
   end
