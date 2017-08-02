@@ -45,6 +45,14 @@ defmodule UnsocialVR.HTTP do
     resp(conn, 200, "Gotcha!")
   end
 
+  get "/:player_id/collect-token" do
+    player_id
+    |> String.to_integer()
+    |> UnsocialVR.Experiment.log(:collect_token)
+
+    resp(conn, 200, "Gotcha!")
+  end
+
   match _ do
     resp(conn, 404, "oops")
   end

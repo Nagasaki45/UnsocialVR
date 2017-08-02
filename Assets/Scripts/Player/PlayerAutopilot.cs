@@ -11,6 +11,7 @@ public class PlayerAutopilot : NetworkBehaviour {
 	public GameObject autopilotMarkerPrefab;
 	public string controllerTag;
 
+	private TokenSpawner tokenSpawner;
 	private GameObject autopilotMarker;
 	private SteamVR_TrackedObject trackedObj;
 	private FlashScreen flashScreen;
@@ -27,8 +28,9 @@ public class PlayerAutopilot : NetworkBehaviour {
 
 	void Start()
 	{
+		tokenSpawner = GameObject.FindGameObjectWithTag ("TokenSpawner").GetComponent<TokenSpawner> ();
 		flashScreen = GameObject.FindGameObjectWithTag ("FlashScreen").GetComponent<FlashScreen> ();
-		if (isLocalPlayer && SceneManager.GetActiveScene ().name != "Simulator")
+		if (SceneManager.GetActiveScene ().name != "Simulator")
 		{
 			trackedObj = GameObject.FindGameObjectWithTag (controllerTag).GetComponent<SteamVR_TrackedObject> ();
 			cameraRig = GameObject.FindGameObjectWithTag ("CameraRig").GetComponent<Transform> ();
@@ -73,6 +75,9 @@ public class PlayerAutopilot : NetworkBehaviour {
 	{
 		Debug.Log("Player " + netId.Value + " starts autopilot!");
 
+		// Start spawning tokens
+		tokenSpawner.isSpawning = true;
+
 		// Spawn the marker
 		autopilotMarker = Instantiate(autopilotMarkerPrefab, transform.position, transform.rotation);
 
@@ -92,6 +97,9 @@ public class PlayerAutopilot : NetworkBehaviour {
 	private IEnumerator StopAutopilot()
 	{
 		Debug.Log("Player " + netId.Value + " stops autopilot!");
+
+		// Stop spawning tokens
+		tokenSpawner.isSpawning = false;
 
 		// Delete the marker
 		if (null != autopilotMarker)
