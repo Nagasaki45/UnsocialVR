@@ -73,7 +73,7 @@ public class PlayerAutopilot : NetworkBehaviour {
 
 	private IEnumerator StartAutopilot()
 	{
-		Debug.Log("Player " + netId.Value + " starts autopilot!");
+		Debug.Log("Local player starts autopilot!");
 
 		// Start spawning tokens
 		tokenSpawner.isSpawning = true;
@@ -96,7 +96,7 @@ public class PlayerAutopilot : NetworkBehaviour {
 
 	private IEnumerator StopAutopilot()
 	{
-		Debug.Log("Player " + netId.Value + " stops autopilot!");
+		Debug.Log("Local player stops autopilot!");
 
 		// Stop spawning tokens
 		tokenSpawner.isSpawning = false;
