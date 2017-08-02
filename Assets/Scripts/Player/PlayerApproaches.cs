@@ -4,14 +4,15 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
+
 public class PlayerApproaches : NetworkBehaviour {
 
 	public float rayDistance;
 	public Transform headTransform;
+	public PlayerController attention;
 
 	private PlayerTalking playerTalking;
 	private PlayerApproachedText playerApproachedText;
-
 	private Ray attentionRay;
 	private RaycastHit attentionHit;
 
@@ -40,16 +41,17 @@ public class PlayerApproaches : NetworkBehaviour {
 
 	private void LocalPlayerAttention()
 	{
-		int attention = -1;
+		PlayerController temp = null;
 		if (Physics.Raycast (attentionRay, out attentionHit, rayDistance))
 		{
 			PlayerController otherPlayer = attentionHit.collider.gameObject.GetComponent<PlayerController> ();
 			if (null != otherPlayer)
 			{
-				attention = (int) otherPlayer.netId.Value;
+				temp = otherPlayer;
 			}
 		}
-		PlayerController.localPlayerData.attention = attention;
+		attention = temp;
+		PlayerController.localPlayerData.attention = (null != attention) ? (int) attention.netId.Value : -1;
 	}
 
 

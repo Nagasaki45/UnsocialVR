@@ -14,6 +14,7 @@ public class PlayerController : NetworkBehaviour {
 	public Transform headTransform;
 	public Transform leftHandTransform;
 	public Transform rightHandTransform;
+	public string state;
 
 	// Local player settings
 	public float sleepBetweenRequests;
@@ -53,14 +54,15 @@ public class PlayerController : NetworkBehaviour {
 			remotePlayersData.TryGetValue (netId.Value, out received);
 			if (null != received)
 			{
-				if (received.state == "real")
+				state = received.state;
+				if (state == "real")
 				{
 					transform.position = Vector3.Lerp (transform.position, received.chestPosition, transformSmoothing);
 					transform.rotation = Quaternion.Lerp (transform.rotation, received.chestRotation, transformSmoothing);
 					playerTalking.isTalking = received.isTalking;
 					Scale (1f);
 				}
-				else if (received.state == "autopilot")
+				else if (state == "autopilot")
 				{
 					uint attention = (uint)received.attention;
 					if (attention > 0)
@@ -82,7 +84,7 @@ public class PlayerController : NetworkBehaviour {
 					playerTalking.isTalking = false;
 					Scale (1f);
 				}
-				else if (received.state == "ignored")
+				else if (state == "ignored")
 				{
 					playerTalking.isTalking = false;
 					transform.position = Vector3.Lerp (transform.position, received.chestPosition, transformSmoothing);
