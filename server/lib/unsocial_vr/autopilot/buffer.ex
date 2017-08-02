@@ -64,5 +64,5 @@ defmodule UnsocialVR.Autopilot.Buffer do
 
   def mod(x, y) when x > 0, do: rem(x, y)
   def mod(x, y) when x < 0, do: rem(x + y, y)
-  def mod(0, y), do: 0
+  def mod(0, _), do: 0
 end
