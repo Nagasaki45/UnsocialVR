@@ -5,7 +5,8 @@ defmodule UnsocialVR.HTTP do
 
   use Plug.Router
 
-  # plug Plug.Logger
+  require Logger
+
   plug :match
   plug :dispatch
 
@@ -28,33 +29,39 @@ defmodule UnsocialVR.HTTP do
     player_id
     |> String.to_integer()
     |> UnsocialVR.SceneAnalysis.start_autopilot()
-    resp(conn, 200, "Gotcha!")
+
+    logged_gotcha(conn)
   end
 
   get "/:player_id/stop_autopilot" do
     player_id
     |> String.to_integer()
     |> UnsocialVR.SceneAnalysis.stop_autopilot()
-    resp(conn, 200, "Gotcha!")
+
+    logged_gotcha(conn)
   end
 
+  # The next endpoints do nothing but logging the interaction.
+
   get "/:player_id/participant-id/:participant_id" do
-    player_id = String.to_integer(player_id)
-    participant_id = String.to_integer(participant_id)
-    UnsocialVR.Participants.put(player_id, participant_id)
-    resp(conn, 200, "Gotcha!")
+    logged_gotcha(conn)
   end
 
   get "/:player_id/collect-token" do
-    player_id
-    |> String.to_integer()
-    |> UnsocialVR.Experiment.log(:collect_token)
+    logged_gotcha(conn)
+  end
 
-    resp(conn, 200, "Gotcha!")
+  get "/:player_id/accuse/:other_player_id/:correctness" do
+    logged_gotcha(conn)
   end
 
   match _ do
     resp(conn, 404, "oops")
+  end
+
+  def logged_gotcha(conn) do
+    Logger.info([conn.method, ?\s, conn.request_path])
+    resp(conn, 200, "Gotcha!")
   end
 
 end

@@ -9,7 +9,6 @@ defmodule UnsocialVR.SceneAnalysis do
   alias UnsocialVR.Autopilot
   alias UnsocialVR.Backchannel
   alias UnsocialVR.Cache
-  alias UnsocialVR.Experiment
 
   @doc """
   Cache the player data, and if speaking, mark as the current speaker in the
@@ -73,7 +72,6 @@ defmodule UnsocialVR.SceneAnalysis do
   Player start autopilot behaviour in the current f-formation.
   """
   def start_autopilot(local_id) do
-    Experiment.log(local_id, :start_autopilot)
     my_f_formation_id = Cache.get_player_f_formation_id(local_id)
     Cache.put_autopilot(local_id, my_f_formation_id)
     Autopilot.set_recording(local_id, false)
@@ -83,7 +81,6 @@ defmodule UnsocialVR.SceneAnalysis do
   Stop faking social behaviour.
   """
   def stop_autopilot(local_id) do
-    Experiment.log(local_id, :stop_autopilot)
     Cache.delete_autopilot(local_id)
     Autopilot.set_recording(local_id, true)
   end
