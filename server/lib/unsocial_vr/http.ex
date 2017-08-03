@@ -44,20 +44,30 @@ defmodule UnsocialVR.HTTP do
   # The next endpoints do nothing but logging the interaction.
 
   get "/:player_id/participant-id/:participant_id" do
+    UnsocialVR.Scores.register_participant(player_id, participant_id)
     logged_gotcha(conn)
   end
 
   get "/:player_id/collect-token" do
+    UnsocialVR.Scores.increment(player_id)
     logged_gotcha(conn)
   end
 
-  get "/:player_id/accuse/:other_player_id/:correctness" do
+  get "/:player_id/accuse/:other_player_id/correct" do
+    UnsocialVR.Scores.increment(player_id)
+    logged_gotcha(conn)
+  end
+
+  get "/:player_id/accuse/:other_player_id/incorrect" do
+    UnsocialVR.Scores.decrement(player_id)
     logged_gotcha(conn)
   end
 
   get "/:player_id/talking/:status" do
     logged_gotcha(conn)
   end
+
+  forward "/scores", to: UnsocialVR.HTTP.Scores
 
   match _ do
     resp(conn, 404, "oops")

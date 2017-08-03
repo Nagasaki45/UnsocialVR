@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="refresh" content="5" >
+    <title>UnsocialVR participants scores</title>
+</head>
+
+<body>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Player ID</th>
+                <th>Participant ID</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+        <%= for {player_id, %{participant_id: participant_id, score: score}} <- scores do %>
+            <tr>
+                <td><%= player_id %></td>
+                <td><%= participant_id %></td>
+                <td><%= score %></td>
+            </tr>
+        <%= end %>
+        </tbody>
+    </table>
+
+    <form action="reset" method="POST">
+        <button type="submit">Reset scores</button>
+    </form>
+</body>
+</html>
