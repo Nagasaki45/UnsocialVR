@@ -18,6 +18,14 @@ defmodule UnsocialVR.Cache do
     ConCache.get(cache(), {:player_data, player_id})
   end
 
+  def update_existing_player(player_id, data) do
+    ConCache.update_existing(
+      cache(),
+      {:player_data, player_id},
+      fn _ -> {:ok, data} end
+    )
+  end
+
   def put_player(player_id, data) do
     ConCache.put(cache(), {:player_data, player_id}, data)
   end

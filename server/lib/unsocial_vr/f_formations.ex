@@ -5,28 +5,46 @@ defmodule UnsocialVR.FFormations do
 
   use GenServer
 
+  require Logger
+
+  # Interface
+
   def start_link() do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
+  @doc """
+  Request an f-formations analysis and wait for completion.
+  """
+  def force_analysis() do
+    GenServer.call(__MODULE__, :force_analysis)
+  end
+
+  # Callbacks
+
   def init(state) do
-    schedule_analysis()
+    schedule_periodic_analysis()
     {:ok, state}
   end
 
-  @analysis_period :timer.seconds(1)
-
-  def schedule_analysis() do
-    Process.send_after(__MODULE__, :analyze, @analysis_period)
+  def handle_call(:force_analysis, _from, state) do
+    Logger.debug("Forced f-formation analysis")
+    analyze()
+    {:reply, :ok, state}
   end
 
-  def handle_info(:analyze, state) do
-    UnsocialVR.Cache.get_players()
-    |> analyze()
-    |> Enum.each(fn {id, ff} -> UnsocialVR.Cache.put_f_formation(id, ff) end)
-
-    schedule_analysis()
+  def handle_info(:periodic_analysis, state) do
+    analyze()
+    schedule_periodic_analysis()
     {:noreply, state}
+  end
+
+  # Internals
+
+  @analysis_period :timer.seconds(1)
+
+  def schedule_periodic_analysis() do
+    Process.send_after(__MODULE__, :periodic_analysis, @analysis_period)
   end
 
   @gcff_server "http://127.0.0.1:5000/continuous"
@@ -34,6 +52,7 @@ defmodule UnsocialVR.FFormations do
   @doc """
   Analyze f-formations using the GCFF server.
   """
+  def analyze(), do: analyze(UnsocialVR.Cache.get_players())
   def analyze([]), do: []
   def analyze(all_players) do
     all_players
@@ -42,7 +61,8 @@ defmodule UnsocialVR.FFormations do
     |> Enum.join("\n")
     |> gcff()
     |> Poison.decode!()
-    |> Enum.map(fn map -> Map.pop(map, "id") end)
+    |> Stream.map(fn map -> Map.pop(map, "id") end)
+    |> Enum.each(fn {id, ff} -> UnsocialVR.Cache.put_f_formation(id, ff) end)
   end
 
   @doc """

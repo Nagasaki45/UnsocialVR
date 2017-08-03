@@ -9,13 +9,20 @@ defmodule UnsocialVR.SceneAnalysis do
   alias UnsocialVR.Autopilot
   alias UnsocialVR.Backchannel
   alias UnsocialVR.Cache
+  alias UnsocialVR.FFormations
 
   @doc """
-  Cache the player data, and if speaking, mark as the current speaker in the
-  f-formation.
+  Cache the player data.
+  If it's a new player force an f-formation analysis (blocking).
+  If speaking, mark as the current speaker in the f-formation.
   """
   def cache_player(local_id, player_data) do
-    Cache.put_player(local_id, player_data)
+    case Cache.update_existing_player(local_id, player_data) do
+      {:error, :not_existing} ->
+        Cache.put_player(local_id, player_data)
+        FFormations.force_analysis()
+      :ok -> :ok
+    end
     transforms = get_transforms(player_data)
     Autopilot.record(local_id, transforms)
     if player_data["isTalking"] do
