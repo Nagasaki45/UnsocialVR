@@ -55,6 +55,10 @@ defmodule UnsocialVR.HTTP do
     logged_gotcha(conn)
   end
 
+  get "/:player_id/talking/:status" do
+    logged_gotcha(conn)
+  end
+
   match _ do
     resp(conn, 404, "oops")
   end

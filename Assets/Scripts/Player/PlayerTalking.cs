@@ -16,6 +16,7 @@ public class PlayerTalking : NetworkBehaviour {
 	public bool isTalking;
 	public float talkingAmplitudeThreshold;
 
+	private bool previousIsTalking = false;
 	private float epsilon = 0.01f;
 	private DissonanceComms comms;
 	private float target;
@@ -51,6 +52,8 @@ public class PlayerTalking : NetworkBehaviour {
 					}
 				}
 			}
+
+			SendStartStopTalkingToServer ();
 		}
 
 		if (isTalking)
@@ -70,11 +73,30 @@ public class PlayerTalking : NetworkBehaviour {
 		}
 		Vector3 targetVector = new Vector3 (mouth.localScale.x, target, mouth.localScale.z);
 		mouth.localScale = Vector3.Lerp (mouth.localScale, targetVector, speed * Time.deltaTime);
+
+		previousIsTalking = isTalking;
 	}
 
 
 	private bool IsTalking(VoicePlayerState state)
 	{
 		return state.IsSpeaking && (state.Amplitude > talkingAmplitudeThreshold);
+	}
+
+
+	private void SendStartStopTalkingToServer()
+	{
+		if (isTalking != previousIsTalking)
+		{
+			string msg = isTalking ? "start" : "stop";
+			StartCoroutine (SendTalkingToServer (msg));
+		}
+	}
+
+
+	private IEnumerator SendTalkingToServer(string msg)
+	{
+		Debug.Log("Local player " + msg + "s talking!");
+		yield return new WWW(NetworkGui.serversAddress + ":8080/" + netId.Value + "/talking/" + msg);
 	}
 }
