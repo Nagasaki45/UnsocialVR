@@ -90,7 +90,7 @@ public class PlayerAutopilot : NetworkBehaviour {
 		autopilotYRotation = transform.rotation.eulerAngles.y;
 
 		// Send the message to the server
-		yield return new WWW(NetworkGui.serversAddress + ":8080/" + netId.Value + "/start_autopilot");
+		yield return new WWW(NetworkGui.serversAddress + ":8080/" + netId.Value + "/autopilot/start");
 	}
 
 
@@ -135,7 +135,7 @@ public class PlayerAutopilot : NetworkBehaviour {
 		yield return PlayerController.BuildUpdateRequest(netId.Value);
 
 		// Send the message to the server that I'm not autopiloting anymore
-		yield return new WWW(NetworkGui.serversAddress + ":8080/" + netId.Value + "/stop_autopilot");
+		yield return new WWW(NetworkGui.serversAddress + ":8080/" + netId.Value + "/autopilot/stop");
 	}
 
 }

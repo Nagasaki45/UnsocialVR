@@ -25,7 +25,7 @@ defmodule UnsocialVR.HTTP do
     resp(conn, 200, scene)
   end
 
-  get "/:player_id/start_autopilot" do
+  get "/:player_id/autopilot/start" do
     player_id
     |> String.to_integer()
     |> UnsocialVR.SceneAnalysis.start_autopilot()
@@ -33,7 +33,7 @@ defmodule UnsocialVR.HTTP do
     logged_gotcha(conn)
   end
 
-  get "/:player_id/stop_autopilot" do
+  get "/:player_id/autopilot/stop" do
     player_id
     |> String.to_integer()
     |> UnsocialVR.SceneAnalysis.stop_autopilot()
