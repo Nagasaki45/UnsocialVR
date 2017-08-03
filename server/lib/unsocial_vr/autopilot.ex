@@ -10,9 +10,6 @@ defmodule UnsocialVR.Autopilot do
   alias UnsocialVR.Autopilot.Buffer
   require Logger
 
-  @recording_period 100  # millis
-  @buffer_size 20
-
   # INTERFACE
 
   @doc """
@@ -77,8 +74,9 @@ defmodule UnsocialVR.Autopilot do
   end
 
   defp start_link(id) do
+    buffer_size = Application.get_env(:unsocial_vr, :autopilot_buffer_size)
     state = %{
-      buffer: Buffer.new(@buffer_size),
+      buffer: Buffer.new(buffer_size),
       is_recording: true,
     }
     GenServer.start_link(__MODULE__, state, name: via_tuple(id))
@@ -93,6 +91,10 @@ defmodule UnsocialVR.Autopilot do
   end
 
   defp schedule_buffer_rotation() do
-    Process.send_after(self(), :rotate_buffer, @recording_period)
+    Process.send_after(
+      self(),
+      :rotate_buffer,
+      Application.get_env(:unsocial_vr, :autopilot_recording_period)
+    )
   end
 end

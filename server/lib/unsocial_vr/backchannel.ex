@@ -49,8 +49,6 @@ defmodule UnsocialVR.Backchannel do
     Process.send(__MODULE__, :predict, [])
   end
 
-  @backchannel_server "http://127.0.0.1:5001/"
-
   @doc """
   Call the server to generate prediction.
   """
@@ -58,7 +56,8 @@ defmodule UnsocialVR.Backchannel do
     data = %{listeners: data, type: "dekok"}
     body = Poison.encode!(data)
     headers = ["Content-Type": "application/json"]
-    resp = HTTPotion.post(@backchannel_server, body: body, headers: headers)
+    url = Application.get_env(:unsocial_vr, :backchannel_server)
+    resp = HTTPotion.post(url, body: body, headers: headers)
     %{status_code: 200, body: body} = resp
     Poison.decode!(body)
   end

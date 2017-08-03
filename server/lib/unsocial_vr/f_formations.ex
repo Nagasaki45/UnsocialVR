@@ -41,13 +41,13 @@ defmodule UnsocialVR.FFormations do
 
   # Internals
 
-  @analysis_period :timer.seconds(1)
-
   def schedule_periodic_analysis() do
-    Process.send_after(__MODULE__, :periodic_analysis, @analysis_period)
+    Process.send_after(
+      __MODULE__,
+      :periodic_analysis,
+      Application.get_env(:unsocial_vr, :f_formation_analysis_period)
+    )
   end
-
-  @gcff_server "http://127.0.0.1:5000/continuous"
 
   @doc """
   Analyze f-formations using the GCFF server.
@@ -104,7 +104,8 @@ defmodule UnsocialVR.FFormations do
   """
   def gcff(features) do
     opts = [body: features, headers: ["Content-Type": "text/csv"]]
-    %{status_code: 200, body: body} = HTTPotion.post(@gcff_server, opts)
+    url = Application.get_env(:unsocial_vr, :gcff_server)
+    %{status_code: 200, body: body} = HTTPotion.post(url, opts)
     body
   end
 

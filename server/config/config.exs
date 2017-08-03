@@ -21,6 +21,17 @@ use Mix.Config
 #     config :logger, level: :info
 #
 
+# UnsocialVR
+
+config :unsocial_vr,
+  autopilot_recording_period: 100,  # millis
+  autopilot_buffer_size: 20,
+  backchannel_server: "http://127.0.0.1:5001",
+  gcff_server: "http://127.0.0.1:5000/continuous",
+  f_formation_analysis_period: :timer.seconds(1)
+
+# 3rd-party
+
 config :logger,
   backends: [
     :console,
