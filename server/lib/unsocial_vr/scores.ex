@@ -19,8 +19,12 @@ defmodule UnsocialVR.Scores do
     GenServer.call(__MODULE__, :scores)
   end
 
-  def reset() do
-    GenServer.cast(__MODULE__, :reset)
+  def reset_scores() do
+    GenServer.cast(__MODULE__, :reset_scores)
+  end
+
+  def reset_hard() do
+    GenServer.cast(__MODULE__, :reset_hard)
   end
 
   def register_participant(player_id, participant_id) do
@@ -42,7 +46,11 @@ defmodule UnsocialVR.Scores do
     {:noreply, scores}
   end
 
-  def handle_cast(:reset, _old_data) do
+  def handle_cast(:reset_scores, scores) do
+    {:noreply, reset_scores(scores)}
+  end
+
+  def handle_cast(:reset_hard, _old_data) do
     {:noreply, %{}}
   end
 
@@ -61,6 +69,12 @@ defmodule UnsocialVR.Scores do
   def modify_score(%{score: current} = data, change) do
     new = if current + change < 0, do: 0, else: current + change
     %{data | score: new}
+  end
+
+  def reset_scores(scores) do
+    scores
+    |> Enum.map(fn {id, data} -> {id, %{data | score: 0}} end)
+    |> Enum.into(Map.new())
   end
 
 end

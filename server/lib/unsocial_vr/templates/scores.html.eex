@@ -25,8 +25,12 @@
         </tbody>
     </table>
 
-    <form action="/scores/reset" method="POST">
+    <form action="/scores/reset-scores" method="POST">
         <button type="submit">Reset scores</button>
+    </form>
+
+    <form action="/scores/reset-hard" method="POST">
+        <button type="submit">Hard reset!</button>
     </form>
 </body>
 </html>
