@@ -6,6 +6,7 @@ defmodule UnsocialVR.HTTP.Scores do
   use Plug.Router
 
   require EEx
+  require Logger
 
   EEx.function_from_file(
     :def,
@@ -14,7 +15,6 @@ defmodule UnsocialVR.HTTP.Scores do
     [:scores]
   )
 
-  plug Plug.Logger, log: :debug
   plug :match
   plug :dispatch
 
@@ -25,6 +25,7 @@ defmodule UnsocialVR.HTTP.Scores do
   end
 
   post "/reset" do
+    Logger.info([conn.method, ?\s, conn.request_path])
     UnsocialVR.Scores.reset()
 
     # Redirect to "/scores"
