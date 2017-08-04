@@ -30,7 +30,6 @@ defmodule UnsocialVR.Mixfile do
       {:gproc, "~> 0.6.1"},
       {:logger_file_backend, "~> 0.0.10"},
       {:credo, "~> 0.8.3", only: [:dev, :test], runtime: false},
-      {:exsync, "~> 0.1.4", only: :dev},
     ]
   end
 

@@ -4,8 +4,6 @@
   "cowlib": {:hex, :cowlib, "1.0.2", "9d769a1d062c9c3ac753096f868ca121e2730b9a377de23dec0f7e08b1df84ee", [:make], [], "hexpm"},
   "credo": {:hex, :credo, "0.8.3", "efe6e9078de64cefdd25d8df7a97292e29e63f42a8988990340eaf1f40d93224", [:mix], [{:bunt, "~> 0.2.0", [hex: :bunt, repo: "hexpm", optional: false]}], "hexpm"},
   "exactor": {:hex, :exactor, "2.2.3", "a6972f43bb6160afeb73e1d8ab45ba604cd0ac8b5244c557093f6e92ce582786", [:mix], [], "hexpm"},
-  "exfswatch": {:hex, :exfswatch, "0.4.2", "d88a63b5c2f8f040230d22010588ff73286fd1aef32564115afa3051eaa4391d", [:mix], [], "hexpm"},
-  "exsync": {:hex, :exsync, "0.1.4", "f5800f5c3137271bf7c0f5ca623919434f91798e1be1b9d50fc2c59168d44f17", [:mix], [{:exfswatch, "~> 0.4", [hex: :exfswatch, repo: "hexpm", optional: false]}], "hexpm"},
   "gproc": {:hex, :gproc, "0.6.1", "4579663e5677970758a05d8f65d13c3e9814ec707ad51d8dcef7294eda1a730c", [:rebar3], [], "hexpm"},
   "httpotion": {:hex, :httpotion, "3.0.2", "525b9bfeb592c914a61a8ee31fdde3871e1861dfe805f8ee5f711f9f11a93483", [:mix], [{:ibrowse, "~> 4.2", [hex: :ibrowse, repo: "hexpm", optional: false]}], "hexpm"},
   "ibrowse": {:hex, :ibrowse, "4.4.0", "2d923325efe0d2cb09b9c6a047b2835a5eda69d8a47ed6ff8bc03628b764e991", [:rebar3], [], "hexpm"},
