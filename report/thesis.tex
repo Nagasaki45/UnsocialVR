@@ -16,7 +16,7 @@
 \usepackage[margin=1cm]{caption}
 \usepackage[toc]{appendix}
 \usepackage{array}
-\newcolumntype{C}{>{\centering\arraybackslash}p{2cm}}
+\newcolumntype{C}{>{\centering\arraybackslash}p{1.5cm}}
 \renewcommand{\labelitemii}{$\circ$}  % Set the nested itemize style to empty circle.
 \lstset{
   basicstyle=\footnotesize\ttfamily,
@@ -604,6 +604,8 @@ Auto swap positioning.
 
 \begin{itemize}
 
+\item Participant ID: $\rule{1cm}{0.1mm}$
+
 \item What is your age? $\rule{1cm}{0.1mm}$
 
 \item What is your gender?
@@ -624,12 +626,21 @@ Auto swap positioning.
   \item Regularly
 \end{itemize}
 
+\item Have you experienced virtual reality the HTC Vive?
+
+\begin{itemize}
+  \item Never
+  \item Once
+  \item A few times
+  \item Regularly
+\end{itemize}
+
 \item Please rate how well you know each of the two other participants.
 
-\begin{tabular}{c|C C C C}
-  & Do not know him/her at all & & & Know him/her very well \\
-  Participant ID $\rule{1cm}{0.1mm}$ & 1 & 2 & 3 & 4 \\
-  Participant ID $\rule{1cm}{0.1mm}$ & 1 & 2 & 3 & 4 \\
+\begin{tabular}{c|C C C C C}
+  & Do not know him/her at all & & & & Know him/her very well \\
+  Participant ID $\rule{1cm}{0.1mm}$ & 1 & 2 & 3 & 4 & 5\\
+  Participant ID $\rule{1cm}{0.1mm}$ & 1 & 2 & 3 & 4 & 5\\
 \end{tabular}
 
 \end{itemize}
@@ -638,6 +649,15 @@ Auto swap positioning.
 \chapter{Post-experience questionnaire}\label{appendix:questionnaire:post}
 
 \begin{itemize}
+
+\item What were your strategies to maximize your score?
+
+  \rule{\linewidth}{0.1mm}
+  \rule{\linewidth}{0.1mm}
+  \rule{\linewidth}{0.1mm}
+  \rule{\linewidth}{0.1mm}
+  \rule{\linewidth}{0.1mm}
+  \rule{\linewidth}{0.1mm}
 
 \item What were your strategies to detect that someone is faking attention?
 
