@@ -55,16 +55,9 @@ public class PlayerController : NetworkBehaviour {
 			if (null != received)
 			{
 				state = received.state;
-				if (state == "real")
+				if (state == "autopilot")
 				{
-					transform.position = Vector3.Lerp (transform.position, received.chestPosition, transformSmoothing);
-					transform.rotation = Quaternion.Lerp (transform.rotation, received.chestRotation, transformSmoothing);
-					playerTalking.isTalking = received.isTalking;
-					Scale (1f);
-				}
-				else if (state == "autopilot")
-				{
-					uint attention = (uint)received.attention;
+					uint attention = (uint) received.attention;
 					if (attention > 0)
 					{
 						Vector3 target;
@@ -82,24 +75,16 @@ public class PlayerController : NetworkBehaviour {
 						transform.rotation = Quaternion.Slerp (transform.rotation, newDir, Time.deltaTime * slowSmoothing);
 					}
 					playerTalking.isTalking = false;
-					Scale (1f);
 				}
-				else if (state == "ignored")
+				else
 				{
-					playerTalking.isTalking = false;
 					transform.position = Vector3.Lerp (transform.position, received.chestPosition, transformSmoothing);
 					transform.rotation = Quaternion.Lerp (transform.rotation, received.chestRotation, transformSmoothing);
-					Scale (ignoredScale);
+					playerTalking.isTalking = received.isTalking;
 				}
 				UpdateRemotePlayerTransforms (received);
 			}
 		}
-	}
-
-
-	private void Scale(float target)
-	{
-		transform.localScale = Vector3.Lerp(transform.localScale, new Vector3 (target, target, target), Time.deltaTime * slowSmoothing);
 	}
 
 

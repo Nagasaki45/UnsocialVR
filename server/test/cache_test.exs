@@ -17,13 +17,10 @@ defmodule CacheTest do
 
 
   test "add, get, and remove autopilots" do
-    assert get_autopilots(1) == []
-    assert get_autopilots(2) == []
-    put_autopilot(3, 1)  # player 3 is faking towared f-formation 2
-    assert get_autopilots(1) == [3]
-    assert get_autopilots(2) == []
+    assert get_autopilots() == []
+    put_autopilot(3)  # player 3 is faking
+    assert get_autopilots() == [3]
     delete_autopilot(3)
-    assert get_autopilots(1) == []
-    assert get_autopilots(2) == []
+    assert get_autopilots() == []
   end
 end

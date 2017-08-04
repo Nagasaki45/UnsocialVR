@@ -18,52 +18,28 @@ defmodule UnsocialVR.Cache do
     ConCache.get(cache(), {:player_data, player_id})
   end
 
-  def update_existing_player(player_id, data) do
-    ConCache.update_existing(
-      cache(),
-      {:player_data, player_id},
-      fn _ -> {:ok, data} end
-    )
-  end
-
   def put_player(player_id, data) do
     ConCache.put(cache(), {:player_data, player_id}, data)
   end
 
-  def get_player_f_formation_id(player_id) do
-    ConCache.get(cache(), {:player_f_formation_id, player_id})
+  def get_speaker_id() do
+    ConCache.get(cache(), :speaker)
   end
 
-  def get_f_formation(id) do
-    ConCache.get(cache(), {:f_formation, id})
+  def put_speaker_id(player_id) do
+    ConCache.put(cache(), :speaker, player_id)
   end
 
-  def put_f_formation(id, f_formation) do
-    ConCache.put(cache(), {:f_formation, id}, f_formation)
-    # Set the f-formation of each player
-    Enum.each(f_formation["members"], fn player_id ->
-      ConCache.put(cache(), {:player_f_formation_id, player_id}, id)
-    end)
-  end
-
-  def get_f_formation_speaker_id(f_formation_id) do
-    ConCache.get(cache(), {:f_formation_speaker, f_formation_id})
-  end
-
-  def put_f_formation_speaker_id(f_formation_id, player_id) do
-    ConCache.put(cache(), {:f_formation_speaker, f_formation_id}, player_id)
-  end
-
-  def get_autopilots(f_formation_id) do
+  def get_autopilots() do
     cache()
     |> ConCache.ets()
-    |> :ets.match({{:autopilot, :"$1"}, f_formation_id})
+    |> :ets.match({{:autopilot, :"$1"}, true})
     |> Enum.map(fn [player_id] -> player_id end)
     |> _touch()  # Necessary for keeping the data in cache
   end
 
-  def put_autopilot(player_id, f_formation_id) do
-    ConCache.put(cache(), {:autopilot, player_id}, f_formation_id)
+  def put_autopilot(player_id) do
+    ConCache.put(cache(), {:autopilot, player_id}, true)
   end
 
   def delete_autopilot(player_id) do

@@ -18,17 +18,9 @@ You will need:
   - Dissonance Voice Chat 1.1.0. You will need to buy it from the assets store.
 - HTC Vive
 - elixir 1.4
-- Whatever required to run the GCFF (Graph-Cut for F-formations) server. See `GCFF/README.md`.
 - Whatever required to run the backchannel server (predicting head nods). See `backchannel/README.md`.
 
 ### Servers
-
-Run the GCFF server with appropriate values for `stride`, `mdl`, and `max_change_per_second`. It seems that these values work fine:
-
-```bash
-cd GCFF
-python server.py 1 10 3
-```
 
 A separate python server is responsible for predicting listener backchannels (head nods), according to speaker behaviours (is the speaker talking, etc.).
 Run it with:
