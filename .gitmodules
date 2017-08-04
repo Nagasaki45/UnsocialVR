@@ -1,6 +1,3 @@
-[submodule "GCFF"]
-	path = GCFF
-	url = https://github.com/Nagasaki45/GCFF.git
 [submodule "backchannel"]
 	path = backchannel
 	url = https://github.com/Nagasaki45/backchannel.git
