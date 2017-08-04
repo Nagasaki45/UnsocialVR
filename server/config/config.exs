@@ -28,7 +28,8 @@ config :unsocial_vr,
   autopilot_buffer_size: 20,
   backchannel_server: "http://127.0.0.1:5001",
   gcff_server: "http://127.0.0.1:5000/continuous",
-  f_formation_analysis_period: :timer.seconds(1)
+  f_formation_analysis_period: :timer.seconds(1),
+  token_score: 5
 
 # 3rd-party
 

@@ -20,20 +20,19 @@ defmodule ScoresTest do
 
 
   test "increment new id" do
-    Scores.increment(:moshe)
+    Scores.add(:moshe, 1)
     assert Scores.scores().moshe.score == 1
   end
 
   test "decrement can't go negative" do
-    Scores.increment(:moshe)
-    Scores.decrement(:moshe)
-    Scores.decrement(:moshe)
+    Scores.add(:moshe, 1)
+    Scores.add(:moshe, -2)
     assert Scores.scores().moshe.score == 0
   end
 
   test "reset" do
-    Scores.increment(:moshe)
-    Scores.increment(:yossi)
+    Scores.add(:moshe, 1)
+    Scores.add(:yossi, 1)
     Scores.reset()
     assert Scores.scores() == %{}
   end
@@ -42,7 +41,7 @@ defmodule ScoresTest do
     Scores.register_participant(:moshe, 3)
     assert Scores.scores().moshe.participant_id == 3
     assert Scores.scores().moshe.score == 0
-    Scores.increment(:moshe)
+    Scores.add(:moshe, 1)
     assert Scores.scores().moshe.score == 1
   end
 

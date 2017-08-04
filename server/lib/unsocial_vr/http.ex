@@ -49,17 +49,20 @@ defmodule UnsocialVR.HTTP do
   end
 
   get "/:player_id/collect-token" do
-    UnsocialVR.Scores.increment(player_id)
+    value = Application.get_env(:unsocial_vr, :token_score)
+    UnsocialVR.Scores.add(player_id, value)
     logged_gotcha(conn)
   end
 
   get "/:player_id/accuse/:other_player_id/correct" do
-    UnsocialVR.Scores.increment(player_id)
+    UnsocialVR.Scores.add(player_id, 1)
+    UnsocialVR.Scores.add(other_player_id, -1)
     logged_gotcha(conn)
   end
 
   get "/:player_id/accuse/:other_player_id/incorrect" do
-    UnsocialVR.Scores.decrement(player_id)
+    UnsocialVR.Scores.add(player_id, -1)
+    UnsocialVR.Scores.add(other_player_id, 1)
     logged_gotcha(conn)
   end
 

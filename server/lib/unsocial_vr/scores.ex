@@ -11,12 +11,8 @@ defmodule UnsocialVR.Scores do
     GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
   end
 
-  def increment(player_id) do
-    GenServer.cast(__MODULE__, {:add, player_id, 1})
-  end
-
-  def decrement(player_id) do
-    GenServer.cast(__MODULE__, {:add, player_id, -1})
+  def add(player_id, ammount) do
+    GenServer.cast(__MODULE__, {:add, player_id, ammount})
   end
 
   def scores() do
