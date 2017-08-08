@@ -78,6 +78,9 @@ public class PlayerAutopilot : NetworkBehaviour {
 		// Start spawning tokens
 		tokenSpawner.isSpawning = true;
 
+		// Disable my collider (so it won't interefere with attention)
+		GetComponent<CapsuleCollider>().enabled = false;
+
 		// Spawn the marker
 		autopilotMarker = Instantiate(autopilotMarkerPrefab, transform.position, transform.rotation);
 
@@ -97,6 +100,9 @@ public class PlayerAutopilot : NetworkBehaviour {
 	private IEnumerator StopAutopilot()
 	{
 		Debug.Log("Local player stops autopilot!");
+
+		// Re-enable my collider
+		GetComponent<CapsuleCollider>().enabled = true;
 
 		// Stop spawning tokens
 		tokenSpawner.isSpawning = false;
