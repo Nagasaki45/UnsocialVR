@@ -16,6 +16,7 @@
 \usepackage[margin=1cm]{caption}
 \usepackage[toc]{appendix}
 \usepackage{array}
+\usepackage{float}
 \newcolumntype{C}{>{\centering\arraybackslash}p{1.5cm}}
 \renewcommand{\labelitemii}{$\circ$}  % Set the nested itemize style to empty circle.
 \lstset{
@@ -680,6 +681,15 @@ Auto swap positioning.
   \rule{\linewidth}{0.1mm}
 
 \end{itemize}
+
+
+\chapter{Interface}\label{appendix:interface}
+
+\begin{figure}[H]
+  \includegraphics[width=\textwidth]{../graphics/interface_manual.pdf}
+  \caption{Based on the HTC Vive controllers, the interface allows the players to teleport, fake active listening behaviours, and accuse other players for faking.}
+  \label{fig:interface}
+\end{figure}
 
 
 \end{appendices}
