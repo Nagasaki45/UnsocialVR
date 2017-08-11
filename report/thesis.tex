@@ -16,6 +16,7 @@
 \usepackage[margin=1cm]{caption}
 \usepackage[toc]{appendix}
 \usepackage{array}
+\usepackage{float}
 \newcolumntype{C}{>{\centering\arraybackslash}p{1.5cm}}
 \renewcommand{\labelitemii}{$\circ$}  % Set the nested itemize style to empty circle.
 \lstset{
@@ -626,7 +627,7 @@ Auto swap positioning.
   \item Regularly
 \end{itemize}
 
-\item Have you experienced virtual reality the HTC Vive?
+\item Have you experienced virtual reality with the HTC Vive?
 
 \begin{itemize}
   \item Never
@@ -649,6 +650,8 @@ Auto swap positioning.
 \chapter{Post-experience questionnaire}\label{appendix:questionnaire:post}
 
 \begin{itemize}
+
+\item Participant ID: $\rule{1cm}{0.1mm}$
 
 \item What were your strategies to maximize your score?
 
@@ -678,6 +681,15 @@ Auto swap positioning.
   \rule{\linewidth}{0.1mm}
 
 \end{itemize}
+
+
+\chapter{Interface}\label{appendix:interface}
+
+\begin{figure}[H]
+  \includegraphics[width=\textwidth]{../graphics/interface_manual.pdf}
+  \caption{Based on the HTC Vive controllers, the interface allows the players to teleport, fake active listening behaviours, and accuse other players for faking.}
+  \label{fig:interface}
+\end{figure}
 
 
 \end{appendices}
