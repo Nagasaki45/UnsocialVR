@@ -12,7 +12,7 @@ defmodule ScoresTest do
 
   setup do
     on_exit fn ->
-      Scores.reset()
+      Scores.reset_hard()
     end
 
     :ok
@@ -30,10 +30,10 @@ defmodule ScoresTest do
     assert Scores.scores().moshe.score == 0
   end
 
-  test "reset" do
+  test "reset hard" do
     Scores.add(:moshe, 1)
     Scores.add(:yossi, 1)
-    Scores.reset()
+    Scores.reset_hard()
     assert Scores.scores() == %{}
   end
 
