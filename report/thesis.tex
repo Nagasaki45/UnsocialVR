@@ -718,6 +718,30 @@ The participant detection performance was, however, lower than average, suggesti
 
 \section{Discussion}
 
+The evaluation of the system provide some relatively surprising results.
+The most prominent of them are the better than chance but nevertheless low accuracy in detecting faked active listening behaviours, and the high probability to start and finish faking without being noticed.
+This suggests that the underlying mechanisms that automate the active listening behaviour usually manage to trick the players, and therefore are viable and useful for ECAs creation.
+Furthermore, two of the underlying mechanisms are unique for the current system.
+First, and as previously discussed, there is almost no research in ECAs in multiparty social contexts.
+Always rotating towards the speaker was chosen as the simplest approximation for the automated agent attention.
+As the analysis of the participants strategies shows, participants didn't manage to use this as a clue for detecting faked behaviour.
+Therefore, I would argue that this mechanism supports the automated behaviour and without a more sophisticated attention mechanism it is essential for the faked behaviour credibility.
+Second, no research in ECAs deals with transitioning between human and automated controlled behaviours.
+The looped recorded baseline was mainly used to support this transition.
+From the results, it seems that some of the participants managed to detect the loop and use that to differentiate between real and faked behaviour.
+Still, the generally low detection accuracy shows that the recorded baseline mechanism is not too obvious and easy to detect.
+
+Another surprising result is related to the backchannel behaviours implemented in this project.
+They used only a small set of features and applied a single, simple, animation to the avatar.
+Still, no participant managed to detect the faked behaviour by noticing the automated head nods.
+
+Lastly, the results demonstrate clear positive correlation between participants familiarity and detection accuracy.
+It might be interesting to explore further what cues helped familiar participants to improve their detection of faked behaviours.
+I can only assume that participants manage to notice a decreased attention to the conversation indicated by verbal cues (e.g. ``er'' or ``ehh'' utterances).
+The verbal cues from known participants might be more expected.
+Similar reasoning might be applied to the body language with relation to the baseline recorded behaviour.
+A future study might shed more light on this phenomena.
+
 
 \chapter{General discussion}\label{general_discussion}
 
