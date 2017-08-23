@@ -581,14 +581,35 @@ Participants in the hot air balloon task reached a consensus by 10:41 to 14:49 m
 During that time, the ratio of correct accusations from all accusations made was 0.285.
 Although this value is surprisingly low, it is above chance level, as the average ratio of time spent faking out of the entire session length is 0.22.
 The ratio of faking behaviours that started and finished without any accusation was 0.787.
-As shown in figure TODO, longer faking periods were easier to detect ($t(341) = -4.826$, $p < .001$).
+As shown in figure \ref{fig:analysis:hist_time_faking}, longer faking periods were easier to detect ($t(341) = -4.826$, $p < .001$).
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.6\textwidth]{../graphics/analysis_hist_time_faking.pdf}
+  \caption{A histogram of the time, in seconds, of all faking behaviours. In blue are faking behaviours that started and finished without other participants accusing the faker. In orange are the faking behaviours that were detected: another participant correctly accused the faker. The figure demonstrates both the ratio between undetected and detected faking behaviours and the difference in time between undetected and detected faked behaviours.}
+  \label{fig:analysis:hist_time_faking}
+\end{figure}
 
 A correlation was found between talking and faking behaviours.
 More specifically, participants that talked a higher percentage of the experiment also faked active listening more time ($r(10) = 0.65$, $p < .05$) and for longer periods ($r(10) = 0.66$, $p < 0.05$).
-This relationship, that is shown is the left panel of figures TODO and TODO, is mainly affected by one outlier.
-Without the outlier there is no significant correlation, and the trend even change its general direction as shown in the right panel of figures TODO and TODO.
+This relationship, that is shown is the left panel of figures \ref{fig:analysis:correlation_talking_ratio_vs_faking_time} and \ref{fig:analysis:correlation_talking_ratio_vs_faking_ratio}, is mainly affected by one outlier.
+Without the outlier there is no significant correlation, and the trend even change its general direction as shown in the right panel of figures \ref{fig:analysis:correlation_talking_ratio_vs_faking_time} and \ref{fig:analysis:correlation_talking_ratio_vs_faking_ratio}.
 Therefore, the correlation between talking and faking behaviours might be understood as an unique strategy applied by a single participant.
 Indeed, the written comments confirm that the participant tried to talk as much as possible while faking to distract the other participants:
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{../graphics/analysis_correlation_talking_ratio_vs_faking_time.pdf}
+  \caption{Both panels show a scatter plot and a regression line of the participants' talking ratio (talking time out of the entire session) compared to the average faking time in seconds. In the left panel outliers, marked with orange, are included in the calculation. On the right panel outliers are excluded from the scatter plot, regression line, and statistics.}
+  \label{fig:analysis:correlation_talking_ratio_vs_faking_time}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{../graphics/analysis_correlation_talking_ratio_vs_faking_ratio.pdf}
+  \caption{Both panels show a scatter plot and a regression line of the participants' talking ratio (talking time out of the entire session) compared to the faking ratio (faking time out of the entire session). In the left panel outliers, marked with orange, are included in the calculation. On the right panel outliers are excluded from the scatter plot, regression line, and statistics.}
+  \label{fig:analysis:correlation_talking_ratio_vs_faking_ratio}
+\end{figure}
 
 \begin{displayquote}
   \textit{
@@ -600,13 +621,27 @@ Indeed, the written comments confirm that the participant tried to talk as much 
 
 In addition, a negative correlation was found between average faking length (in seconds) of each participant and the ratio of faked behaviour they completed without being accused ($r(10) = -0.72$, $p < .01$).
 This is inline with the previous results that shows that detected faking behaviours are usually longer.
-Similarly to the correlations found between talking and faking behaviours, this correlation is also affected by the same outlier, as shown in figure TODO.
+Similarly to the correlations found between talking and faking behaviours, this correlation is also affected by the same outlier, as shown in figure \ref{fig:analysis:analysis_correlation_faking_time_vs_faking_undetected}.
 In this case, again, removing the outlier makes the result insignificant.
 However, the outlier keeps the general trend, suggesting that the failure to get significance without the outlier is not due to different underlying characteristics but due to reduced statistical power.
 Therefore, I suspect that indeed, participant that choose longer periods of faking behaviour have less faked periods that complete without anyone noticing.
 
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{../graphics/analysis_correlation_faking_time_vs_faking_undetected.pdf}
+  \caption{Both panels show a scatter plot and a regression line of the participants' average faking time in seconds compared to the ratio of undetected faking periods. In the left panel outliers, marked with orange, are included in the calculation. On the right panel outliers are excluded from the scatter plot, regression line, and statistics.}
+  \label{fig:analysis:analysis_correlation_faking_time_vs_faking_undetected}
+\end{figure}
+
 Analysis of familiarity between the participants shows a positive correlation between familiarity and the percentage of correct accusations ($r_s = 0.19$, $p < .001$).
-This can be viewed in figure TODO.
+This can be viewed in figure \ref{fig:analysis:analysis_pointplot_familiarity_vs_correct}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.6\textwidth]{../graphics/analysis_pointplot_familiarity_vs_correct.pdf}
+  \caption{The familiarity effect on the ratio of correct accusations. Familiarity between participants was measured on a 1 to 5 likert scale, and found to positively correlate with detection accuracy.}
+  \label{fig:analysis:analysis_pointplot_familiarity_vs_correct}
+\end{figure}
 
 In addition to the quantitative data gathered during the VR experience, the post-experience questionnaires contain some interesting information about strategies for detecting faked behaviour.
 Here, I will try to use this information and compare it with the participants statistics to see how the choice of strategies affected the participants performance in detecting faked behaviour.
@@ -648,8 +683,15 @@ Participants 12 and 14 indicated that they detected repetitive movement and used
 \end{displayquote}
 
 Using this strategy, 0.857 of the accusations made by participant 12 were correct.
-As shown in figure TODO, this value is significantly higher than the average 0.285 detection performance and is expected to exceed 99\% of the players ($z = 2.38$).
+As shown in figure \ref{fig:analysis:analysis_participant12_accusations_correct}, this value is significantly higher than the average 0.285 detection performance and is expected to exceed 99\% of the players ($z = 2.38$).
 Participant 14, although performed above average with a ratio of 0.533 correct accusations, didn't reach significance ($z = 0.9$).
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.6\textwidth]{../graphics/analysis_participant12_accusations_correct.pdf}
+  \caption{A normalized histogram and estimated distribution function of the ratio of correct accusations. Participant's 12 performance is significantly high on the upper tail of the distribution.}
+  \label{fig:analysis:analysis_participant12_accusations_correct}
+\end{figure}
 
 Participants 5 and 8 looked for suspicious head nods to detect faked behaviour.
 
