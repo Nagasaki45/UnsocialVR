@@ -496,7 +496,8 @@ This animation is merged (position vectors are added together) with the rest of 
 The system described in the previous chapter suggests several interesting evaluation paths.
 In the current study, I choose to follow the extensive research already done in the field of ECAs \citep{Nishimura2007, Bevacqua2008, Gratch2007, Huang2011, Lee2006, Poppe2013} and frame the evaluation in that context.
 Whereas all of these studies assess interaction with an automated agent, in the current project the interaction is with an avatar that switches between human and automated control.
-This difference opens up ways to explore the properties of the transition between the two modes.
+In addition, research in the field of ECAs doesn't usually explore multiparty social interactions.
+These differences opens up ways to explore the properties of the transition between the two modes, and the effects of the social context.
 More specifically, can state of the art ECA techniques (e.g. automated backchannel behaviours) seamlessly replace human controlled avatars?
 If so, for how long can automated behaviour replace us without anyone noticing?
 What underlying mechanisms are required to support such automated behaviour?
@@ -534,9 +535,10 @@ The participants were allocated to 4 groups of 3 participants each.
 Due to missing a participant in one of the group a co-worker re-participated in the experiment.
 Examination of the group and the participant data didn't show any unique or unexpected differences from the other groups so I decided not to discard the groups' data.
 
-The participants were asked to participate in a balloon task \citep{Howes2012} in the virtual environment:
+The participants were asked to cooperate in a hot air balloon task \citep{Howes2012} in the virtual environment:
 They were presented with a scenario of an hot air balloon that is about to crash, unless one passenger will be sacrificed.
 They had to come to an agreement, and choose between scarifying a 7 months pregnant woman, her husband, the balloon pilot, or their friend, a doctor that is about to find a cure for cancer.
+
 They were also instructed that there are tokens hidden in the virtual environment that they need to find and collect, whilst still progressing towards their shared goal of the balloon task.
 These tokens were presented only while faking, so to collect them they had to fake participation in the conversation.
 Meanwhile, participants in the conversation could accuse whoever they think is faking active listening by looking at them and pressing a button on the hand controller.
@@ -557,7 +559,7 @@ Lastly, they filled a post-experience questionnaire (see appendix \ref{appendix:
 
 During the VR sessions the participants were divided into 3 network connected rooms, with one participant at each room.
 They were video recorded and their view of the VR environment was captured.
-The following events were logged for further analysis:
+The following events were logged by the system for further analysis:
 
 \begin{itemize}
   \item Transitions to and from faked behaviours.
@@ -565,6 +567,10 @@ The following events were logged for further analysis:
   \item Accusations for faking active listening.
   \item Collection of a token.
 \end{itemize}
+
+Note that this design, in general, contains only one condition: the group of participating interacting with each other in the VR environment.
+Therefore, most of the results demonstrate the general characteristics of the system, without properly comparing them to any control condition.
+Due to the absence of literature about this specific use of automated social behaviour, these results may provide a baseline for future research.
 
 \section{Results}
 
@@ -650,7 +656,7 @@ Participant 7, for example, claimed the following:
 Let's see if this claim can be backed by the data collected by the system.
 Participant 7 accused participant 8 five times, all of these accusations were incorrect.
 Participant 9, on the other hand, was correctly accused 4 times (0.286 of the accusations) and incorrectly accused 10 times.
-This is almost the same as the already discussed 0.285 average ratio of correct accusations.
+This ratio is almost the same as the already discussed 0.285 average ratio of correct accusations.
 From this, we might assume that the claim is correct.
 However, participant 8 faked only 0.056 of the time, while participant 9 faked 0.133 of the time, making the detection of participant 9 easier.
 Overall, the claim must by at least partially true, as the participant did manage to accuse one better then the other.
@@ -718,7 +724,7 @@ The participant detection performance was, however, lower than average, suggesti
 
 \section{Discussion}
 
-The evaluation of the system provide some relatively surprising results.
+The evaluation of the system provides some relatively surprising results.
 The most prominent of them are the better than chance but nevertheless low accuracy in detecting faked active listening behaviours, and the high probability to start and finish faking without being noticed.
 This suggests that the underlying mechanisms that automate the active listening behaviour usually manage to trick the players, and therefore are viable and useful for ECAs creation.
 Furthermore, two of the underlying mechanisms are unique for the current system.
@@ -729,10 +735,11 @@ Therefore, I would argue that this mechanism supports the automated behaviour an
 Second, no research in ECAs deals with transitioning between human and automated controlled behaviours.
 The looped recorded baseline was mainly used to support this transition.
 From the results, it seems that some of the participants managed to detect the loop and use that to differentiate between real and faked behaviour.
-Still, the generally low detection accuracy shows that the recorded baseline mechanism is not too obvious and easy to detect.
+Therefore, improving the baseline behaviour might be the most important development path to achieve more reliable active listening behaviour.
+Still, the generally low detection accuracy shows that the recorded baseline mechanism is not too obvious nor easy to detect.
 
 Another surprising result is related to the backchannel behaviours implemented in this project.
-They used only a small set of features and applied a single, simple, animation to the avatar.
+I used only a small set of features and applied a single, simple, animation to the avatar.
 Still, no participant managed to detect the faked behaviour by noticing the automated head nods.
 
 Lastly, the results demonstrate clear positive correlation between participants familiarity and detection accuracy.
