@@ -186,29 +186,67 @@ Whereas many studies explore active listening behaviours using embodied conversa
 Recently, social research see high opportunities in exploring social behaviours using virtual environments \citep{Bailenson2008}.
 Following the same trend, and inspired by the possibilities to fake attention in ways that are impossible in face-to-face conversation, the current research is based on a social virtual environment system.
 
-The main target of the system is to support exploration of faked active listening behaviours in a social context.
-As such, it implements a shared virtual environment, and uses a minimal user interface to let participants start and stop faking active listening behaviour towards the conversational group they belong to.
-In the background, a set of components analyze the social interaction and manipulate how each participant experience the environment.
+The main target of the system is to support exploration of faked active listening behaviours in a multiparty social context.
+As such, it implements a shared virtual environment, and uses a minimal user interface to let participants start and stop faking.
+Using this interface users can press a button to start faking, meaning, that while the button is pressed the other users won't see the real behaviour of this user in the virtual environment.
+Instead, the avatar of the faking user, as viewed by the other users, will be controlled by an automated behaviour.
+The three principles that enable this automation are presented in section \ref{system:mechanisms}.
 
-Figure \ref{fig:system:diagram} shows a schematic diagram of the system, and the paths and protocols of communication between the components.
-The components in blue represent client side code, those in green are the client facing servers, and the red ones are background servers that process behavioural data to instruct the client facing servers how to operate.
+In the background, a set of software components analyze the social interaction and manipulate how each participant experience the environment.
+Figure \ref{fig:system:diagram} shows a schematic diagram of the system architecture, and the paths and protocols of communication between the components.
+In blue are the client side components.
+The components in green are client facing servers, and the red ones are background servers that process behavioural data to instruct the client facing servers how to operate.
 A thorough description of each component in the system is presented bellow.
 
 The code-base for the entire project is open sourced and \fnurl{available online}{https://github.com/Nagasaki45/UnsocialVR}.
 
 \begin{figure}
   \includegraphics[width=\textwidth]{../graphics/system_diagram.pdf}
-  \caption{A schematic diagram of the system architecture. In blue are client side components, that communicate with the client facing servers in green. The components in red are background servers that are used by the client facing servers to process behavioural data. The lines between the components represents paths of communication with the a label indicating the protocol.}
+  \caption{A schematic diagram of the system architecture. In blue are client side components, that communicate with the client facing servers in green. The components in red are background servers that are used by the client facing servers to process behavioural data. The lines between the components represents paths of communication with the a label indicating the protocol. TODO update.}
   \label{fig:system:diagram}
 \end{figure}
 
 \section{Mechanisms for faking active listening behaviour}\label{system:mechanisms}
 
+The underlying mechanisms that support the automation of the faking behaviour are a mixture of ideas.
+Part of them are based on the scientific literature, while others are novel findings from the current research.
+
+\subsection{Automated head nods}
+
+As already discussed, carefully crafted automated head nods are known to be a crucial for convincing ECAs.
+Therefore, the current project follow the literature in the field and implements a machine learning based backchannel predictor.
+This predictor is thoroughly described in section \ref{system:active_listening_server}.
+
 \subsection{Baseline recorded behaviour}
+
+When users trigger the automated behaviour their avatars must keep moving naturally.
+They can't, for example, just freeze.
+During the early development phases of the system the faked behaviour used a pre-recorded movement of the hands, head, and chest.
+This pre-recorded movement was looped to support an arbitrary length of faking periods.
+In addition, random time lag was added for the recorded behaviour of each user to make sure no two fakers look the same.
+
+At that time, I ran an unofficial pilot study with 3 co-workers to expose user experience issues with the system.
+Participants in the pilot were not instructed to do any specific task in the virtual environment, nor fill any questionnaire before or after the experience.
+In addition, no measurements were recorded.
+Instead, I was interested to hear from the participants about their experience with the system, and probed them to emphasis their experience with the faking mechanism.
+
+The results clearly show that the transitions into automated behaviour are noticeable.
+The change of body posture and the positioning change of the body parts between the real and the faked behaviour were significantly noticeable.
+The reason for that is that physical differences between people are recreated in the virtual environment.
+Ignoring these and using the same movement for everyone allowed the participants to quickly learn to notice the pre-recorded behaviour.
+
+The solution I found is to always record the last few seconds of each user.
+When the user trigger the faked behaviour this recorded movement will start to play in a loop.
+In addition, to make sure that there is no jump in the loop recorded behaviour is first played backwards from the last recorded sample.
+Whenever the playing head reached the end of the recorded behaviour the playing direction flips.
+More implementation details are described in section \ref{system:fake_behaviour_generator}.
 
 \subsection{Looking at the speaker}
 
-\subsection{Automated head nods}
+With the head nods and the baseline recorded behaviour in place there was a need for modeling the avatar attention in one way or another.
+A basic approximation of attention in a conversation is to always look at the speaker.
+Therefore, the last underlying mechanism for the faked behaviour is to always slowly rotate towards the user that is speaking.
+If no one is speaking, I choose to rotate the faking avatars towards the last speaker.
 
 \section{Hardware}
 
@@ -416,7 +454,7 @@ Lastly, the predicted head nods from the Active Listening Server are generating 
 This animation is merged (position vectors are added together) with the rest of the faked behaviour.
 
 
-\chapter{Reflection}
+\chapter{TODELETE}
 
 \section{Multiparty social interaction}
 %% TODO is it worth adding a more general intro using \citep{Hall1966} and \citep{Goffman1966}?
@@ -496,24 +534,6 @@ After each time the GCFF algorithm is called, the new F-formations are compared 
 If the distance of a new F-formation from an old one is bellow an arbitrary threshold, they are considered as the same.
 Otherwise, it is a new F-formation.
 Second, to be able to call the algorithm from the Main Game Server I wrote a minimal HTTP server in \fnurl{Python}{https://www.python.org/}, that uses \fnurl{Octave}{https://www.gnu.org/software/octave/} and \fnurl{oct2py}{https://github.com/blink1073/oct2py} to invoke the Matlab code.
-
-\section{Pilot}
-
-I ran an unofficial pilot study with 3 co-workers participating during the early development phases of the system.
-The faked behaviour at that time was a pre-recorded movement with different time lag between participants to make sure no two fakers look the same.
-The pilot attempted to expose user experience issues with the system.
-Participants in the pilot were not instructed to do any specific task in the virtual environment, nor fill any questionnaire before or after the experience.
-In addition, no measurements were recorded.
-Instead, I was interested to hear from the participants about their experience with the system, and probed them to emphasis their experience of the faking mechanism.
-
-The results clearly showed that the transitions into automated behaviour are noticeable.
-First, the automated behaviuor didn't responded properly to the social interaction.
-This finding are not surprising considering the research in the field of backcahnnel behaviours.
-Second, and with equal importance, the change of body posture and the relationship between the body parts between the real and the faked behaviour were significantly noticeable.
-Using the hands controllers and the chest tracker, the physical differences between people are recreated in the virtual environment.
-In addition, people posture is different, and these differences are also presented in the virtual world.
-Ignoring these and using the same behaviour for everyone allowed the participants to learn it quickly and easily notice it.
-Much of the design of the Fake Behaviour Generator and the necessity of the Active Listening Server described in \ref{system:fake_behaviour_generator} and \ref{system:active_listening_server} is inspired by these findings.
 
 
 \chapter{Evaluation}\label{evaluation}
