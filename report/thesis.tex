@@ -188,11 +188,11 @@ Following the same trend, and inspired by the possibilities to fake attention in
 
 The main target of the system is to support exploration of faked active listening behaviours in a multiparty social context.
 As such, it implements a shared virtual environment, and uses a minimal user interface to let participants start and stop faking.
-Using this interface users can press a button to start faking, meaning, that while the button is pressed the other users won't see the real behaviour of this user in the virtual environment.
+Using this interface users can press a button to start faking, meaning, that while the button is pressed other users won't see the real behaviour of this user in the virtual environment.
 Instead, the avatar of the faking user, as viewed by the other users, will be controlled by an automated behaviour.
 The three principles that enable this automation are presented in section \ref{system:mechanisms}.
-
 In the background, a set of software components analyze the social interaction and manipulate how each participant experience the environment.
+
 Figure \ref{fig:system:diagram} shows a schematic diagram of the system architecture, and the paths and protocols of communication between the components.
 In blue are the client side components.
 The components in green are client facing servers, and the red ones are background servers that process behavioural data to instruct the client facing servers how to operate.
@@ -213,17 +213,17 @@ Part of them are based on the scientific literature, while others are novel find
 
 \subsection{Automated head nods}
 
-As already discussed, carefully crafted automated head nods are known to be a crucial for convincing ECAs.
-Therefore, the current project follow the literature in the field and implements a machine learning based backchannel predictor.
+As already discussed, carefully crafted automated head nods are known to be crucial for creating convincing ECAs.
+Therefore, the current project follows the literature in the field and implements a machine learning based backchannel predictor.
 This predictor is thoroughly described in section \ref{system:active_listening_server}.
 
-\subsection{Baseline recorded behaviour}
+\subsection{Baseline recorded movement}
 
 When users trigger the automated behaviour their avatars must keep moving naturally.
 They can't, for example, just freeze.
 During the early development phases of the system the faked behaviour used a pre-recorded movement of the hands, head, and chest.
 This pre-recorded movement was looped to support an arbitrary length of faking periods.
-In addition, random time lag was added for the recorded behaviour of each user to make sure no two fakers look the same.
+In addition, random time lag was added for the recorded movement of each user to make sure no two fakers look the same.
 
 At that time, I ran an unofficial pilot study with 3 co-workers to expose user experience issues with the system.
 Participants in the pilot were not instructed to do any specific task in the virtual environment, nor fill any questionnaire before or after the experience.
@@ -231,19 +231,19 @@ In addition, no measurements were recorded.
 Instead, I was interested to hear from the participants about their experience with the system, and probed them to emphasis their experience with the faking mechanism.
 
 The results clearly show that the transitions into automated behaviour are noticeable.
-The change of body posture and the positioning change of the body parts between the real and the faked behaviour were significantly noticeable.
+The change of body posture and the positioning change of the body parts between the real and the faked behaviour were easily detected.
 The reason for that is that physical differences between people are recreated in the virtual environment.
 Ignoring these and using the same movement for everyone allowed the participants to quickly learn to notice the pre-recorded behaviour.
 
 The solution I found is to always record the last few seconds of each user.
 When the user trigger the faked behaviour this recorded movement will start to play in a loop.
-In addition, to make sure that there is no jump in the loop recorded behaviour is first played backwards from the last recorded sample.
-Whenever the playing head reached the end of the recorded behaviour the playing direction flips.
+To make sure that there is no jump in the loop the recorded movement is first played backwards from the last recorded sample.
+Whenever the playing head reaches the end of the recorded movement the playing direction flips.
 More implementation details are described in section \ref{system:fake_behaviour_generator}.
 
 \subsection{Looking at the speaker}
 
-With the head nods and the baseline recorded behaviour in place there was a need for modeling the avatar attention in one way or another.
+With the head nods and the baseline recorded movement in place there was a need for modeling the avatar attention in one way or another.
 A basic approximation of attention in a conversation is to always look at the speaker.
 Therefore, the last underlying mechanism for the faked behaviour is to always slowly rotate towards the user that is speaking.
 If no one is speaking, I choose to rotate the faking avatars towards the last speaker.
@@ -251,7 +251,7 @@ If no one is speaking, I choose to rotate the faking avatars towards the last sp
 \section{Hardware}
 
 The hardware used in this project is the \fnurl{HTC Vive}{https://www.vive.com/uk/}, which bundle together a headset and two hand controllers.
-In addition, \fnurl{Vive trackers}{https://www.vive.com/uk/vive-tracker/} are used to track the chest position of each participant.
+In addition, a \fnurl{Vive tracker}{https://www.vive.com/uk/vive-tracker/} is used to track the chest position of each participant.
 This setup provided suitable features for the project compared to products like the \fnurl{Oculus Rift}{https://www.oculus.com/rift/}, or simpler VR solutions like \fnurl{Google Daydream}{https://vr.google.com/daydream/} or \fnurl{Samsung Gear VR}{http://www.samsung.com/global/galaxy/gear-vr/}.
 Specifically, my system make use of the following features of the headset, that I couldn't find in other products:
 
@@ -262,15 +262,9 @@ Specifically, my system make use of the following features of the headset, that 
 
 \section{Game Client}
 
-\begin{figure}
-  \centering
-  \includegraphics[width=.5\textwidth]{../graphics/environment_demo.png}
-  \caption{Example view of the virtual environment, showing the cocktail party context and the avatar design.}
-  \label{fig:system:environment_demo}
-\end{figure}
+The Game Client is the application each player uses to connect to the virtual environment.
+Figure \ref{fig:system:environment_demo} shows how the virtual environment and the avatars look like\footnote{Most of the 3D models were designed by me using blender (\href{https://www.blender.org/}{www.blender.org}), an open source 3D creation software.}.
 
-The Game Client is the application each participant use to connect to the 3D virtual environment.
-Figure \ref{fig:system:environment_demo} shows how the virtual environment and the avatars look like.
 I choose to contextualize the environment as a cocktail party on the beach.
 This decision is mainly influenced by the intent to create a shared space where people can interact and dynamically form conversational groups.
 Note that cocktail parties are common examples for such environments in the scientific literature \citep{Setti2015}.
@@ -279,27 +273,24 @@ Two main principles guided the design of the player avatar.
 First, attempts to design a realistic avatar often elicit feelings of eeriness and revulsion.
 This effect, also known as the \textit{uncanny valley}, suggests that when robots become more human like, our empathy to them increase.
 It is true until a point of high similarity to humans where there is a ``valley'' in the empathy curve \citep{Mori1970}.
-So, to stay away from the uncanny valley, I choose to design the avatar in a cartoon, unrealistic style.
+So, to stay away from the uncanny valley, I choose to design the avatar in a cartoon-ish, unrealistic style.
 This is inline with similar decision by commercial social VR products \citep{Ghosh2017, AltspaceVR2016, Pot2016}.
-Second, with F-formation theory in mind, the avatar is made out of 4 body parts: head, 2 hands, and chest.
-The visibility of the head and hands in the virtual environment immerses the players in the experience and makes the player more aware of their body.
+Second, the avatar is made out of 4 body parts: head, 2 hands, and chest.
+The visibility of the head and hands in the virtual environment immerses the players in the experience and makes them more aware of their bodies.
 The chest, however, is there mainly to signal the body orientation and therefore attention and sense of belonging to a conversation.
 Originally, the cartoon style of the avatar made the orientation unclear.
 To solve this, a belt with a buckle helps indicating the body direction.
-
-Most of the 3D models were designed by me using \fnurl{blender}{https://www.blender.org/}.
-I choose blender mainly because it is an open source project, whereas most of the alternatives are non-free commercial software.
-Choosing a free and open source solution will allow me to reuse the acquired skills in future projects.
+TODO mouth movement.
 
 The players interface is minimal.
-There is one button on the controller that when pressed, the player starts to fake active listening towards the other players in the same F-formation.
+There is one button on the controller that when pressed, the player starts to fake active listening behaviour.
 When the button is released the faked behaviour stops and the player jumps back to the place and orientation where the faking behaviour started.
 This gives the players the freedom to start faking active listening and jump back to the conversation as fast as possible when needed.
 As in other HTC Vive games, one of the controller's buttons implements a ``teleportation'' feature that make movement in the environment faster and easier (like in \fnurl{The Lab}{http://store.steampowered.com/app/450390/The_Lab/} game).
 In addition, while a player is faking active listening is approached by another player, a notification saying that ``someone is talking to you'' appears, suggesting that it's time to stop faking and going back to the conversation.
 
 The client is developed using the free game development platform \fnurl{Unity3D}{https://unity3d.com/}.
-The integration of the hardware with Unity3D is seamless, and both has a large community of developers, so it was a natural choice to build the client with this technology.
+The integration of the hardware with Unity3D is seamless, and both have large communities of developers, making Unity3D a natural technological choice.
 
 The client application communicate with two other components over the network.
 The first is the Identification Game Server.
@@ -307,83 +298,54 @@ Communication between the clients and this server is based on the native Unity3D
 The second component that the client communicate with, over HTTP, is the Main Game Server.
 
 For testing and development purposes I wrote a simulator client.
-The simulator client uses the same environment and avatars.
-But here, players use the keyboard to control their avatar and see the environment on the computer screen instead of the VR headset and controllers.
+The simulator client uses the same environment and avatars, but is controlled by keyboard and viewed using the computer screen instead of the VR headset and controllers.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.5\textwidth]{../graphics/environment_demo.png}
+  \caption{Example view of the virtual environment, showing the cocktail party context and the avatar design.}
+  \label{fig:system:environment_demo}
+\end{figure}
 
 \section{Identification Game Server}
 
 The Identification Game Server utilize the built-in Unity3D network server to create an identification for each connected client, and notify the rest of the clients about new connections.
+Based on this information clients create and manage avatars for all of the players in the virtual environment.
 Usually, the Unity3D network server is also used to pass positioning, orientation, and other kinds of information between clients.
 In this project, however, all of the data is passed between the clients through the Main Game Server.
 
 \section{Main Game Server}
 
 The main game server is used to pass information between the clients.
-Every Game Client send information about itself to the server every 20 milliseconds.
+Each client repeatedly sends the player information to this server and get back information about the other players.
+This information includes the positioning and orientation of the chest, head, and hands of the player.
+It also includes the identification of who the player is looking at, whether or not the player is speaking (using sound level threshold), and whether or not the player is currently faking.
+
+On the server, first, the player data is extracted from the HTTP request and stored in an in memory cache.
+Then, information about the rest of the players is extracted from the cache.
+For each of the non faking players, the information is passed to the client from the cache without modification.
+Otherwise, the positioning and orientation are overridden by an automatic generated movement that are described thoroughly in section \ref{system:fake_behaviour_generator}.
+Additionally, the player is flagged to be faking, and the identification of the current speaker is sent to the client.
+This information is than used by the client to rotate the automated agent slowly towards the speaker.
+I decided to implement this feature on the client side only for technical reasons:
+Unity3D made it relatively straightforward to slowly rotate an object towards a specified direction, whereas on the server I would have to write this functionality from scratch.
+
+The clients communicate with the server every 20 milliseconds, and interpolate the readings.
 This fast communication is crucial for keeping the visual rendering smooth.
-The information each client sends includes the positioning and orientation of the chest, head, and hands of the player, as well as who the player is looking at, and whether or not the player is speaking (using sound level threshold).
-The server, however, doesn't blindly pass this information to the other clients.
-It uses sophisticated analysis to manipulate the information it presents to each client to achieve the intended social illusions.
-
-\begin{figure}
-  \begin{lstlisting}[language=Python]
-    player_id, player_data = deserialize(request.data)
-
-    store_in_cache(player_id, player_data)
-
-    other_players = get_others_from_cache(player_id)
-    my_f_formation = get_f_formation_from_cache(player_id)
-
-    for other_player in other_players:
-        if other_player in my_f_formation.fakers:
-            other_player.fake_active_listening(my_f_formation.speaker)
-        else if other_player not in my_f_formation.members:
-            other_player.scale_down()
-           
-    return serialize(other_players)
-  \end{lstlisting}
-  \caption{Pseudo-code for the HTTP request/response cycle in the Main Game Server that handle new data from a client and reply with information about the rest of the clients.}
-  \label{fig:system:main_server_pseudocode}
-\end{figure}
-
-The server exposes three HTTP endpoints for the clients to communicate with.
-Figure \ref{fig:system:main_server_pseudocode} shows a pseudo-code of the main request/response cycle in the server that is used by the client to send their information and get back information about the other players.
-First, the player data is extracted from the request data and stored in the cache (lines 1 and 3).
-Then, information about the rest of the players and the player F-formation are extracted from the cache (lines 5 and 6).
-The state of each of the other players is determined by a series of checks.
-If the other player is currently faking active listening in the requester F-formation, his/her positioning and orientation are overridden by automatic generated behaviour (line 10).
-This is a merge of a baseline behaviour and predicted head nods that are described thoroughly in section \ref{system:fake_behaviour_generator}.
-Alternatively, if the other player is not a member of the requester F-formation his/her avatar is scaled down, helping in separating conversational group in the virtual environment (line 12).
-Otherwise, the other player is generated as is to the requester.
-Lastly, the list of other players is serialized and returned in the response object (line 14).
-
-The next two endpoints available for the clients are for starting and stopping the faked active listening behaviour.
-The clients call these endpoints when the faking button is triggered and released respectively.
-
-In addition to the client facing endpoints there are two background processes running as part of the Main Game Server.
-They periodically send and receive data from the two background servers.
-Every second, one background process collect the chest position and orientation of all of the players, project them on the 2 dimensional plane of the floor, and send them to the Scene Analysis Server for F-formation analysis.
-The results are stored in a the server cache.
-The second background process repeatedly fetches all the faker players from the cache, find their speakers (if exist), and pass the speaker talking state (is speaking or silent) and gaze (is looking or not looking at the faker) to the Active Listening Server to predict backchannel behaviours.
+A faster communication rate found to overload the server.
 
 The server is developed in \fnurl{Elixir}{https://elixir-lang.org/}.
 Usually, when developing games in Unity3D the server is built with Unity3D as well.
-The main reason I choose Elixir instead is my prior familiarity with it and understanding its capabilities and design.
-Being able to develop the system as fast as possible was crucial in this project, and using Unity3D as a server would probably slow me down.
-In addition, there are some specific benefits for using Elixir in this type of project.
-First, the language is designed for concurrent and fault tolerant systems.
-In the context of this project the concurrent model allowed me to develop a system with relatively fast response rates while longer processes are always happen in the background and cached.
-The fault tolerance capabilities allowed me to ignore handling incomplete cached data that happens every restart or when clients connect and disconnect.
-With other technologies such inconsistencies will affect all clients, and the general behaviour of the system.
-But with elixir, inconsistent states cause a relatively local failure, affecting only one client at a time in my case.
-Regardless of the failures, after a few seconds the background processes are guaranteed to fix any discrepancies in the cached data.
-Second, Elixir is a high level language with terse syntax and have many high quality libraries available that support the fast development of this server.
+The main reason I choose Elixir instead is my prior familiarity with it.
+In addition, Elixir provides some nice benefits for this type of project, as it significantly simplifies the development of both web and concurrent programs.
+Lastly, being a high level language with terse syntax and many high quality libraries accelerated the development process.
 
 \section{Active Listening Server}\label{system:active_listening_server}
 
-The Active Listening Server is responsible for predicting backchannel behaviours based on speaker talking state (is speaking or silence) and gaze (is looking at listener or not).
+The Active Listening Server is responsible for predicting head nods.
+It is based on the vast research in automatic backchannel behaviours prediction and uses speaker talking state (is speaking or silence) and gaze (is looking at listener or not).
 Predicting listeners backchannel behaviours is usually done using either hand-crafted rule based systems, or more recently, data driven and machine learning (ML) approaches \citep{Morency2008}.
-Due to the better performance of the later I followed the same path and with the absence of openly available solution decided to develop an ML based backchannel predictor myself.
+Due to the better performance of the later, and with the absence of openly available solution, I decided to develop an ML based backchannel predictor for the project.
 Using more features, such as prosody \citep{Ward2000} or speaker gestures (TODO reference), could probably improve the model.
 However, the simpler model described below was found to be accurate enough.
 
@@ -404,16 +366,16 @@ This vector, when fed into the ML model, should predict the listeners nodding of
 As a last step of preparation I split the dataset into 3 to 1 train and test portions.
 
 I tried to train three different ML models.
-First I attempted to train a Linear Support Vector Machine Classifier (LinearSVC) model using the open source package Scikit-learn \citep{Pedregosa2011}.
+First I attempted to train a Linear Support Vector Machine Classifier (LinearSVC) model using the open source software package Scikit-learn \citep{Pedregosa2011}.
 Using the test portion of the dataset, the model precision (percentage of correct predictions) was high.
 However, the recall (correct predictions out of correct predictions and misses) was very low.
 In fact, the model learned to almost never predict a backchannel.
 Visually comparing the predictions to the dataset reveals that the it failed to model the data correctly.
-Second, I tried to train a Long Short-Term Memory (LSTM) deep neural network with the open source package Keras \citep{Chollet2015}.
+Second, I tried to train a Long Short-Term Memory (LSTM) deep neural network with the open source software package Keras \citep{Chollet2015}.
 The results were similar to these of the LinearSVC model.
 Lastly, I trained a K Nearest Neighbors classifier ($K = 5$) with Scikit-learn.
-This time, it seems that the model manage to capture nature of the data, as shown in figure \ref{fig:system:backchannel_predictions}.
-Using the test portion of the dataset the was lower than before (0.77), but the recall was higher (0.83).
+This time, it seems that the model manage to capture the nature of the data, as shown in figure \ref{fig:system:backchannel_predictions}.
+Using the test portion of the dataset the accuracy was lower than before (0.77), but the recall was higher (0.83).
 
 \begin{figure}
   \includegraphics[width=\textwidth]{../graphics/backchannel_predictions.pdf}
@@ -423,7 +385,7 @@ Using the test portion of the dataset the was lower than before (0.77), but the 
 
 Choosing between the models didn't follow a properly nor systematic evaluation.
 However, based on the performance on the test portion of the dataset and visual inspection the K Nearest Neighbors classifier seemed to performed well enough.
-It also provided fast predictions, as necessary by real-time system like this.
+It also provided fast predictions, as necessary by real-time system like this one.
 
 To make the backchannel predictions more robust to variations in the input data I implemented the variable threshold as suggested by \cite{Kok2012}.
 The K Nearest Neighbors classifier can be used not only to predict a backchannel, as a binary value, but also to predict the probability of a backchannel.
@@ -431,22 +393,22 @@ This feature of the model is used, together with a variable threshold to provide
 Initially, the threshold is set to 1, and is decreased over time by 10 percent per second.
 When the predicted probability for a backchannel accedes the threshold, a backchannel is predicted and the threshold resets back to 1.
 
-The model, with the variable threshold algorithm, is written in Python and is exposed to the Main Game Server as an HTTP server.
+This model, with the variable threshold algorithm, is written in \fnurl{Python}{https://www.python.org/} and exposes an HTTP endpoint.
 The code for this server is open sourced and \fnurl{available online}{https://github.com/Nagasaki45/backchannel}.
+The Main Game Server repeatedly fetches all of the currently faking players from the server cache and sends them, together with information about the speaker talking state and gaze, to the Active Listening Server.
+The returned predictions are stored back in the Main Game Server cache.
 
 \section{Fake Behaviour Generator}\label{system:fake_behaviour_generator}
 
-The Fake Behaviour Generator integrate the predictions from the Active Listening Sever to provide a smooth and socially appropriate movement for the automated behaviour.
-For each participant, the position and orientation of the head and hands, relatively to the chest, is always recorded.
+The Fake Behaviour Generator integrate the predicted head nods from the Active Listening Sever with a natural baseline recorded movement.
+It is designed to provide a smooth and socially appropriate movement for the automated behaviour.
+For each player, the position and orientation of the head and hands, relatively to the chest, is always recorded.
 This data is kept in a 2 seconds buffer.
 The decision to keep the last 2 seconds is arbitrary and found via trial and error.
-This aimed to give a long enough recording to make the faked behaviour look natural, but in the same time not to include two old movements (e.g. when the faker was the speaker or before the F-formation was formed).
+It aimed to give a long enough recording to make the faked behaviour look natural, but in the same time not to include two old movements.
+If the faker was involved in different type of activity few seconds ago, like speaking for example, it is better to discard these body movements as they are probably inappropriate in the new context.
 When a participant start to fake active listening a playback of this buffer start from the last recorded sample and goes backwards until it reaches the beginning of the buffer, and then forwards again, repeatedly.
-This ensure that there are no jumps in the playback of the recorded behaviour.
-
-The chest of an automated active listening agent is always directed to the chest of the speaker in the F-formation.
-In case that there is no speaker, the latest speaker is chosen instead.
-The chest movement are automated to rotate slowly and smoothly between speakers.
+This ensure that there are no jumps in the playback of the recorded movement.
 
 Lastly, the predicted head nods from the Active Listening Server are generating head nods animation that was created in Unity3D.
 This animation is merged (position vectors are added together) with the rest of the faked behaviour.
