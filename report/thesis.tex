@@ -82,9 +82,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Thesis body:
 %%
+\setcounter{page}{1}  % Start page count from here
 \chapter{Introduction}
 
-In Infinite Jest, David Foster Wallace argues that "Good old traditional audio-only phone conversations allowed you to presume that the person on the other end was paying complete attention to you while also permitting you not to have to pay anything even close to complete attention to her." \citep{Wallace1996}.
+In Infinite Jest, David Foster Wallace argues that ``Good old traditional audio-only phone conversations allowed you to presume that the person on the other end was paying complete attention to you while also permitting you not to have to pay anything even close to complete attention to her.'' \citep{Wallace1996}.
 He continues and claims that we are addicted to this illusion, and that's why video conferencing always feel so awkward - we need to pretend to listen all the time.
 And if we think about it, even in face to face conversation we must always adhere to these social rules, and signal our complete attention when someone is talking to us.
 
@@ -106,43 +107,65 @@ Chapter \ref{conclusions} conclude this report with TODO and suggestions for fut
 
 \chapter{Literature review}\label{literature_review}
 
+TODO rewrite.
 This project is based on multidisciplinary research.
 It merges ideas from telepresence and mediated communication, that explore the representation of non verbal cues in new communication technologies;
 depends on multiparty social interaction analysis, which uses spatial cues to understand who is talking with whom in dynamic social environments;
 make use of new ways to generate active listening cues, such as head nods, in automated agents;
 and influenced by research in asymmetric social communication in virtual environments.
 
-\section{Telepresence and mediated communication}
+\section{Collaborative virtual environments}
 
-Surveys \citep{Isaacs1994, Erickson2000}.
+Collaborative virtual environments (CVEs) are computer systems that generate 3D avatars to represent human participants in a shared virtual space \cite{Bailenson2004}.
+Recent technological breakthroughs made CVEs a possible advancement for both telecommunication and social research.
+This section presents the advantages of using CVEs for both use cases.
 
-Social VR.
+Telecommunication technologies often tries to maximize the feeling of being together at a remote location.
+This feeling, known as \textit{social presence}, varies between different communication media \citep{Short1976}.
+For example, video conferencing is often described as a medium that supports higher social presence than, let's say, text-only chats.
+But video conferencing is still way behind face-to-face conversation in many senses.
+In multiparty conversation, its shortcomings include decreased turn taking efficiency, inability to participate in side conversations, lack of meaningful gaze, and no 3 dimensional orientation \citep{Isaacs1994}.
 
-The GAZE systems \citep{Vertegaal1999, Vertegaal2003}.
+CVEs attempt to solve some of these issues by exposing socially significant cues in the virtual environment.
+One of these cues, that is not redundantly coded in speech, and is usually problematic in video conferencing, is gaze.
+CVEs that convey gaze give clear indication of who is talking with whom, and therefore simplify the turn taking management \citep{Vertegaal1999, Vertegaal2003}.
+In addition, researchers show that exposing the participants eye gaze in the virtual environment improved their lying detection \citep{Steptoe2010}.
+Other studies explore the effects of non-verbal cues on communication.
+For example, participants in CVEs that track and render head movements reported higher social presence compared to environments with static, non-moving, heads.
+Participants in the first condition also reported that they liked each other more, and looked more on the other participant head \citep{Bailenson2002}.
+Similarly, when trying to communicate the meaning of a word, participants performed better when their listener's hand movements were presented in the virtual environment \citep{Dodds2011}.
+
+Social VR as an emerging commercial product of CVEs.
+
+CVEs for social research.
+
+\section{Transformed social interaction}
 
 Transformed social interaction \citep{Bailenson2004, Bailenson2008}.
 
-\section{Active listening}
+Asymmetric communication \citep{Chou2016, Yee2007, Dominguez2014}.
 
-In order to make a conversation natural and engaging, conversing parties use a wide array of social cues.
+\section{Active listening and embodied conversational agents}
+
+In order to make a conversation natural and engaging, conversing parties transmit a wide array of social cues.
 These signals can indicate the parties interest in keeping the conversation going, show mutual understanding, or the attempt to take the speaker turn.
-Whereas conversations are usually considered to be a lingual phenomena, many of these social signals are non-verbal (e.g.\ head nods and facial expressions), or extra-linguistic (e.g.\ utterances like ``uh-huh'').
-In the context of active listening behaviours they are known as backchannels \citep{Yngve1970}.
-They are important for establishing rapport \citep{Gratch2007} and have significant effect on the speaker behaviour \citep{Bavelas2000}.
-Not surprisingly, one of the main application of backchannels research is the implementation of automated agents that can provide socially appropriate responses in free conversation \citep{Morency2008, Bevacqua2008}.
-There are reasons to believe that backchannels can be predicted without attending the content of the conversation \citep{Yngve1970}.
-Therefore, researchers consistently attempt to use surface features like speaker-listener eye contact, speaker voice level, and prosody to model backchannels.
+Whereas conversations are usually considered to be a lingual phenomena, many of these social signals are non-verbal (e.g.\ head nods and facial expressions), or paralingual (e.g.\ the use of prosody or utterances like ``uh-huh'').
+In the context of active listening behaviours these are known as backchannels, and there are reasons to believe that they can be modeled without attending the content of the conversation \citep{Yngve1970}.
+Backchannel behaviours are known to have a significant effect on the speaker \citep{Bavelas2000} and are important for establishing rapport \citep{Gratch2007}.
+Therefore, it is of no surprise that one of the main application for backchannels research is the automation of embodied conversational agents (ECAs).
+Integrating backchannels into such agents might be the key to providing socially appropriate responses in free conversation \citep{Morency2008, Bevacqua2008}.
 
+Researchers often use surface features like speaker-listener eye contact, speaker voice level, and prosody to model backchannels.
 \citeauthor{Ward2000} suggested a backchannel prediction model that is based on the speaker prosody (\citeyear{Ward2000}).
-Their model used a small set of features and simple hand-crafted rules.
+Their model uses a small set of features and simple hand-crafted rules.
 Specifically, speaker ``talking state'' (speaking or silent) and the pitch of the speaker voice were taken into account.
 \citeauthor{Gratch2006} propose to incorporate the speaker head moves and body pose into a similar model (\citeyear{Gratch2006}).
-Another approach is to use surface text features to model backchannels \citep{Lee2006}.
-In this study, the model is based on a bag-of-words technique, with different spoken words triggering different listener responses.
-They based their rules on manual analysis of video recorded conversations with embodied conversational agents.
-All of these studies used a set of carefully chosen hand-crafted rules to build their backchannel prediction models.
+\citeauthor{Lee2006}, on the other hand, suggested to use surface text features to predict backchannels (\citeyear{Lee2006}).
+They used a bag-of-words technique, with different spoken words triggering different listener responses.
+They based their rules on manual analysis of recorded video conversations with ECAs.
+All of these studies use a set of carefully chosen hand-crafted rules to build their backchannel prediction models.
 
-Recent studies suggest that data-driven approaches for modeling backchannels improve the model performance.
+Recent studies suggest data-driven approaches for backchannels modeling to improve predictive performance.
 \citeauthor{Nishimura2007} predict listener responses using the pitch and power of the speaker voice (\citeyear{Nishimura2007}).
 Their model, however, isn't constrained to predict backchannels only.
 A response generator uses audio features to choose between types of responses, like backchannels, collaborative completion (e.g. suggesting a keyword for the speaker), and more.
@@ -155,18 +178,14 @@ Their model uses the speaker talking state, speaker-listener eye contact, and, i
 A year later, \citeauthor{Kok2012} suggested some improvements to the same model to make it more robust to different speaker behaviours (\citeyear{Kok2012}).
 Note that there is almost no direct comparison between the different models, mainly due to the use of different datasets and different evaluation methods \citep{Morency2008}.
 
-%% TODO decide if it's worth mentioning. Use \cite{Gratch2007} as a baseline.
-%% Another interesting approach to elicit rapport with automated conversational agents is to use mimicry.
-%% \citeauthor{Bailenson2005} found that an automated agent is perceived as more persuasive if it's mimicking the speaker movement with four seconds lag (\citeyear{Bailenson2005}).
-
-Before ending this section, it is important to discuss the theoretical distinction between the different participants roles in a social interaction.
-Some of the roles are more obvious, like the role of the speaker in a conversation.
+Before ending this section, it is important to discuss the theoretical differences between conversing parties in a social interaction.
+Some of the roles in a conversation are more obvious, like the role of the speaker.
 The differences between other roles, however, might be harder to tell.
 According to \citeauthor{Clark1982}, apart from the speaker, participants in a conversation can take a role of addressees, side-participants, and over-hearers (\citeyear{Clark1982}).
 Put simply, addressees are the listeners that the speaker illocutionary act is directed to.
 Side-participants are the listeners that the speaker wish to inform about his/her illocutionary act towards the addressees.
 Although they usually not expected to take the floor, they are an important part of the conversation.
-The speaker must take the side-participants understanding in mind, and expected confirmation for their understanding, probably through non verbal cues (TODO find ref).
+The speaker must take the side-participants understanding in mind, and expected them to confirm their understanding, probably through non verbal cues (TODO find ref).
 Over-hearers are listeners that the speaker have no interest in them hearing the conversation.
 They are less relevant for the current study and thus won't be further discussed.
 The roles are usually assigned to the participants, implicitly, by the speaker.
@@ -175,14 +194,10 @@ Most of the current research in backchannels and active listening behaviour is c
 Therefore, side-participants active listening behaviours are much less investigated, understood, and modeled.
 TODO present \citep{Matsusaka2003, Fujie2009}.
 
-\section{Asymmetric communication}
-
-\citep{Chou2016, Yee2007, Dominguez2014}.
-
 
 \chapter{System design and implementation}\label{system_design_and_implementation}
 
-Whereas many studies explore active listening behaviours using embodied conversational agents (ECAs) \citep{Nishimura2007, Bevacqua2008, Gratch2007, Huang2011, Lee2006, Poppe2013}, the current research aim to investigate how humans can start to pretend to listen to someone, how they stop faking and return to the conversation, and what are the social implication for such behaviours.
+Whereas many studies explore active listening behaviours using ECAs \citep{Nishimura2007, Bevacqua2008, Gratch2007, Huang2011, Lee2006, Poppe2013}, the current research aim to investigate how humans can start to pretend to listen to someone, how they stop faking and return to the conversation, and what are the social implication for such behaviours.
 Recently, social research see high opportunities in exploring social behaviours using virtual environments \citep{Bailenson2008}.
 Following the same trend, and inspired by the possibilities to fake attention in ways that are impossible in face-to-face conversation, the current research is based on a social virtual environment system.
 
