@@ -18,6 +18,7 @@
 \usepackage{array}
 \usepackage{float}
 \usepackage{csquotes}
+\usepackage{subcaption}
 \newcolumntype{C}{>{\centering\arraybackslash}p{1.5cm}}
 \renewcommand{\labelitemii}{$\circ$}  % Set the nested itemize style to empty circle.
 \lstset{
@@ -341,7 +342,7 @@ Specifically, the system make use of the following features of the headset that 
 \section{Game Client}
 
 The Game Client is the application each player uses to connect to the virtual environment.
-Figure \ref{fig:system:environment_demo} shows how the virtual environment and the avatars look like\footnote{Most of the 3D models were designed by me using blender (\href{https://www.blender.org/}{www.blender.org}), an open source 3D creation software.}.
+Figure \ref{fig:system:3d_design:unsocial_vr} shows how the virtual environment and the avatars look like\footnote{Most of the 3D models were designed by me using blender (\href{https://www.blender.org/}{www.blender.org}), an open source 3D creation software.}.
 
 I choose to contextualize the environment as a cocktail party on the beach.
 This decision is mainly influenced by the intent to create a shared space where people can interact and dynamically form conversational groups.
@@ -350,6 +351,7 @@ Note that cocktail parties are common examples for such environments in the scie
 The design of the player avatar adhere to the following principles.
 First, the avatars are designed in a cartoon-ish and unrealistic style.
 This is inline with similar decision by commercial social VR products\footnote{AltspaceVR blog post on avatar design: \href{https://altvr.com/social-communication-design-in-vr/}{altvr.com/social-communication-design-in-vr}.} \citep{Ghosh2017, Pot2016}.
+For reference, the social VR platform from facebook, \fnurl{Facebook Spaces}{https://www.facebook.com/spaces}, is presented in figure \ref{fig:system:3d_design:facebook_spaces}.
 Also, attempts to design a realistic avatar often elicit feelings of eeriness and revulsion.
 This effect, also known as the \textit{uncanny valley}, suggests that when robots become more human like, our empathy to them increase.
 It is true until a point of high similarity to humans where there is a ``valley'' in the empathy curve \citep{Mori1970}.
@@ -388,9 +390,20 @@ The simulator client uses the same environment and avatars, but is controlled by
 
 \begin{figure}
   \centering
-  \includegraphics[width=.5\textwidth]{../graphics/environment_demo.png}
-  \caption{Example view of the virtual environment, showing the cocktail party context and the avatar design.}
-  \label{fig:system:environment_demo}
+  \begin{subfigure}{.4\textwidth}
+    \centering
+    \includegraphics[height=6cm]{../graphics/environment_demo.png}
+    \caption{Unsocial VR}
+    \label{fig:system:3d_design:unsocial_vr}
+  \end{subfigure}%
+  \begin{subfigure}{.6\textwidth}
+    \centering
+    \includegraphics[height=6cm]{../graphics/facebook_spaces.jpg}
+    \caption{Facebook Spaces}
+    \label{fig:system:3d_design:facebook_spaces}
+  \end{subfigure}
+  \caption{Example view of the virtual environment and the avatar design for Unsocial VR on the left and Facebook Spaces on the right.}
+  \label{fig:system:3d_design}
 \end{figure}
 
 \section{Identification Game Server}
