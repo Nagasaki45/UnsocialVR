@@ -85,6 +85,8 @@
 \setcounter{page}{1}  % Start page count from here
 \chapter{Introduction}
 
+TODO getting bored in meetings as main motivation.
+
 In Infinite Jest, David Foster Wallace argues that ``Good old traditional audio-only phone conversations allowed you to presume that the person on the other end was paying complete attention to you while also permitting you not to have to pay anything even close to complete attention to her.'' \citep{Wallace1996}.
 He continues and claims that we are addicted to this illusion, and that's why video conferencing always feel so awkward - we need to pretend to listen all the time.
 And if we think about it, even in face to face conversation we must always adhere to these social rules, and signal our complete attention when someone is talking to us.
@@ -233,6 +235,10 @@ Their model uses the speaker talking state, speaker-listener eye contact, and, i
 A year later, \citeauthor{Kok2012} suggested some improvements to the same model to make it more robust to different speaker behaviours (\citeyear{Kok2012}).
 Note that there is almost no direct comparison between the different models, mainly due to the use of different datasets and different evaluation methods \citep{Morency2008}.
 
+\section{Multiparty social interaction}
+
+TODO \citep{Goodwin1979, Healey2009, Battersby2010}.
+
 Before ending this section, it is important to discuss the theoretical differences between conversing parties in a social interaction.
 Some of the roles in a conversation are more obvious, like the role of the speaker.
 The differences between other roles, however, might be harder to tell.
@@ -295,7 +301,7 @@ During the early development phases of the system the faked behaviour used a pre
 This pre-recorded movement was looped to support an arbitrary length of faking periods.
 In addition, random time lag was added for the recorded movement of each user to make sure no two fakers look the same.
 
-At that time, I ran an unofficial pilot study with 3 co-workers to expose user experience issues with the system.
+At that time, I ran a pilot study with 3 co-workers to expose user experience issues with the system.
 Participants in the pilot were not instructed to do any specific task in the virtual environment, nor fill any questionnaire before or after the experience.
 In addition, no measurements were recorded.
 Instead, I was interested to hear from the participants about their experience with the system, and probed them to emphasis their experience with the faking mechanism.
@@ -310,6 +316,11 @@ When the user trigger the faked behaviour this recorded movement will start to p
 To make sure that there is no jump in the loop the recorded movement is first played backwards from the last recorded sample.
 Whenever the playing head reaches the end of the recorded movement the playing direction flips.
 More implementation details are described in section \ref{system:fake_behaviour_generator}.
+
+Whereas preserving the personal body language and posture is the most obvious improvement, the proposed solution offers one additional, more subtle, advantage.
+As already discussed, the role in the conversation have implications on the interactant body language.
+Addressees, for example, are expected to behave differently than side-participants.
+The new baseline recorded movement guarantees to match the last conversational role of the faker.
 
 \subsection{Looking at the speaker}
 
@@ -339,17 +350,18 @@ I choose to contextualize the environment as a cocktail party on the beach.
 This decision is mainly influenced by the intent to create a shared space where people can interact and dynamically form conversational groups.
 Note that cocktail parties are common examples for such environments in the scientific literature \citep{Setti2015}.
 
-Three principles guided the design of the player avatar.
-First, attempts to design a realistic avatar often elicit feelings of eeriness and revulsion.
+The design of the player avatar followed the following principles.
+First, the avatars are designed in a cartoon-ish and unrealistic style.
+This is inline with similar decision by commercial social VR products \citep{Ghosh2017, AltspaceVR2016, Pot2016}.
+Also, attempts to design a realistic avatar often elicit feelings of eeriness and revulsion.
 This effect, also known as the \textit{uncanny valley}, suggests that when robots become more human like, our empathy to them increase.
 It is true until a point of high similarity to humans where there is a ``valley'' in the empathy curve \citep{Mori1970}.
-So, to stay away from the uncanny valley, I choose to design the avatar in a cartoon-ish, unrealistic style.
-This is inline with similar decision by commercial social VR products \citep{Ghosh2017, AltspaceVR2016, Pot2016}.
 Second, the avatar is made out of 4 body parts: head, 2 hands, and chest.
 The visibility of the head and hands in the virtual environment immerses the players in the experience and makes them more aware of their bodies.
 The chest, however, is there mainly to signal the body orientation and therefore attention and sense of belonging to a conversation.
 Originally, the cartoon style of the avatar made the orientation unclear.
 To solve this, a belt with a buckle helps indicating the body direction.
+Third, to avoid unnecessary biases the avatars are gender-natural.
 Lastly, the mouth is animated when the player is speaking.
 All players have the same avatar, so it is often hard to distinguish them.
 Having a simple and concrete indication for who is currently speaking makes the interaction more fluent and natural.
@@ -363,6 +375,10 @@ In addition, while a player is faking active listening is approached by another 
 
 The client is developed using the free game development platform \fnurl{Unity3D}{https://unity3d.com/}.
 The integration of the hardware with Unity3D is seamless, and both have large communities of developers, making Unity3D a natural technological choice.
+
+A voice chat is implemented into the client.
+Early versions of the client muted players when they started faking, but in a pilot study this behaviour was found to be complex and non-intuitive for the users.
+Therefore, voice chat is always open, regardless of whether the player is faking or not.
 
 The client application communicate with two other components over the network.
 The first is the Identification Game Server.
@@ -553,7 +569,8 @@ Due to the absence of literature about this specific use of automated social beh
 
 Participants in the hot air balloon task reached a consensus by 10:41 to 14:49 minutes.
 During that time, the ratio of correct accusations from all accusations made was 0.285.
-Although this value is surprisingly low, it is above chance level, as the average ratio of time spent faking out of the entire session length is 0.22.
+This ratio, referred as \textit{detection performance}, is used interchangeably from now on to describe individual participants or the entire sample.
+Although this value is surprisingly low, it is probably above chance level, as the average ratio of time spent faking out of the entire session length is 0.22.
 The ratio of faking behaviours that started and finished without any accusation was 0.787.
 As shown in figure \ref{fig:analysis:hist_time_faking}, longer faking periods were easier to detect ($t(341) = -4.826$, $p < .001$).
 
@@ -564,7 +581,8 @@ As shown in figure \ref{fig:analysis:hist_time_faking}, longer faking periods we
   \label{fig:analysis:hist_time_faking}
 \end{figure}
 
-A correlation was found between talking and faking behaviours.
+No correlation was found between VR expertise and detection performance nor with faking behaviours.
+On the other hand, talking and faking behaviours found to correlate.
 More specifically, participants that talked a higher percentage of the experiment also faked active listening more time ($r(10) = 0.65$, $p < .05$) and for longer periods ($r(10) = 0.66$, $p < 0.05$).
 This relationship, that is shown is the left panel of figures \ref{fig:analysis:correlation_talking_ratio_vs_faking_time} and \ref{fig:analysis:correlation_talking_ratio_vs_faking_ratio}, is mainly affected by one outlier.
 Without the outlier there is no significant correlation, and the trend even change its general direction as shown in the right panel of figures \ref{fig:analysis:correlation_talking_ratio_vs_faking_time} and \ref{fig:analysis:correlation_talking_ratio_vs_faking_ratio}.
@@ -598,7 +616,7 @@ This is inline with the previous results that shows that detected faking behavio
 Similarly to the correlations found between talking and faking behaviours, this correlation is also affected by the same outlier, as shown in figure \ref{fig:analysis:analysis_correlation_faking_time_vs_faking_undetected}.
 In this case, again, removing the outlier makes the result insignificant.
 However, the outlier keeps the general trend, suggesting that the failure to get significance without the outlier is not due to different underlying characteristics but due to reduced statistical power.
-Therefore, I suspect that indeed, participant that choose longer periods of faking behaviour have less faked periods that complete without anyone noticing.
+Therefore, I suspect that indeed, participants that choose longer periods of faking behaviour have less faked periods that complete without anyone noticing.
 
 \begin{figure}
   \centering
@@ -607,13 +625,13 @@ Therefore, I suspect that indeed, participant that choose longer periods of faki
   \label{fig:analysis:analysis_correlation_faking_time_vs_faking_undetected}
 \end{figure}
 
-Analysis of familiarity between the participants shows a positive correlation between familiarity and the percentage of correct accusations ($r_s = 0.19$, $p < .001$).
+Analysis of familiarity between the participants shows a positive correlation between familiarity and the detection performance ($r_s = 0.19$, $p < .001$).
 This can be viewed in figure \ref{fig:analysis:analysis_pointplot_familiarity_vs_correct}.
 
 \begin{figure}
   \centering
   \includegraphics[width=.6\textwidth]{../graphics/analysis_pointplot_familiarity_vs_correct.pdf}
-  \caption{The familiarity effect on the ratio of correct accusations. Familiarity between participants was measured on a 1 to 5 likert scale, and found to positively correlate with detection accuracy.}
+  \caption{The familiarity effect on the ratio of correct accusations. Familiarity between participants was measured on a 1 to 5 likert scale, and found to positively correlate with detection performance.}
   \label{fig:analysis:analysis_pointplot_familiarity_vs_correct}
 \end{figure}
 
@@ -687,7 +705,7 @@ Participant 5, however, was \textit{\textquote{pressing `Accuse' loads}}.
 This comment is backed by quantitative data: whereas the average participant made an accusation every 21 seconds, participant 5 made one every 5 seconds, which is considered higher than 99\% of the players ($z = 3.02$).
 This is a result of partially misunderstanding of the scoring mechanisms.
 So, there is a chance that the participant actually manage to detect the automated head nods, but that this is hidden behind the excessive accusations.
-Overall, there is no clear evidence that any of the participants managed to improve their accusation performance based on faked head nods detection.
+Overall, there is no clear evidence that any of the participants managed to improve their detection performance based on faked head nods detection.
 
 Lastly, participant 15 pointed out in the comments the last mechanisms to fake listening: looking at the speaker.
 The participant detection performance was, however, lower than average, suggesting a failure to use this strategy to detect faked behaviour.
@@ -703,28 +721,35 @@ The participant detection performance was, however, lower than average, suggesti
 
 The evaluation of the system provides some relatively surprising results.
 The most prominent of them are the better than chance but nevertheless low accuracy in detecting faked active listening behaviours, and the high probability to start and finish faking without being noticed.
-This suggests that the underlying mechanisms that automate the active listening behaviour usually manage to trick the players, and therefore are viable and useful for ECAs creation.
+This suggests that the underlying mechanisms that automate the active listening behaviour usually manage to trick the players, and therefore are viable and useful for ECAs research.
 Furthermore, two of the underlying mechanisms are unique for the current system.
 First, and as previously discussed, there is almost no research in ECAs in multiparty social contexts.
 Always rotating towards the speaker was chosen as the simplest approximation for the automated agent attention.
 As the analysis of the participants strategies shows, participants didn't manage to use this as a clue for detecting faked behaviour.
 Therefore, I would argue that this mechanism supports the automated behaviour and without a more sophisticated attention mechanism it is essential for the faked behaviour credibility.
-Second, no research in ECAs deals with transitioning between human and automated controlled behaviours.
+Second, no research in ECAs deals with transitioning between human controlled and automated avatars.
 The looped recorded baseline was mainly used to support this transition.
 From the results, it seems that some of the participants managed to detect the loop and use that to differentiate between real and faked behaviour.
-Therefore, improving the baseline behaviour might be the most important development path to achieve more reliable active listening behaviour.
-Still, the generally low detection accuracy shows that the recorded baseline mechanism is not too obvious nor easy to detect.
+Therefore, improving the baseline behaviour might be the most important development path to achieve more reliable active listening behaviour for similar systems.
+Still, the generally low detection performance shows that the recorded baseline mechanism is not too obvious nor easy to detect.
+In addition, knowing that longer faking periods increase the chance of being detected implies that transition between real and faked behaviour were hard to detect.
+Otherwise, participants would detect faked behaviours immediately, causing the faking period length to have insignificant effect.
 
 Another surprising result is related to the backchannel behaviours implemented in this project.
 I used only a small set of features and applied a single, simple, animation to the avatar.
 Still, no participant managed to detect the faked behaviour by noticing the automated head nods.
 
-Lastly, the results demonstrate clear positive correlation between participants familiarity and detection accuracy.
-It might be interesting to explore further what cues helped familiar participants to improve their detection of faked behaviours.
-I can only assume that participants manage to notice a decreased attention to the conversation indicated by verbal cues (e.g. ``er'' or ``ehh'' utterances).
-The verbal cues from known participants might be more expected.
-Similar reasoning might be applied to the body language with relation to the baseline recorded behaviour.
-A future study might shed more light on this phenomena.
+Also, the results demonstrate clear positive correlation between participants familiarity and detection performance.
+One interpretation of this result is that participants that are familiar with each other form more accurate expectations for backchannel behaviours.
+These expectations can lead them to notice body movements that are caused by the automated mechanisms.
+Alternatively, they might be able to notice a decreased attention to the conversation indicated by verbal cues (e.g. ``er'' or ``ehh'' utterances).
+A future study might further explore what cues helped familiar participants to improve their detection of faked behaviours.
+
+Lastly, it is important to note that with the current implementation of the system the voice chat between the participants is always open.
+This implies that participants could fake active listening behaviours will continue talking.
+As this evaluation shows, participants used this capability of the system for their advantage in the individual token collection task.
+The current research focuses on understanding the possibilities in dropping from the conversation and letting an automated behaviour manage ones avatar.
+A further research should be carried out to understand the effects of mixing automated behaviour, such as body movement, with real one, such as voice.
 
 
 \chapter{General discussion}\label{general_discussion}
@@ -733,6 +758,8 @@ A future study might shed more light on this phenomena.
 \chapter{Conclusions}\label{conclusions}
 
 Use VR to investigate new ways of communication, and new social behaviours that are impossible in face to face conversation.
+
+A platform to investigate automated behaviours.
 
 \section{Future work}
 
