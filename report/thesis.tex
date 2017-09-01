@@ -783,32 +783,49 @@ A further research should be carried out to understand the effects of mixing aut
 
 \chapter{Conclusions}\label{conclusions}
 
-Use VR to investigate new ways of communication, and new social behaviours that are impossible in face-to-face conversation.
+The current study suggested that the ability to fake attention in telephony might be transferable to other media.
+By embedding this idea in a collaborative virtual environment it explored how we signal attention and what underlying mechanisms can be used to automate these social signals.
+Whereas some of the mechanisms presented in this study are known to the scientific community, others are completely new and are unique to the current project.
 
-A platform to investigate automated behaviours.
+An experiment shows that accurate detection of faked behaviour is surprisingly hard, and that most faking periods go undetected.
+Inline with previous studies, the results suggest that head nods can be automated based on surface features using ML techniques.
+More interestingly, automatic rotation towards the speaker found to be a simple but convincing model of attention for automated agents in multiparty conversations.
+The credibility of the proposed baseline recorded movement, however, is still unclear.
+On one hand, its contribution to the reliability of automated behaviour is unquestioned, but on the other, repetitive movements sometimes gave away the fact that a user is faking.
+Overall, the mechanisms for faking active listening behaviours are credible enough to trick users most of the time.
+Therefore, future studies and social VR products might implement them to automate social behaviour.
+
+More generally, this research demonstrated a possible use case for VR technologies.
+The system developed in this project can be modified to test a wide array of social phenomena that are hard to test in other conditions.
+Face-to-face conversations have their limitations.
+Therefore, the use of VR in social studies can lead us to better understand social interaction in an increasingly technological world.
 
 \section{Future work}
 
-Many possible improvements to the idea and implementation.
-Faking social behaviour is only one possibility.
-Auto swap positioning.
+The current study only scratches the surface of exploring faked attention in CVEs.
+First, as already suggested, there is room for improving the baseline recorded behaviour.
+One option is to train an ML model on raw movement data.
+Then, instead of playing back recorded movement with animated head nods on top, the entire movement and backchannels will be recreated by the ML algorithm.
+Another option is to use a larger set of animated movements and continuously trigger appropriate animations using either ML model or hand-crafted rules.
 
-The system developed in the current study suggests several interesting evaluation paths.
-The first goes back to the comparison with traditional telephony.
-Participants in phone conversation can always decide that it's time to end the call.
-It is not the same as the decision to stop listening and start doing something else during the phone call.
-Therefore, we may assume that when participants fake attention they do so with the intent to keep the conversation going.
-This idea is transferable to the virtual environment developed in this study:
-Participants can either leave the conversation by walking away, or start faking active listening and do whatever they want.
-With that in mind, the system can be used to understand if faking active listening affect the level of conversations, and if so, how.
-Extending this idea further, it might be interesting to check how the possibilities exposed by the system affect the overall group dynamics in the cocktail party context.
+The system developed in this project might also be used to compare different ECAs design.
+For example, \citeauthor{Bailenson2005} suggest that listeners response to an ECA is more positive when the agent automatically mimics the listeners body language with 4 seconds lag (\citeyear{Bailenson2005}).
+This idea somewhat contradicts theories that highlight the differences in body language between interactants based on their role in the conversation (see TODO).
+If these theories are correct, applying the body language of a listener to a speaker agent should generate inappropriate behaviour.
+With relatively small modifications to the current system it might be possible to compare these ideas by automating avatars using different algorithms and measuring faking detection.
+More specifically, it might be interesting to compare the current faking behaviour with the one that suggested by \citeauthor{Bailenson2005}, and with agents replicating randomly chosen non-faking player.
 
-\begin{itemize}
-  \item Require attention based on end-of-turn analysis instead of when someone is speaking with me.
-  \item Jumping seamlessly between autopilots.
-  \item Playback addressee in 4 seconds delay a la \cite{Bailenson2005}.
-  \item Train an ML algorithm on VR data, not to predict head nods, but to generate hands and head transforms directly.
-\end{itemize}
+Results show a significant effect of familiarity between users on their ability to accurately detect faked behaviours.
+Apparently, it is easier to notice when someone familiar is faking attention.
+The reasons behind this effect are not clear.
+A further study should be conducted to investigate this effect further.
+
+Lastly, the current study analyzed on surface level features, like detection performance and faking time.
+More interestingly, future studies might explore higher-level effects of faking on the conversation.
+For example, are groups produce inferior decisions when faking is possible?
+How it affects the decision making process?
+Does it allow users that otherwise would be bored and inattentive to still take part in the conversation?
+A positive answer to any of these questions might provide a sufficient reason for implementing the ideas proposed in this study in future technologies for group communication.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
