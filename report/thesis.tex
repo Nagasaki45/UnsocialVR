@@ -79,11 +79,9 @@
 %%
 \acknowledgements{%
   I wish to thank my supervisor Patrick Healey for his helpful and insightful guidance at every stage of the project, and for the positive feedback along the way.
-  Huge thanks to my host Stuart Cupit at Inition for his support on this project.
+  Huge thanks to my host Stuart Cupit from Inition for his support on this project.
   Special thanks to Pedro Souse from Inition who helped and directing me with technical advice, without him I wouldn't have the knowledge to make this project a reality.
-  Thanks also to Inition's developers, Grigor and Kevin, for helping me learning so many new things in such a short time.
-  For George and Peter for helping in setting up my experiments.
-  For the rest of the people at Inition for their support, valuable feedback, and welcoming attitude.
+  Thanks also to Inition's developers, Grigor and Kevin, for helping me learning so many new things in such a short time, for George and Peter for helping in setting up my experiments, and for the rest of the people at Inition for their support, valuable feedback, and welcoming attitude.
   Thanks for Karen Shoop and Becky Stewart that provided guidance in the early stages of the project.
   Finally, thanks to the rest of the MAT cohort for the many invaluable conversations on all aspects of the project.
 }
@@ -115,7 +113,7 @@ In Infinite Jest, David Foster Wallace argues that ``Good old traditional audio-
 He continues and claims that we are addicted to this illusion, and that's why video conferencing often feel so awkward --- we need to pretend to listen all the time.
 The implications are clear.
 Telephony, as a medium, allows us to do all those things we wish were possible in face-to-face conversations and skype calls without being caught.
-Furthermore, the telephony example highlightss the difference between leaving the conversation and faking attention.
+Furthermore, the telephony example highlights the difference between leaving the conversation and faking attention.
 It is always possible to tell the person on the other end that we need to leave, and must terminate the call.
 Choosing not to do so, but fake attention instead, shows our interest in keeping the conversation going.
 
@@ -128,8 +126,8 @@ Press a button on the handheld controller to starts the automated behaviours, an
 Users even get an on screen notification when someone is speaking directly to them, so they can return to the conversation elegantly.
 
 The Unsocial VR system might therefore shed a light on the ways we signal attention to others, what it takes to automatically replicate these social signals, and how it affect the conversation.
-As such, it is added to a growing list of social studies that chooses VR as a tool for research.
-More generally, it can be seen as a an environment to investigate complex multiparty social behaviours.
+As such, it is added to a growing list of social studies that choose VR as a tool for research.
+More generally, it can be seen as an environment to investigate complex multiparty social behaviours.
 
 Chapter \ref{literature_review} reviews the topics that form the basis for the current study.
 Chapter \ref{system_design_and_implementation} presents the design and development of a system that was implemented especially for this research, and includes detailed motivation for each design decision.
@@ -141,7 +139,7 @@ The report is concluded, in chapter \ref{conclusions}, by highlighting the main 
 
 The current study is based on multidisciplinary research.
 It is embedded in a collaborative virtual environment (CVE), and employs asymmetric rendering techniques that are inspired by transformed social interaction (TSI) theories.
-In addition, it implements mechanisms to fake active listening behaviours that are based on research in the field of embodied conversational agents (ECAs) and multiparty conversations.
+In addition, it implements mechanisms to fake active listening behaviours that are based on research in the field of embodied conversational agents (ECAs) and studies of multiparty conversations.
 
 \section{Collaborative virtual environments}
 
@@ -158,11 +156,11 @@ In multiparty conversation, its shortcomings include decreased turn taking effic
 CVEs attempt to solve some of these issues by exposing socially significant cues in the virtual environment.
 One of these cues, that is not redundantly coded in speech, and is usually problematic in video conferencing, is gaze.
 CVEs that convey gaze give clear indication of who is talking with whom, and therefore simplify the turn taking management \citep{Vertegaal1999, Vertegaal2003}.
-In addition, researchers show that exposing the users eye gaze in the virtual environment improved their lying detection \citep{Steptoe2010}.
+In addition, researchers show that exposing the users eye gaze in the virtual environment improve their lying detection \citep{Steptoe2010}.
 
 Other studies explore the effects of non-verbal cues on communication.
 For example, participants in CVEs that track and render head movements report higher social presence compared to environments with static, non-moving, heads.
-Participants in the first condition also report that they like each other more, and look more on the other participant head \citep{Bailenson2002}.
+Participants in the first condition also report that they like each other more, and look more on the other participant's head \citep{Bailenson2002}.
 Similarly, when trying to communicate the meaning of a word, users use less worlds when their listener's hand movements are presented in the virtual environment \citep{Dodds2011}.
 In addition, when the listener's hands are static the speaker choose to skip words more frequently, without communicating their meaning.
 
@@ -175,17 +173,17 @@ The reason is probably the lack of available consumer VR headsets to support thi
 Regardless, introducing eye tracking to social VR seems to be a natural step forwards \citep{Langley2017}.
 Yet again, the lessons learned from research in non-verbal cues in CVEs are inline with the market demands.
 
-The use of CVEs is, however, not bounded to telecommunication and social media.
+The use of CVEs, however, is not bounded to telecommunication and social media.
 They are also a viable tool for social research.
 Traditionally, controlled experiments often explore psychological and social concepts out of context, in a laboratory environment.
 Consequently, the ecological validity of the results might be unclear.
 VR provides a possible remedy to this issue.
 With it, controlled experiments can preserve the social context and therefore increase the results' ecological validity \citep{Loomis1999}.
-Researchers also suggest that VR might solve additional common issues in psychology research: the lack of replications, and unrepresentative sampling.
+Researchers also suggest that VR might solve additional common issues in psychology research: the lack of replications, and unrepresentative sampling \citep{Blascovich2002}.
 First, when the entire experiment is done in VR, instead of a complex laboratory setup, replication studies might be easier to perform.
 Second, consumer VR products are soon to become widespread, and with the emergence of social VR more users interact daily with VR content\footnote{VR market forecast: \href{http://uk.businessinsider.com/virtual-reality-headset-sales-explode-2015-4}{uk.businessinsider.com/virtual-reality-headset-sales-explode-2015-4}.}.
 In the near future, VR might help mitigating the unrepresentative sampling issue by allowing scientist to run experiments with remote participants.
-With the right consumer technology, it is not impossible that participation in immersive social experiments will become as simple as filling an online survey \citep{Blascovich2002}.
+With the right consumer technology, it is not impossible that participation in immersive social experiments will become as simple as filling an online survey.
 
 \section{Transformed social interaction}
 
@@ -205,7 +203,7 @@ The CVE itself can gather socially relevant information, process it, and present
 For example, lecturers often try to spread their gaze evenly between the learners in a classroom.
 This should ensure that no learner is left behind, helps the lecturer in assessing the class understanding, and encourage participation.
 CVEs for remote learning can trace lecturers gaze and notify them when they are not spreading their gaze evenly.
-A study that implemented such CVE showed that lecturers spread their gaze more evenly, and suggested that it increased their ability to maintain joint attention \citep{Bailenson2008b}.
+A study that implemented such CVE showed that it helped lecturers spreading their gaze more evenly, and suggested that it increased their ability to maintain joint attention \citep{Bailenson2008b}.
 Lastly are modifications of the environment, also known as the contextual situation.
 This type of TSI methods is probably the least investigated.
 An example, however, might be a system designed to support rewinding of the conversation to view past time events.
@@ -268,7 +266,7 @@ Their model uses the speaker talking state, speaker-listener eye contact, and, i
 A year later, \citeauthor{Kok2012} suggested some improvements to the same model to make it more robust to different speaker behaviours (\citeyear{Kok2012}).
 Note that there is almost no direct comparison between the different models, mainly due to the use of different datasets and different evaluation methods \citep{Morency2008}.
 
-\section{Active listening in multiparty conversations}
+\section{Multiparty conversations}
 
 In any single moment a participant in a dyadic conversation is either a speaker or a listener.
 Understanding multiparty conversations, however, requires a larger set of roles.
@@ -298,14 +296,13 @@ Two studies, however, are worth mentioning, as they model agents to perform in m
 \citeauthor{Matsusaka2001} present a robot that can join multiparty conversations (\citeyear{Matsusaka2001}).
 Apart from the implementation of a turn taking mechanism, the researchers chose to implement the robot as always looking at the speaker.
 In case of no current speaker, the robot uses the turn taking mechanism to anticipate the next speaker and rotate to that direction.
-In addition, this system restricted to 3 party conversations only.
+In addition, this system is restricted to 3 party conversations.
 Interestingly, the authors claim that when there is more than one side-participant, as implied by conversations with more than 3 parties, the modeling of the agent attention should take the other side-participant in mind, and these complexity is out of the scope of their research.
 A clear reasoning behind this statement and the decision to always rotate the robot towards the speaker are missing from the paper.
-According to the authors in more the authors claim
 A similar study was conducted by \cite{Fujie2009}.
 Their paper, again, describes a robot that can participate in multiparty conversation.
 The behaviour of the robot depends on its conversational role.
-Moreover, in some of the behaviours or optional, depending on the role, as demonstrated bellow.
+Moreover, depending on the role some of the behaviours are optional, as demonstrated bellow.
 As a speaker, the agent must choose an addressee to look at and reply to the former speaker.
 As an addressee, the agent must node appropriately and look at the speaker.
 And as side-participant, it has the option to look at the speaker and can either node or not.
@@ -330,7 +327,7 @@ In blue are the client side components.
 The components in green are client facing servers, and the red ones are background servers that process behavioural data to instruct the client facing servers how to operate.
 A thorough description of each component in the system is presented bellow.
 
-The code for the entire project is open sourced and \fnurl{available online}{https://github.com/Nagasaki45/UnsocialVR}.
+The source code for the entire project is open and \fnurl{available online}{https://github.com/Nagasaki45/UnsocialVR}.
 
 \begin{figure}
   \includegraphics[width=\textwidth]{../graphics/system_diagram.pdf}
@@ -368,7 +365,7 @@ The reason for that is that physical differences between people are recreated in
 Ignoring these and using the same movement for everyone allowed the participants to quickly learn to notice the pre-recorded behaviour.
 
 As a solution, the system always record the last few seconds of each user.
-When the user trigger the faked behaviour this recorded movement will start to play in a loop.
+When the user trigger the faked behaviour this recorded movement starts to play in a loop.
 To make sure that there is no jump in the loop the recorded movement is first played backwards from the last recorded sample.
 Whenever the playing head reaches the end of the recorded movement the playing direction flips.
 More implementation details are described in section \ref{system:fake_behaviour_generator}.
@@ -383,12 +380,12 @@ The new baseline recorded movement guarantees to match the last conversational r
 With the head nods and the baseline recorded movement in place only modeling of attention is missing.
 A basic approximation of attention in a conversation is to always look at the speaker, as suggested by \cite{Fujie2009}.
 Therefore, the last underlying mechanism for the faked behaviour is to always slowly rotate towards the user that is currently speaking.
-If no one is speaking, faking avatars rotate towards the last speaker.
+If no one is speaking, faking avatars rotate towards the last known speaker.
 
 \section{Hardware}
 
 The hardware used in this project is the \fnurl{HTC Vive}{https://www.vive.com/uk/}, which bundles together a headset and two hand controllers.
-In addition, a \fnurl{Vive tracker}{https://www.vive.com/uk/vive-tracker/} is used to track the chest position of each participant.
+In addition, a \fnurl{Vive tracker}{https://www.vive.com/uk/vive-tracker/} is used to track the chest position of each user.
 This setup provides suitable features for the project compared to products like the \fnurl{Oculus Rift}{https://www.oculus.com/rift/}, or simpler VR solutions like \fnurl{Google Daydream}{https://vr.google.com/daydream/} or \fnurl{Samsung Gear VR}{http://www.samsung.com/global/galaxy/gear-vr/}.
 Specifically, the system make use of the following features of the headset that are absent from other products:
 
@@ -413,10 +410,10 @@ For reference, the social VR platform from facebook, \fnurl{Facebook Spaces}{htt
 Also, attempts to design a realistic avatar often elicit feelings of eeriness and revulsion.
 This effect, also known as the \textit{uncanny valley}, suggests that when robots become more human like, our empathy to them increase.
 It is true until a point of high similarity to humans where there is a ``valley'' in the empathy curve \citep{Mori1970}.
-The unrealistic avatars made it easy to stay away from the uncanny valley.
+Therefore, the unrealistic avatars made it easy to stay away from the uncanny valley.
 Second, the avatar is made out of 4 body parts: head, 2 hands, and chest.
 The aim of this is to immerse the players in the experience and makes them more aware of their bodies.
-In addition, the chest is also used to signal the body orientation and therefore might indicate attention and provide sense of belonging to a conversation.
+In addition, the chest is used to signal the body orientation and therefore might indicate attention and provide sense of belonging to a conversation.
 Originally, the cartoon style of the avatar made the orientation unclear.
 To solve this, a belt with a buckle helps indicating the body direction.
 Third, to avoid unnecessary biases the avatars are gender-natural.
@@ -507,7 +504,7 @@ Due to the better performance of the later, and with the absence of openly avail
 Using more features, such as prosody \citep{Ward2000} or speaker gestures \citep{Gratch2006}, could probably improve the model.
 However, the simpler model described below was found to be accurate enough.
 
-It is important to note that there is an expected difference in social behaviour between an addressee and a side-participant \citep{Clark1982}.
+It is important to note that there is an expected difference in social behaviour between an addressee and a side-participant \citep{Clark1982, Healey2009, Battersby2010, Healey2013}.
 Although the addressee can fake active listening, in the context of the current research it is more common for side-participants to fake and wonder around, as they are not required to provide verbal response to the speaker.
 However, there is much less literature about predicting side-participants active listening behaviours, and even less available resource for training a data-driven model.
 With that in mind, the project predicts the addressee backchannels and applied them to both addressees and side-participants alike.
@@ -527,8 +524,8 @@ I tried to train three different ML models.
 First was a Linear Support Vector Machine Classifier (LinearSVC) model from the open source software package Scikit-learn \citep{Pedregosa2011}.
 Using the test portion of the dataset, the model precision (percentage of correct predictions) was high.
 However, the recall (correct predictions out of correct predictions and misses) was very low.
-In fact, the model learned to almost never predict a backchannel.
 Visually comparing the predictions to the dataset reveals that it failed to model the data correctly.
+In fact, the model learned to almost never predict a backchannel.
 Second was a Long Short-Term Memory (LSTM) deep neural network from the open source software package Keras \citep{Chollet2015}.
 The results were similar to these of the LinearSVC model.
 Lastly, I trained a K Nearest Neighbors classifier ($K = 5$) with Scikit-learn.
@@ -553,12 +550,13 @@ When the predicted probability for a backchannel accedes the threshold, a backch
 
 This model, with the variable threshold algorithm, is written in \fnurl{Python}{https://www.python.org/} and exposes an HTTP endpoint.
 The code for this server is open sourced and \fnurl{available online}{https://github.com/Nagasaki45/backchannel}.
+
 The Main Game Server repeatedly fetches all of the currently faking players from the server cache and sends them, together with information about the speaker talking state and gaze, to the Active Listening Server.
 The returned predictions are stored back in the Main Game Server cache.
 
 \section{Fake Behaviour Generator}\label{system:fake_behaviour_generator}
 
-The Fake Behaviour Generator integrate the predicted head nods from the Active Listening Sever with a natural baseline recorded movement.
+The Fake Behaviour Generator integrates the predicted head nods from the Active Listening Server with a natural baseline recorded movement.
 It is designed to provide a smooth and socially appropriate movement for the automated behaviour.
 For each player, the position and orientation of the head and hands, relatively to the chest, is always recorded.
 This data is kept in a 2 seconds buffer.
@@ -578,16 +576,16 @@ The system described in the previous chapter suggests several interesting evalua
 In the current study, I choose to follow the extensive research already done in the field of ECAs \citep{Nishimura2007, Bevacqua2008, Gratch2007, Huang2011, Lee2006, Poppe2013} and frame the evaluation in that context.
 Whereas all of these studies assess interaction with an automated agent, in the current project the interaction is with an avatar that switches between human and automated control.
 In addition, research in the field of ECAs doesn't usually explore multiparty social interactions.
-These differences opens up ways to explore the properties of the transition between the two modes, and the effects of the social context.
+These differences open up ways to explore the properties of the transition between the two modes, and the effects of the social context.
 More specifically, can state of the art ECA techniques (e.g. automated backchannel behaviours) seamlessly replace human controlled avatars?
 If so, for how long can automated behaviour replace us without anyone noticing?
 What underlying mechanisms are required to support such automated behaviour?
 And more importantly, what are the limitations of such methods and what can they tell us about active listening behaviours?
 
 This chapter presents a controlled experiment that was done to evaluate the automated active listening properties of the system, with emphasis on the properties of the transition into the automated behaviour.
-Specifically, I assess the time it takes for participants to detect a faked behaviour, the detection accuracy, and how are these affected by familiarity between participants.
+Specifically, I assess the detection accuracy and how it is affected by familiarity between participants.
 In addition, the participants strategies for detecting faked behaviour are analyzed and compared to their performance.
-This information have the potential to explain what underlying mechanism more easily expose the automated behaviour.
+This information have the potential to explain what underlying mechanism more easily exposes the automated behaviour.
 
 Note that the experiment design bellow contains only one condition.
 Therefore, most of the results are descriptive statistics of the system and correlations between different measurements.
@@ -639,7 +637,7 @@ The experiment started by each participant filling a pre-experience questionnair
 Then, the features and functions of the system were carefully explained using the instructions sheet found in appendix \ref{appendix:interface}.
 Later, the participants entered the VR environment for 10 minutes familiarization session, after which the total score of each participant for this session was revealed.
 Participants were encouraged to ask questions about the system to make sure they fully understand how to use the interface to operate their avatar.
-Then, the hot air balloon task was explained and the main experiment session was started.
+Then, the hot air balloon task was explained and the main experiment session started.
 I instructed the participants to get to an agreement in up to 15 minutes.
 After the participants formed a consensus, the VR experience stopped, and the participants filled a post-experience questionnaire (see appendix \ref{appendix:questionnaire:post}).
 
@@ -811,7 +809,7 @@ The looped recorded baseline was mainly used to support this transition.
 From the results, it seems that some of the participants managed to detect the loop and use that to differentiate between real and faked behaviour.
 Therefore, improving the baseline behaviour might be the most important development path to achieve more reliable active listening behaviour for similar systems.
 Still, the generally low detection performance shows that the recorded baseline mechanism is not too obvious nor easy to detect.
-In addition, knowing that longer faking periods increase the chance of being detected implies that transition between real and faked behaviour were hard to detect.
+In addition, knowing that longer faking periods increase the chance of being detected implies that the transition between real and faked behaviour were hard to detect.
 Otherwise, participants would detect faked behaviours immediately, causing the faking period length to have no effect.
 
 Another surprising result is related to the backchannel behaviours implemented in this project.
@@ -870,7 +868,7 @@ Apparently, it is easier to notice when someone familiar is faking attention.
 The reasons behind this effect are not clear.
 A further study should be conducted to investigate this effect further.
 
-Lastly, the current study analyzed on surface level features, like detection performance and faking time.
+Lastly, the current study analyzed surface level features, like detection performance and faking time.
 More interestingly, future studies might explore higher-level effects of faking on the conversation.
 For example, are groups produce inferior decisions when faking is possible?
 How it affects the decision making process?
