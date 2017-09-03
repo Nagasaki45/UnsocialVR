@@ -251,25 +251,49 @@ Their model uses the speaker talking state, speaker-listener eye contact, and, i
 A year later, \citeauthor{Kok2012} suggested some improvements to the same model to make it more robust to different speaker behaviours (\citeyear{Kok2012}).
 Note that there is almost no direct comparison between the different models, mainly due to the use of different datasets and different evaluation methods \citep{Morency2008}.
 
-\section{Multiparty social interaction}
+\section{Active listening in multiparty conversations}
 
-TODO \citep{Goodwin1979, Healey2009, Battersby2010} and rewrite opening sentence.
-
-Before ending this section, it is important to discuss the theoretical differences between conversing parties in a social interaction.
-Some of the roles in a conversation are more obvious, like the role of the speaker.
-The differences between other roles, however, might be harder to tell.
+In any single moment a participant in a dyadic conversation is either a speaker or a listener.
+Understanding multiparty conversations, however, requires a larger set of roles.
+Some of these are more obvious, like the role of the speaker, whereas the differences between other roles might be harder to tell.
 According to \citeauthor{Clark1982}, apart from the speaker, participants in a conversation can take a role of addressees, side-participants, and over-hearers (\citeyear{Clark1982}).
 Put simply, addressees are the listeners that the speaker voice is directed to.
 Side-participants are the listeners that the speaker wish to inform when speaking with the addressees.
-Although they are usually not expected to take the floor, they are an important part of the conversation.
-The speaker takes the side-participants understanding in mind, and expects them to confirm their understanding, often through non-verbal cues (TODO find ref).
+By doing so, the accumulated knowledge of the conversation is shared between all of its participants.
+The side-participants are usually not expected to take the floor.
 Over-hearers are listeners that the speaker have no interest in them hearing the conversation.
 They are less relevant for the current study and thus won't be further discussed.
 The roles are usually assigned to the participants, implicitly, by the speaker.
 
-Most of the current research in backchannels and active listening behaviour is concentrated on two party conversations.
-Therefore, side-participants active listening behaviours are much less investigated, understood, and modeled.
-TODO present \citep{Matsusaka2003, Fujie2009}.
+Not surprisingly, experimental studies found behavioural differences between addressees and side-participants.
+Speakers often change orientation and assign the addressee role to side-participants if they provide more backchannels than the addressees \citep{Goodwin1979}.
+Another study showed that when speakers look at side-participants, the side-participants often look back at the speaker.
+One the other hand, the same doesn't apply for addressees.
+When the speaker rotate from them and towards the side-participants they usually keep looking at the speaker \citep{Healey2009}.
+A follow up study by the same researchers confirmed the common belief that in 3 party conversations addressees usually look at the speaker.
+Interestingly, the side-participants are equally likely to look at the addressee.
+This finding disagree with the common assumption that side-participants look where the speaker is looking \citep{Battersby2010}.
+Moreover, unlike addressees, side-participants usually suppress backchannels as the speaking rate increases \citep{Healey2013}.
+
+To my knowledge, these findings were never used for automating ECAs.
+Most of the efforts in ECAs research are currently concentrated on two party conversations.
+Two studies, however, are worth mentioning, as they model agents to perform in multiparty contexts.
+\citeauthor{Matsusaka2001} present a robot that can join multiparty conversations (\citeyear{Matsusaka2001}).
+Apart from the implementation of a turn taking mechanism, the researchers chose to implement the robot as always looking at the speaker.
+In case of no current speaker, the robot uses the turn taking mechanism to anticipate the next speaker and rotate to that direction.
+In addition, this system restricted to 3 party conversations only.
+Interestingly, the authors claim that when there is more than one side-participant, as implied by conversations with more than 3 parties, the modeling of the agent attention should take the other side-participant in mind, and these complexity is out of the scope of their research.
+A clear reasoning behind this statement and the decision to always rotate the robot towards the speaker are missing from the paper.
+According to the authors in more the authors claim
+A similar study was conducted by \cite{Fujie2009}.
+Their paper, again, describes a robot that can participate in multiparty conversation.
+The behaviour of the robot depends on its conversational role.
+Moreover, in some of the behaviours or optional, depending on the role, as demonstrated bellow.
+As a speaker, the agent must choose an addressee to look at and reply to the former speaker.
+As an addressee, the agent must node appropriately and look at the speaker.
+And as side-participant, it has the option to look at the speaker and can either node or not.
+In all roles, if a target object is discussed the agent must look at it or point to it.
+This basic set of rules reflects some of the findings of \cite{Healey2009} and \cite{Battersby2010}, and might provides good starting point for automating agents in multiparty contexts.
 
 
 \chapter{System design and implementation}\label{system_design_and_implementation}
