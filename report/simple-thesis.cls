@@ -198,7 +198,6 @@ This dissertation is submitted in partial fulfilment of the requirements for the
 \begin{lrbox}{\simple@logo}
 \hspace*{\simple@logorightnudge}\includegraphics[width=73mm]{\@affiliationlogo}
 \end{lrbox}
-
 %% THESIS TITLE box
 \newsavebox{\simple@title}
 \begin{lrbox}{\simple@title}
@@ -252,6 +251,11 @@ This dissertation is submitted in partial fulfilment of the requirements for the
 ~\vspace{.02\simple@titlepagevspace}\\
 {\usebox{\simple@logo}}\\
 \vspace{.28\simple@titlepagevspace}
+
+\Large%
+Advanced placement project report\\
+\vspace{.1\simple@titlepagevspace}
+
 {\usebox{\simple@title}}\\
 \vspace{.23\simple@titlepagevspace}
 {\usebox{\simple@authorcollege}}\\
