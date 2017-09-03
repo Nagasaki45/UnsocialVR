@@ -124,7 +124,7 @@ The report is concluded, in chapter \ref{conclusions}, by highlighting the main 
 
 The current study is based on multidisciplinary research.
 It is embedded in a collaborative virtual environment (CVE), and employs asymmetric rendering techniques that are inspired by transformed social interaction (TSI) theories.
-In addition, it implements mechanisms to fake active listening behaviours that are based on research in the field of embodied conversational agents (ECAs) and multiparty social interaction.
+In addition, it implements mechanisms to fake active listening behaviours that are based on research in the field of embodied conversational agents (ECAs) and multiparty conversations.
 
 \section{Collaborative virtual environments}
 
@@ -218,8 +218,8 @@ It welcomes them, and doesn't portray them as faking.
 
 \section{Active listening and embodied conversational agents}
 
-In order to make a conversation natural and engaging, conversing parties transmit a wide array of social cues.
-These signals can indicate the parties interest in keeping the conversation going, show mutual understanding, or the attempt to take the speaker turn.
+In natural and engaging conversations interactants transmit a wide array of social cues.
+These can indicate the parties interest in keeping the conversation going, show mutual understanding, or the attempt to take the speaker turn.
 Whereas conversations are usually considered to be a lingual phenomena, many of these social signals are non-verbal (e.g.\ head nods and facial expressions), or paralingual (e.g.\ the use of prosody or utterances like ``uh-huh'').
 In the context of active listening behaviours these are known as backchannels \citep{Yngve1970}.
 A study that gave listeners in a dialogue demanding tasks that were unrelated to the conversation showed decreased fluency of the speaker.
@@ -241,7 +241,7 @@ All of these studies use a set of carefully chosen rules to build their backchan
 Recent studies suggest data-driven approaches for backchannels modeling to improve predictive performance.
 \citeauthor{Nishimura2007} predict listener responses using the pitch and power of the speaker voice (\citeyear{Nishimura2007}).
 Their model, however, isn't constrained to predict backchannels only.
-A response generator uses audio features to choose between types of responses, like backchannels, collaborative completion (e.g. suggesting a keyword for the speaker), and more.
+A response generator uses audio features to choose between backchannels, collaborative completions (e.g. suggesting a keyword for the speaker), and other types of response.
 Their decision-tree model was trained using audio-recorded and annotated conversations of the RWC multimodal database \citep{Hayamizu1996}.
 \citeauthor{Morency2008} followed a similar path but with a more exhaustive set of audio-based features, and speaker-listener gaze annotations (\citeyear{Morency2008}).
 In addition, they encoded each feature with a set of encoding templates that modified the appearance of the feature over time.
@@ -364,7 +364,7 @@ The new baseline recorded movement guarantees to match the last conversational r
 \subsection{Looking at the speaker}
 
 With the head nods and the baseline recorded movement in place only modeling of attention is missing.
-A basic approximation of attention in a conversation is to always look at the speaker.
+A basic approximation of attention in a conversation is to always look at the speaker, as suggested by \cite{Fujie2009}.
 Therefore, the last underlying mechanism for the faked behaviour is to always slowly rotate towards the user that is currently speaking.
 If no one is speaking, faking avatars rotate towards the last speaker.
 
@@ -843,7 +843,7 @@ Another option is to use a larger set of animated movements and continuously tri
 
 The system developed in this project might also be used to compare different ECAs design.
 For example, \citeauthor{Bailenson2005} suggest that listeners response to an ECA is more positive when the agent automatically mimics the listeners body language with 4 seconds lag (\citeyear{Bailenson2005}).
-This idea somewhat contradicts theories that highlight the differences in body language between interactants based on their role in the conversation (see TODO).
+This idea somewhat contradicts theories that highlight the differences in body language between interactants based on their role in the conversation \citep[see][]{Healey2013}.
 If these theories are correct, applying the body language of a listener to a speaker agent should generate inappropriate behaviour.
 With relatively small modifications to the current system it might be possible to compare these ideas by automating avatars using different algorithms and measuring faking detection.
 More specifically, it might be interesting to compare the current faking behaviour with the one that suggested by \citeauthor{Bailenson2005}, and with agents replicating randomly chosen non-faking player.
