@@ -8,7 +8,7 @@ In Infinite Jest, David Foster Wallace argues that "Good old traditional audio-o
 
 In this project I experiment with VR technologies to see if this illusion of faking active listening is transferable to other mediums, and if so, how. In Unsocial VR participants share the same virtual environment, using the HTC Vive headset and controllers. They can converse freely and move around, and if you want to start faking listening to the conversation and just wander around, or even talk with other participants while faking, you absolutely can! The interface is very minimal, just hit a button on the controller to start faking active listening behaviours towards your current conversation, and release it when you want to stop faking. You will even get an on screen notification when someone is speaking directly to you, so you can return to the conversation elegantly.
 
-There are some extra details [on my site](http://www.tomgurion.me/unsocial-vr.html) and a short presentation [here](https://www.youtube.com/watch?v=K39_wlQ60-Y).
+There are some extra details [on my site](http://www.tomgurion.me/unsocial-vr.html) and a video presenting the project [here](https://youtu.be/tqbtOL5R4fw).
 
 ## Running the project
 
