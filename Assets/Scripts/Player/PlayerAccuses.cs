@@ -39,13 +39,18 @@ public class PlayerAccuses : NetworkBehaviour {
 	private void Update () {
 		if (isLocalPlayer)
 		{
-			if (SceneManager.GetActiveScene ().name == "Simulator" && Input.GetButtonDown ("Accuse"))
+			if (SceneManager.GetActiveScene ().name == "Simulator")
 			{
-				StartCoroutine (AccusePlayerForAutopiloting (playerApproaches.attention));
+				if (Input.GetButtonDown ("Accuse")) {
+					StartCoroutine (AccusePlayerForAutopiloting (playerApproaches.attention));
+				}
 			}
-			else if (Controller.GetHairTriggerDown ())
+			else
 			{
-				StartCoroutine (AccusePlayerForAutopiloting (playerApproaches.attention));
+				if (Controller.GetHairTriggerDown ())
+				{
+					StartCoroutine (AccusePlayerForAutopiloting (playerApproaches.attention));
+				}
 			}
 		}
 	}
@@ -67,7 +72,7 @@ public class PlayerAccuses : NetworkBehaviour {
 
 			// Send the message to the server that I'm not autopiloting anymore
 			string conclusion = correct ? "correct" : "incorrect";
-			yield return new WWW(NetworkGui.serversAddress + ":8080/" + netId.Value + "/accuse/" + otherPlayer.netId.Value + "/" + conclusion);
+			yield return new WWW("http://" + NetworkGui.serversAddress + ":8080/" + netId.Value + "/accuse/" + otherPlayer.netId.Value + "/" + conclusion);
 		}
 
 		audioSource.Play ();

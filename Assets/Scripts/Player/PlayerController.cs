@@ -119,7 +119,7 @@ public class PlayerController : NetworkBehaviour {
 		// Let the server know my participantId.
 		while (true)
 		{
-			WWW request = new WWW(NetworkGui.serversAddress + ":8080/" + netId.Value + "/participant-id/" + NetworkGui.participantId);
+			WWW request = new WWW("http://" + NetworkGui.serversAddress + ":8080/" + netId.Value + "/participant-id/" + NetworkGui.participantId);
 			yield return request;
 			if (string.IsNullOrEmpty (request.error))
 			{
@@ -153,6 +153,6 @@ public class PlayerController : NetworkBehaviour {
 	{
 		WWWForm form = new WWWForm ();
 		form.AddField("transform", localPlayerData.ToJson());
-		return new WWW(NetworkGui.serversAddress + ":8080/" + playerId, form);
+		return new WWW("http://" + NetworkGui.serversAddress + ":8080/" + playerId, form);
 	}
 }

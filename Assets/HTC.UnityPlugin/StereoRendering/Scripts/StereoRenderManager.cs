@@ -64,7 +64,7 @@ namespace HTC.UnityPlugin.StereoRendering
 
             // pop warning if no VR device detected
             #if UNITY_5_4_OR_NEWER
-                if (!VRSettings.enabled) { Debug.LogError("VR is not enabled for this application."); }
+                if (!UnityEngine.XR.XRSettings.enabled) { Debug.LogError("VR is not enabled for this application."); }
             #endif
 
             // try to get HMD camera
