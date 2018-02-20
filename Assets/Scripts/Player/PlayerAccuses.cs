@@ -1,80 +1,75 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
 
 public class PlayerAccuses : NetworkBehaviour {
 
-	public string controllerTag;
-	public AudioClip accusingNothing;
-	public AudioClip accusingPlayer;
+    public string controllerTag;
+    public AudioClip accusingNothing;
+    public AudioClip accusingPlayer;
 
-	private PlayerApproaches playerApproaches;
-	private SteamVR_TrackedObject trackedObj;
-	private AudioSource audioSource;
+    private PlayerGaze playerGaze;
+    private AudioSource audioSource;
+    private SteamVR_TrackedObject trackedObj;
 
-	private SteamVR_Controller.Device Controller
-	{
-		get { return SteamVR_Controller.Input((int) trackedObj.index); }
-	}
-
-
-	private void Awake()
-	{
-		audioSource = GetComponent<AudioSource> ();
-	}
+    private SteamVR_Controller.Device Controller
+    {
+        get { return SteamVR_Controller.Input((int) trackedObj.index); }
+    }
 
 
-	private void Start ()
-	{
-		playerApproaches = GetComponent<PlayerApproaches> ();
-		if (SceneManager.GetActiveScene ().name != "Simulator")
-		{
-			trackedObj = GameObject.FindGameObjectWithTag (controllerTag).GetComponent<SteamVR_TrackedObject> ();
-		}
-	}
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource> ();
+        playerGaze = GetComponent<PlayerGaze> ();
+    }
 
 
-	private void Update () {
-		if (isLocalPlayer)
-		{
-			if (SceneManager.GetActiveScene ().name == "Simulator")
-			{
-				if (Input.GetButtonDown ("Accuse")) {
-					StartCoroutine (AccusePlayerForAutopiloting (playerApproaches.attention));
-				}
-			}
-			else
-			{
-				if (Controller.GetHairTriggerDown ())
-				{
-					StartCoroutine (AccusePlayerForAutopiloting (playerApproaches.attention));
-				}
-			}
-		}
-	}
+    private void Start()
+    {
+        if (SceneManager.GetActiveScene ().name != "Simulator")
+        {
+            trackedObj = GameObject.FindGameObjectWithTag (controllerTag).GetComponent<SteamVR_TrackedObject> ();
+        }
+    }
 
 
-	private IEnumerator AccusePlayerForAutopiloting(PlayerController otherPlayer)
-	{
-		if (null == otherPlayer)
-		{
-			audioSource.clip = accusingNothing;
-		}
-		else
-		{
-			audioSource.clip = accusingPlayer;
+    private void Update() {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
 
-			bool correct = (otherPlayer.state == "autopilot");
-			string prefix = correct ? "Rightfully" : "Mistakenly";
-			Debug.Log (prefix + " accusing " + otherPlayer.netId.Value + " for autopiloting");
+        if (SceneManager.GetActiveScene ().name == "Simulator")
+        {
+            if (Input.GetButtonDown ("Accuse")) {
+                AccusePlayer (playerGaze.gazedObj);
+            }
+        }
+        else
+        {
+            if (Controller.GetHairTriggerDown ())
+            {
+                AccusePlayer (playerGaze.gazedObj);
+            }
+        }
+    }
 
-			// Send the message to the server that I'm not autopiloting anymore
-			string conclusion = correct ? "correct" : "incorrect";
-			yield return new WWW("http://" + NetworkGui.serversAddress + ":8080/" + netId.Value + "/accuse/" + otherPlayer.netId.Value + "/" + conclusion);
-		}
 
-		audioSource.Play ();
-	}
+    private void AccusePlayer(GameObject accusedPlayer)
+    {
+        if (null == accusedPlayer)
+        {
+            audioSource.clip = accusingNothing;
+        }
+        else
+        {
+            audioSource.clip = accusingPlayer;
+
+            // TODO do something about it
+        }
+
+        audioSource.Play ();
+    }
+
 }

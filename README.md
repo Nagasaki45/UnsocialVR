@@ -14,28 +14,6 @@ There are some extra details [on my site](http://www.tomgurion.me/unsocial-vr.ht
 
 You will need:
 
-- Unity 5.6.0f3
-  - Dissonance Voice Chat 1.1.0. You will need to buy it from the assets store.
+- Unity 2017.3.0p2
+  - Dissonance Voice Chat 6.0.1. You will need to buy it from the assets store.
 - HTC Vive
-- elixir 1.4
-- Whatever required to run the backchannel server (predicting head nods). See `backchannel/README.md`.
-
-### Servers
-
-A separate python server is responsible for predicting listener backchannels (head nods), according to speaker behaviours (is the speaker talking, etc.).
-Run it with:
-
-```bash
-cd backchannel
-python server.py --port 5001  # Make sure it's on port 5001!
-```
-
-The social behaviour server is written in elixir. It communicate with the two other servers to pass positioning data between the clients, analyze the social scene, and generate appropriate backchannels when necessary.
-It runs alongside the Unity server.
-To run it:
-
-```bash
-cd server
-mix deps.get
-mix run --no-halt
-```

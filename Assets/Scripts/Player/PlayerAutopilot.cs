@@ -8,140 +8,101 @@ using UnityEngine.SceneManagement;
 
 public class PlayerAutopilot : NetworkBehaviour {
 
-	public GameObject autopilotMarkerPrefab;
-	public string controllerTag;
+    public string controllerTag;
+    public GameObject hiddenPlayerPrefab;
+    public bool isFaking = false;
 
-	private TokenSpawner tokenSpawner;
-	private GameObject autopilotMarker;
-	private SteamVR_TrackedObject trackedObj;
-	private FlashScreen flashScreen;
-	private Transform cameraRig;
-	private float autopilotXPosition;
-	private float autopilotZPosition;
-	private float autopilotYRotation;
+    private GameObject hiddenPlayerObj;
+    private TokenSpawner tokenSpawner;
+    private FlashScreen flashScreen;
+    private SteamVR_TrackedObject trackedObj;
 
-	private SteamVR_Controller.Device Controller
-	{
-		get { return SteamVR_Controller.Input((int) trackedObj.index); }
-	}
+    private SteamVR_Controller.Device Controller
+    {
+        get { return SteamVR_Controller.Input((int) trackedObj.index); }
+    }
 
 
-	void Start()
-	{
-		tokenSpawner = GameObject.FindGameObjectWithTag ("TokenSpawner").GetComponent<TokenSpawner> ();
-		flashScreen = GameObject.FindGameObjectWithTag ("FlashScreen").GetComponent<FlashScreen> ();
-		if (SceneManager.GetActiveScene ().name != "Simulator")
-		{
-			trackedObj = GameObject.FindGameObjectWithTag (controllerTag).GetComponent<SteamVR_TrackedObject> ();
-			cameraRig = GameObject.FindGameObjectWithTag ("CameraRig").GetComponent<Transform> ();
-		}
-	}
+    void Start()
+    {
+        tokenSpawner = GameObject.FindGameObjectWithTag ("TokenSpawner").GetComponent<TokenSpawner> ();
+        flashScreen = GameObject.FindGameObjectWithTag ("FlashScreen").GetComponent<FlashScreen> ();
+        if (SceneManager.GetActiveScene ().name != "Simulator")
+        {
+            trackedObj = GameObject.FindGameObjectWithTag (controllerTag).GetComponent<SteamVR_TrackedObject> ();
+        }
+    }
 
 
-	void Update()
-	{
-		if (isLocalPlayer)
-		{
-			if (SceneManager.GetActiveScene ().name != "Simulator")
-			{
-				if (Controller.GetHairTriggerDown ())
-				{
-					StartCoroutine (StartAutopilot ());
-				}
-				else if (Controller.GetHairTriggerUp ())
-				{
-					StartCoroutine (StopAutopilot ());
-				}
-			}
-			else
-			{
-				if (Input.GetButtonUp ("Autopilot"))
-				{
-					if (null == autopilotMarker)
-					{
-						StartCoroutine (StartAutopilot ());
-					}
-					else
-					{
-						StartCoroutine (StopAutopilot ());
-					}
-				}
-			}
-		}
-	}
+    void Update()
+    {
+        if (isLocalPlayer)
+        {
+            if (SceneManager.GetActiveScene ().name != "Simulator")
+            {
+                if (Controller.GetHairTriggerDown ())
+                {
+                    StartAutopilot ();
+                }
+                else if (Controller.GetHairTriggerUp ())
+                {
+                    StopAutopilot ();
+                }
+            }
+            else
+            {
+                if (Input.GetButtonDown ("Autopilot"))
+                {
+                    StartAutopilot ();
+                }
+                else if (Input.GetButtonUp ("Autopilot"))
+                {
+                    StopAutopilot ();
+                }
+            }
+        }
+    }
 
 
-	private IEnumerator StartAutopilot()
-	{
-		Debug.Log("Local player starts autopilot!");
+    private void StartAutopilot()
+    {
+        Debug.Log("Local player starts autopilot!");
+        isFaking = true;
 
-		// Start spawning tokens
-		tokenSpawner.isSpawning = true;
+        // Start spawning tokens
+        tokenSpawner.enabled = true;
 
-		// Disable my collider (so it won't interefere with attention)
-		GetComponent<CapsuleCollider>().enabled = false;
+        // Flash the screen
+        flashScreen.Flash();
 
-		// Spawn the marker
-		autopilotMarker = Instantiate(autopilotMarkerPrefab, transform.position, transform.rotation);
+        // Turn off body trackers and controllers
+        GetComponent<PlayerMovementControl> ().SetControl (false);
 
-		// Flash the screen
-		flashScreen.Flash();
+        // TODO Turn on faking generators
 
-		// Keep the rotation and position for later recovery
-		autopilotXPosition = transform.position.x;
-		autopilotZPosition = transform.position.z;
-		autopilotYRotation = transform.rotation.eulerAngles.y;
-
-		// Send the message to the server
-		yield return new WWW("http://" + NetworkGui.serversAddress + ":8080/" + netId.Value + "/autopilot/start");
-	}
+        // Instantiate the hidden player and control it
+        hiddenPlayerObj = Instantiate (hiddenPlayerPrefab, transform.position, transform.rotation);
+        hiddenPlayerObj.GetComponent<PlayerMovementControl> ().SetControl (true);
+    }
 
 
-	private IEnumerator StopAutopilot()
-	{
-		Debug.Log("Local player stops autopilot!");
+    private void StopAutopilot()
+    {
+        Debug.Log("Local player stops autopilot!");
+        isFaking = false;
 
-		// Re-enable my collider
-		GetComponent<CapsuleCollider>().enabled = true;
+        // Stop spawning tokens
+        tokenSpawner.enabled = false;
 
-		// Stop spawning tokens
-		tokenSpawner.isSpawning = false;
+        // Flash the screen
+        flashScreen.Flash();
 
-		// Delete the marker
-		if (null != autopilotMarker)
-		{
-			Destroy (autopilotMarker);
-		}
+        // TODO Turn off faking generators
 
-		// Flash the screen
-		flashScreen.Flash();
+        // Turn on body trackers
+        GetComponent<PlayerMovementControl> ().SetControl (true);
 
-		// Restore transform
-		if (SceneManager.GetActiveScene ().name != "Simulator")
-		{
-			Vector3 positionBeforeRotation = transform.position;
-			cameraRig.Rotate(new Vector3(0f, autopilotYRotation - transform.rotation.eulerAngles.y, 0f));
-			yield return 0;  // Wait for 1 frame for the transform to update.
-			Vector3 positionAfterRotation = transform.position;
-			cameraRig.position += positionBeforeRotation - positionAfterRotation;
-			yield return 0;  // Wait for 1 frame for the transform to update.
-
-			cameraRig.position += new Vector3(autopilotXPosition - transform.position.x, 0f, autopilotZPosition - transform.position.z);
-		}
-		else
-		{
-			transform.rotation = Quaternion.Euler(new Vector3(0f, autopilotYRotation, 0f));
-			transform.position = new Vector3(autopilotXPosition, transform.position.y, autopilotZPosition);
-		}
-
-		PlayerController.localPlayerData.chestPosition = transform.position;
-		PlayerController.localPlayerData.chestRotation = transform.rotation;
-
-		// Update the server with my transform change
-		yield return PlayerController.BuildUpdateRequest(netId.Value);
-
-		// Send the message to the server that I'm not autopiloting anymore
-		yield return new WWW("http://" + NetworkGui.serversAddress + ":8080/" + netId.Value + "/autopilot/stop");
-	}
-
+        // Destroy the hidden player
+        Destroy(hiddenPlayerObj);
+    }
 }
