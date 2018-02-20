@@ -70,7 +70,7 @@ public class PlayerAutopilot : NetworkBehaviour {
         isFaking = true;
 
         // Start spawning tokens
-        tokenSpawner.enabled = true;
+        tokenSpawner.active = true;
 
         // Flash the screen
         flashScreen.Flash();
@@ -95,7 +95,7 @@ public class PlayerAutopilot : NetworkBehaviour {
         isFaking = false;
 
         // Stop spawning tokens
-        tokenSpawner.enabled = false;
+        tokenSpawner.active = false;
 
         // Flash the screen
         flashScreen.Flash();

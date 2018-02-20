@@ -7,6 +7,7 @@ public class TokenSpawner : MonoBehaviour {
     public GameObject tokenPrefab;
     public Transform[] spawnPoints;
     public float spawnTime;
+    public bool active = false;
 
 
     private void Start ()
@@ -17,8 +18,11 @@ public class TokenSpawner : MonoBehaviour {
 
     private void Spawn()
     {
-        int spawnPointIndex = Random.Range (0, spawnPoints.Length);
-        Transform spawnPoint = spawnPoints [spawnPointIndex];
-        Instantiate (tokenPrefab, spawnPoint.position, spawnPoint.rotation);
+        if (active)
+        {
+            int spawnPointIndex = Random.Range (0, spawnPoints.Length);
+            Transform spawnPoint = spawnPoints [spawnPointIndex];
+            Instantiate (tokenPrefab, spawnPoint.position, spawnPoint.rotation);
+        }
     }
 }
