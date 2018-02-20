@@ -83,6 +83,9 @@ public class PlayerAutopilot : NetworkBehaviour {
         // Instantiate the hidden player and control it
         hiddenPlayerObj = Instantiate (hiddenPlayerPrefab, transform.position, transform.rotation);
         hiddenPlayerObj.GetComponent<PlayerMovementControl> ().SetControl (true);
+
+        // Hide me
+        SetVisibility (false);
     }
 
 
@@ -104,5 +107,15 @@ public class PlayerAutopilot : NetworkBehaviour {
 
         // Destroy the hidden player
         Destroy(hiddenPlayerObj);
+
+        // Show me
+        SetVisibility (true);
+    }
+
+
+    private void SetVisibility(bool onOff) {
+        foreach (var r in gameObject.GetComponentsInChildren<MeshRenderer> ()) {
+            r.enabled = onOff;
+        }
     }
 }
