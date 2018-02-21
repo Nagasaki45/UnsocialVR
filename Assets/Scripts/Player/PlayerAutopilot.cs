@@ -78,7 +78,8 @@ public class PlayerAutopilot : NetworkBehaviour {
         // Turn off body trackers and controllers
         GetComponent<PlayerMovementControl> ().SetControl (false);
 
-        // TODO Turn on faking generators
+        // Turn on faking generators
+        SetFakingGenerators(true);
 
         // Instantiate the hidden player and control it
         hiddenPlayerObj = Instantiate (hiddenPlayerPrefab, transform.position, transform.rotation);
@@ -100,7 +101,8 @@ public class PlayerAutopilot : NetworkBehaviour {
         // Flash the screen
         flashScreen.Flash();
 
-        // TODO Turn off faking generators
+        // Turn off faking generators
+        SetFakingGenerators(false);
 
         // Turn on body trackers
         GetComponent<PlayerMovementControl> ().SetControl (true);
@@ -117,5 +119,15 @@ public class PlayerAutopilot : NetworkBehaviour {
         foreach (var r in gameObject.GetComponentsInChildren<MeshRenderer> ()) {
             r.enabled = onOff;
         }
+    }
+
+
+    private void SetFakingGenerators(bool onOff)
+    {
+        foreach (var naturalMovement in GetComponentsInChildren<NaturalMovement>())
+        {
+            naturalMovement.active = onOff;
+        }
+        // TODO more faking generators
     }
 }
