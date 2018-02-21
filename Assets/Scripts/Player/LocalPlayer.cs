@@ -11,10 +11,13 @@ public class LocalPlayer : NetworkBehaviour {
             return;
         }
 
+        // General local player scripts
         GetComponent<PlayerAutopilot>().enabled = true;
         GetComponent<PlayerAccuses>().enabled = true;
-        GetComponent<PlayerNotifier>().enabled = true;
         GetComponent<PlayerMovementControl>().SetControl (true);
+
+        // Faking generators
+        GetComponent<Notifier>().enabled = true;
 
         foreach(var naturalMovement in GetComponentsInChildren<NaturalMovement>())
         {

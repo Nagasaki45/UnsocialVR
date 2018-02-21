@@ -2,21 +2,21 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 
-public class PlayerNotifier : MonoBehaviour {
+public class Notifier : MonoBehaviour {
+
+    public bool active = false;
 
     private PlayerApproachedText playerApproachedText;
-    private PlayerAutopilot playerAutopilot;
 
 
     private void Start ()
     {
         playerApproachedText = GameObject.FindGameObjectWithTag ("PlayerApproachedText").GetComponent<PlayerApproachedText> ();
-        playerAutopilot = gameObject.GetComponent<PlayerAutopilot> ();
     }
 
 
     private void Update () {
-        if (playerAutopilot.isFaking)
+        if (active)
         {
             GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
             foreach (var player in players)

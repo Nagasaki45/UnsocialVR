@@ -124,6 +124,7 @@ public class PlayerAutopilot : MonoBehaviour {
         {
             naturalMovement.active = onOff;
         }
+        GetComponent<Notifier>().active = onOff;
         // TODO more faking generators
     }
 }
