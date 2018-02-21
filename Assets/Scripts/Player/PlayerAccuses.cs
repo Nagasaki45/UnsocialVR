@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Networking;
 
-public class PlayerAccuses : NetworkBehaviour {
+public class PlayerAccuses : MonoBehaviour {
 
     public string controllerTag;
     public AudioClip accusingNothing;
@@ -35,11 +34,6 @@ public class PlayerAccuses : NetworkBehaviour {
 
 
     private void Update() {
-        if (!isLocalPlayer)
-        {
-            return;
-        }
-
         if (SceneManager.GetActiveScene ().name == "Simulator")
         {
             if (Input.GetButtonDown ("Accuse")) {

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 
-public class PlayerNotifier : NetworkBehaviour {
+public class PlayerNotifier : MonoBehaviour {
 
     private PlayerApproachedText playerApproachedText;
     private PlayerAutopilot playerAutopilot;
@@ -16,7 +16,7 @@ public class PlayerNotifier : NetworkBehaviour {
 
 
     private void Update () {
-        if (isLocalPlayer && playerAutopilot.isFaking)
+        if (playerAutopilot.isFaking)
         {
             GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
             foreach (var player in players)

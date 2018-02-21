@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 
-public class PlayerAutopilot : NetworkBehaviour {
+public class PlayerAutopilot : MonoBehaviour {
 
     public string controllerTag;
     public GameObject hiddenPlayerPrefab;
@@ -36,29 +35,26 @@ public class PlayerAutopilot : NetworkBehaviour {
 
     void Update()
     {
-        if (isLocalPlayer)
+        if (SceneManager.GetActiveScene ().name != "Simulator")
         {
-            if (SceneManager.GetActiveScene ().name != "Simulator")
+            if (Controller.GetHairTriggerDown ())
             {
-                if (Controller.GetHairTriggerDown ())
-                {
-                    StartAutopilot ();
-                }
-                else if (Controller.GetHairTriggerUp ())
-                {
-                    StopAutopilot ();
-                }
+                StartAutopilot ();
             }
-            else
+            else if (Controller.GetHairTriggerUp ())
             {
-                if (Input.GetButtonDown ("Autopilot"))
-                {
-                    StartAutopilot ();
-                }
-                else if (Input.GetButtonUp ("Autopilot"))
-                {
-                    StopAutopilot ();
-                }
+                StopAutopilot ();
+            }
+        }
+        else
+        {
+            if (Input.GetButtonDown ("Autopilot"))
+            {
+                StartAutopilot ();
+            }
+            else if (Input.GetButtonUp ("Autopilot"))
+            {
+                StopAutopilot ();
             }
         }
     }
