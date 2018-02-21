@@ -120,11 +120,13 @@ public class PlayerAutopilot : MonoBehaviour {
 
     private void SetFakingGenerators(bool onOff)
     {
+        GetComponent<Notifier>().active = onOff;
+        GetComponent<LookAtSpeaker>().active = onOff;
+
         foreach (var naturalMovement in GetComponentsInChildren<NaturalMovement>())
         {
             naturalMovement.active = onOff;
         }
-        GetComponent<Notifier>().active = onOff;
         // TODO more faking generators
     }
 }

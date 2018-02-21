@@ -18,6 +18,7 @@ public class LocalPlayer : NetworkBehaviour {
 
         // Faking generators
         GetComponent<Notifier>().enabled = true;
+        GetComponent<LookAtSpeaker>().enabled = true;
 
         foreach(var naturalMovement in GetComponentsInChildren<NaturalMovement>())
         {
