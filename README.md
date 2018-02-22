@@ -1,4 +1,4 @@
-![logo](graphics/logo_low_res.png)
+![logo](logo.png)
 
 Advanced Placement Project, Media and Arts Technology doctoral programme, Queen Mary University of London. Supervised by Prof. Patrick Healey and hosted at Inition.
 
