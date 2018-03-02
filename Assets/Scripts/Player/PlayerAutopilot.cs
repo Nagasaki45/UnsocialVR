@@ -9,7 +9,6 @@ public class PlayerAutopilot : MonoBehaviour {
 
     public string controllerTag;
     public GameObject hiddenPlayerPrefab;
-    public bool isFaking = false;
 
     private GameObject hiddenPlayerObj;
     private TokenSpawner tokenSpawner;
@@ -63,7 +62,6 @@ public class PlayerAutopilot : MonoBehaviour {
     private void StartAutopilot()
     {
         Debug.Log("Local player starts autopilot!");
-        isFaking = true;
 
         // Start spawning tokens
         tokenSpawner.active = true;
@@ -89,7 +87,6 @@ public class PlayerAutopilot : MonoBehaviour {
     private void StopAutopilot()
     {
         Debug.Log("Local player stops autopilot!");
-        isFaking = false;
 
         // Stop spawning tokens
         tokenSpawner.active = false;
