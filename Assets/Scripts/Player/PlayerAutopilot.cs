@@ -100,6 +100,12 @@ public class PlayerAutopilot : MonoBehaviour {
         // Turn off faking generators
         SetFakingGenerators(false);
 
+        // Jump back into the faking avatar
+        if (SceneManager.GetActiveScene().name != "Simulator")
+        {
+            ResetCamera();
+        }
+
         // Turn on body trackers
         GetComponent<PlayerMovementControl> ().SetControl (true);
 
@@ -128,5 +134,27 @@ public class PlayerAutopilot : MonoBehaviour {
             naturalMovement.active = onOff;
         }
         // TODO more faking generators
+    }
+
+
+    private void ResetCamera()
+    {
+        // Get the components involved
+        Transform cameraRig = GameObject.FindGameObjectWithTag("CameraRig").transform;
+        Transform hiddenPlayerHead = hiddenPlayerObj.transform.Find("HeadController");
+        Transform playerHead = transform.Find("HeadController");
+
+        // Calculate changes in advance
+        float angle = hiddenPlayerHead.rotation.eulerAngles.y - playerHead.rotation.eulerAngles.y;
+        Vector3 eulerRotation = new Vector3(0f, -angle, 0f);
+        Vector3 relativePositionBeforeRotation = hiddenPlayerHead.position - cameraRig.position;
+        Vector3 relativePositionAfterRotation = Quaternion.Euler(eulerRotation) * relativePositionBeforeRotation;
+        //                 Shifting to fix the rotation offset                                final shift to move to the player head
+        Vector3 rigShift = (relativePositionBeforeRotation - relativePositionAfterRotation) + (playerHead.position - hiddenPlayerHead.position);
+        rigShift.y = 0;
+
+        // Apply them all at once
+        cameraRig.Rotate(eulerRotation);
+        cameraRig.position += rigShift;
     }
 }
