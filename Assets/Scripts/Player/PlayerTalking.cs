@@ -70,4 +70,13 @@ public class PlayerTalking : NetworkBehaviour {
 				}
         return false;
     }
+
+    public void Block() {
+        isTalking = false;
+        comms.IsMuted = true;
+    }
+
+    public void Unblock() {
+        comms.IsMuted = false;
+    }
 }

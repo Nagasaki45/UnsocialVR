@@ -72,6 +72,9 @@ public class PlayerAutopilot : MonoBehaviour {
         // Turn off body trackers and controllers
         GetComponent<PlayerMovementControl> ().SetControl (false);
 
+        // Block the player from talking
+        GetComponent<PlayerTalking>().Block();
+
         // Turn on faking generators
         SetFakingGenerators(true);
 
@@ -102,6 +105,9 @@ public class PlayerAutopilot : MonoBehaviour {
         {
             ResetCamera();
         }
+
+        // Allow the player to talk again
+        GetComponent<PlayerTalking>().Unblock();
 
         // Turn on body trackers
         GetComponent<PlayerMovementControl> ().SetControl (true);
