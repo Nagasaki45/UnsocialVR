@@ -1,0 +1,109 @@
+#N canvas 3 80 954 997 10;
+#X obj 7 552 *~;
+#X obj 25 532 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 12700 1;
+#X obj 7 580 dac~;
+#X text 159 532 Master volume;
+#X obj 25 227 bng 25 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 49 226 Backchannel;
+#X obj 25 356 bng 25 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 49 355 Backchannel;
+#X text 197 331 Poppe et al. 2010 Pitch and Pause model. Provide BC
+feedback upon detection of: A pause of 400ms \, preceded by at least
+1000ms of speech \, where the last 100ms \, contain a rising or falling
+pitch of at least 30Hz. Provided that no BC has been output within
+the preceding 1400ms.;
+#X obj 25 457 bng 25 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 49 456 Disfluency;
+#X obj 25 110 smooth_pitch 8192;
+#X obj 25 203 WardTsukahara2000 100;
+#X text 197 290 Argument - # of samples for percentile calculation
+;
+#X text 197 202 Ward and Tsukahara 2000 model \, based on snippet from
+Poppe et al. 2010 Provide backchannel feedback upon detection of: A
+region of pitch less than the 26th-percentile pitch level and continuing
+for at least 110ms \, coming after at least 700ms of speech \, provided
+that no backchannel has been output within the preceding 800ms \, after
+700ms wait.;
+#X obj 201 142 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 216 141 Speach detected;
+#X text 197 432 Maatman et al. 2005 disfluency detection. The frequencies
+over 200 milliseconds have to be stored and evaluated. When the standard
+deviation of these frequencies is smaller than approximately one hertz
+\, the module reports the detection of a disfluency.;
+#X obj 25 433 Maatman2005Disfluency;
+#X obj 25 332 Poppe2010PitchAndPause 1000;
+#X obj 201 162 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 216 161 Pitch detected;
+#N canvas 963 80 954 997 input 1;
+#X obj 357 264 readsf~;
+#X obj 128 11 loadbang;
+#X msg 128 60 \; pd dsp 1;
+#X obj 187 265 adc~;
+#X obj 187 296 *~;
+#X obj 357 291 *~ 1;
+#X obj 205 87 hsl 80 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 187 330 outlet~;
+#X msg 202 60 1;
+#X obj 205 118 hsl 80 15 0 6 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X text 288 86 Recording;
+#X text 288 116 Microphone;
+#X floatatom 357 87 5 0 0 0 - - -, f 5;
+#X obj 357 151 makefilename media/out%d.wav;
+#X msg 357 179 open \$1;
+#X msg 357 237 1;
+#X obj 357 208 t b a;
+#X connect 0 0 5 0;
+#X connect 0 1 12 0;
+#X connect 1 0 2 0;
+#X connect 1 0 8 0;
+#X connect 1 0 12 0;
+#X connect 3 0 4 0;
+#X connect 3 1 4 0;
+#X connect 4 0 7 0;
+#X connect 5 0 7 0;
+#X connect 6 0 5 1;
+#X connect 8 0 6 0;
+#X connect 9 0 4 1;
+#X connect 12 0 13 0;
+#X connect 13 0 14 0;
+#X connect 14 0 16 0;
+#X connect 15 0 0 0;
+#X connect 16 0 15 0;
+#X connect 16 1 0 0;
+#X coords 0 -1 1 1 300 56 1 198 82;
+#X restore 7 12 pd input;
+#X text 197 404 Argument - millis to hold rising or failing detection
+;
+#X floatatom 343 69 5 0 0 0 - - -, f 5;
+#X floatatom 343 91 5 0 0 0 - - -, f 5;
+#X text 377 68 Rising volume threshold;
+#X text 377 90 Falling volume threshold;
+#X obj 184 110 speech_detection 8192 60 55;
+#X connect 0 0 2 0;
+#X connect 0 0 2 1;
+#X connect 1 0 0 1;
+#X connect 11 0 12 0;
+#X connect 11 0 18 0;
+#X connect 11 0 19 0;
+#X connect 11 1 18 1;
+#X connect 11 1 20 0;
+#X connect 12 0 4 0;
+#X connect 18 0 9 0;
+#X connect 19 0 6 0;
+#X connect 22 0 11 0;
+#X connect 22 0 0 0;
+#X connect 22 0 28 0;
+#X connect 24 0 28 1;
+#X connect 25 0 28 2;
+#X connect 28 0 12 1;
+#X connect 28 0 15 0;
+#X connect 28 0 18 2;
+#X connect 28 0 19 1;

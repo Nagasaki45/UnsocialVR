@@ -1,0 +1,70 @@
+#N canvas 913 67 451 699 10;
+#X obj 52 480 outlet;
+#X obj 25 65 < 0.26;
+#X obj 200 205 timer;
+#X obj 200 180 sel 0;
+#X obj 200 249 > 700;
+#X floatatom 200 228 5 0 0 0 - - -, f 5;
+#X text 235 227 Speach time before low pitch;
+#X obj 25 136 sel 0 1;
+#X text 41 236 Long low pitch;
+#X obj 25 237 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 25 213 delay 110;
+#X msg 25 189 stop;
+#X obj 44 162 t b b;
+#X obj 25 275 spigot;
+#X obj 25 300 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 41 299 Long low pitch after enough speach;
+#X obj 97 389 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 52 412 spigot 1;
+#X obj 97 345 delay 800;
+#X msg 97 367 1;
+#X obj 52 434 delay 700;
+#X obj 52 458 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 25 327 t 0 b;
+#X obj 25 114 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 44 113 Low pitch;
+#X obj 25 89 change;
+#X obj 200 17 inlet;
+#X obj 200 153 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X text 226 153 Speech detected;
+#X obj 200 127 change;
+#X obj 25 17 inlet;
+#X obj 25 41 percentile \$1;
+#X text 109 40 Percentile calculated with moving speech window;
+#X connect 1 0 25 0;
+#X connect 2 0 5 0;
+#X connect 3 0 2 0;
+#X connect 4 0 13 1;
+#X connect 5 0 4 0;
+#X connect 7 0 11 0;
+#X connect 7 1 12 0;
+#X connect 9 0 13 0;
+#X connect 10 0 9 0;
+#X connect 11 0 10 0;
+#X connect 12 0 10 0;
+#X connect 12 1 2 1;
+#X connect 13 0 14 0;
+#X connect 14 0 22 0;
+#X connect 16 0 17 1;
+#X connect 17 0 20 0;
+#X connect 18 0 19 0;
+#X connect 19 0 16 0;
+#X connect 20 0 21 0;
+#X connect 21 0 0 0;
+#X connect 21 0 18 0;
+#X connect 22 0 16 0;
+#X connect 22 1 17 0;
+#X connect 23 0 7 0;
+#X connect 25 0 23 0;
+#X connect 26 0 29 0;
+#X connect 27 0 3 0;
+#X connect 29 0 27 0;
+#X connect 30 0 31 0;
+#X connect 31 0 1 0;
