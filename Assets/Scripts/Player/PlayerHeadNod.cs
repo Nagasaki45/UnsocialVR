@@ -7,12 +7,14 @@ public class PlayerHeadNod : NetworkBehaviour {
     public Transform headTransform;
     public int bufferSize;
     public int sampleRate;
-    public double noddingThreshold;  // the minimum speed to detect a nod
+    public double noddingThreshold;  // the minimum movement to detect a nod
+    public double notNoddingThreshold;  // epsilon value
 
-    private CircularBuffer<double> readings;
     private Interpolator interpolator;
     private Butterworth lowPassFilter;
     private Butterworth highPassFilter;
+
+    private bool readyToNod;
 
     private Animator animator;
 
@@ -21,7 +23,6 @@ public class PlayerHeadNod : NetworkBehaviour {
 
     void Start()
     {
-        readings = new CircularBuffer<double>(bufferSize);
         interpolator = new Interpolator(1.0 / sampleRate);
         lowPassFilter = new Butterworth(4, sampleRate, Butterworth.PassType.Lowpass);
         highPassFilter = new Butterworth(1, sampleRate, Butterworth.PassType.Highpass);
@@ -41,40 +42,29 @@ public class PlayerHeadNod : NetworkBehaviour {
         if (isLocalPlayer)
         {
             float now = Time.time;
-            float value = headTransform.position.y;
+            double value = (double) headTransform.position.y;
             foreach (double val in interpolator.Interpolate(now, value))
             {
-                double v = lowPassFilter.Filter(val);
-                v = highPassFilter.Filter(v);
-                readings.Add(v);
+                value = lowPassFilter.Filter(val);
+                value = highPassFilter.Filter(value);
+
+                // Nod happens upon negative movement, larger than threshold.
+                if (readyToNod && value < -noddingThreshold)
+                {
+                    readyToNod = false;
+
+                    // Tell all listeners to nod in 4 seconds delay.
+                    Debug.Log("NODDING!");
+                    Invoke("Nod", 4);
+                }
+
+                if (value < notNoddingThreshold && value > -notNoddingThreshold)
+                {
+                    readyToNod = true;
+                }
             }
 
-            float speed = HeadSpeedMetersPerSecond(readings.ToArray());
-
-            // Nod happens upon negative speed, larger than threshold.
-            if (speed < -noddingThreshold)
-            {
-                // Tell all listeners to nod in 4 seconds delay.
-                Debug.Log("NODDING!");
-                Invoke("Nod", 4);
-            }
         }
-    }
-
-
-    private float HeadSpeedMetersPerSecond(double[] readings)
-    {
-        // x is the relative time of the sample
-        double[] x = new double[readings.Length];
-        for (int i = 0; i < x.Length; i++)
-        {
-            x[i] = ((double) i) / sampleRate;
-        }
-
-        // fit.x is slope and fit.y is intercept.
-        Vector2 fit = LinearRegression.Fit(x, readings);
-
-        return fit.x;
     }
 
 
