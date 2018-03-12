@@ -14,9 +14,9 @@ public class PlayerHeadNod : NetworkBehaviour {
     private Butterworth lowPassFilter;
     private Butterworth highPassFilter;
 
-    private PubSub pubSub;
-
     private Animator animator;
+
+    private PubSub pubSub;
 
 
     void Start()
@@ -26,9 +26,13 @@ public class PlayerHeadNod : NetworkBehaviour {
         lowPassFilter = new Butterworth(4, sampleRate, Butterworth.PassType.Lowpass);
         highPassFilter = new Butterworth(1, sampleRate, Butterworth.PassType.Highpass);
 
-        pubSub = GameObject.FindGameObjectWithTag("PubSub").GetComponent<PubSub>();
-
         animator = GetComponent<Animator> ();
+
+        if (isServer)
+        {
+            pubSub = GameObject.FindGameObjectWithTag("PubSub").GetComponent<PubSub>();
+        }
+
     }
 
 
