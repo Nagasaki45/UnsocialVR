@@ -49,11 +49,14 @@ public class PlayerAutopilot : MonoBehaviour {
         {
             if (Input.GetButtonDown ("Autopilot"))
             {
-                StartAutopilot ();
-            }
-            else if (Input.GetButtonUp ("Autopilot"))
-            {
-                StopAutopilot ();
+                if (hiddenPlayerObj == null)
+                {
+                    StartAutopilot ();
+                }
+                else
+                {
+                    StopAutopilot ();
+                }
             }
         }
     }
@@ -78,6 +81,9 @@ public class PlayerAutopilot : MonoBehaviour {
         // Turn on faking generators
         SetFakingGenerators(true);
 
+        // Register for head nods generation
+        GetComponent<PlayerHeadNod>().CmdSubscribeToHeadNods();
+
         // Instantiate the hidden player and control it
         hiddenPlayerObj = Instantiate (hiddenPlayerPrefab, transform.position, transform.rotation);
         hiddenPlayerObj.GetComponent<PlayerMovementControl> ().SetControl (true);
@@ -97,6 +103,9 @@ public class PlayerAutopilot : MonoBehaviour {
         // Flash the screen
         flashScreen.Flash();
 
+        // Unregister from head nods
+        GetComponent<PlayerHeadNod>().CmdUnsubscribeFromHeadNods();
+
         // Turn off faking generators
         SetFakingGenerators(false);
 
@@ -114,6 +123,7 @@ public class PlayerAutopilot : MonoBehaviour {
 
         // Destroy the hidden player
         Destroy(hiddenPlayerObj);
+        hiddenPlayerObj = null;
 
         // Show me
         SetVisibility (true);

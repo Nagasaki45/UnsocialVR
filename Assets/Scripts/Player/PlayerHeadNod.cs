@@ -7,12 +7,16 @@ public class PlayerHeadNod : NetworkBehaviour {
     public Transform headTransform;
     public int bufferSize;
     public int sampleRate;
-    public double noddingThreshold;
+    public double noddingThreshold;  // the minimum speed to detect a nod
 
     private CircularBuffer<double> readings;
     private Interpolator interpolator;
     private Butterworth lowPassFilter;
     private Butterworth highPassFilter;
+
+    private PubSub pubSub;
+
+    private Animator animator;
 
 
     void Start()
@@ -21,6 +25,10 @@ public class PlayerHeadNod : NetworkBehaviour {
         interpolator = new Interpolator(1.0 / sampleRate);
         lowPassFilter = new Butterworth(4, sampleRate, Butterworth.PassType.Lowpass);
         highPassFilter = new Butterworth(1, sampleRate, Butterworth.PassType.Highpass);
+
+        pubSub = GameObject.FindGameObjectWithTag("PubSub").GetComponent<PubSub>();
+
+        animator = GetComponent<Animator> ();
     }
 
 
@@ -39,10 +47,12 @@ public class PlayerHeadNod : NetworkBehaviour {
 
             float speed = HeadSpeedMetersPerSecond(readings.ToArray());
 
-            // Speed moving down is negative
+            // Nod happens upon negative speed, larger than threshold.
             if (speed < -noddingThreshold)
             {
-                // TODO nod
+                // Tell all listeners to nod in 4 seconds delay.
+                Debug.Log("NODDING!");
+                Invoke("Nod", 4);
             }
         }
     }
@@ -60,6 +70,50 @@ public class PlayerHeadNod : NetworkBehaviour {
         // fit.x is slope and fit.y is intercept.
         Vector2 fit = LinearRegression.Fit(x, readings);
 
-        return fit.x * sampleRate;
+        return fit.x;
+    }
+
+
+    // A `CmdNod` wrapper that makes sure the user is still the speaker.
+    private void Nod()
+    {
+        // Only the speaker publishes!
+        if (PlayerTalking.speaker == gameObject)
+        {
+            CmdNod();
+        }
+    }
+
+
+    // Runs on the server (after 4 seconds delay). Tells the listeners to nod.
+    [Command]
+    private void CmdNod()
+    {
+        pubSub.Publish("mimicry");
+    }
+
+
+    [Command]
+    public void CmdSubscribeToHeadNods()
+    {
+        // TODO pick a theory in random.
+        string theory = "mimicry";
+
+        Debug.Log("Faking using " + theory);
+        pubSub.Subscribe(this, theory);
+    }
+
+
+    [Command]
+    public void CmdUnsubscribeFromHeadNods()
+    {
+        pubSub.Unsubscribe(this);
+    }
+
+
+    [ClientRpc]
+    public void RpcNod()
+    {
+        animator.SetTrigger("nodding");
     }
 }
