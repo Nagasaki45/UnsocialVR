@@ -17,14 +17,10 @@ public class LookAtSpeaker : MonoBehaviour {
     {
         if (active)
         {
-            GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
-            foreach (var player in players)
+            GameObject speaker = PlayerTalking.speaker;
+            if (speaker != null)
             {
-                PlayerTalking playerTalking = player.GetComponent<PlayerTalking> ();
-                if (playerTalking.isTalking)
-                {
-                    SlowlyRotateTowards(player.GetComponent<Transform>());
-                }
+                SlowlyRotateTowards(speaker.GetComponent<Transform>());
             }
         }
     }

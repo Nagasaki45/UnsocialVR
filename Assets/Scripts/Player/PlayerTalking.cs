@@ -9,7 +9,10 @@ using Dissonance.VAD;
 
 public class PlayerTalking : NetworkBehaviour {
 
-    [SyncVar]
+    // Static speaker is set whenever a player starts talking.
+    static public GameObject speaker;
+
+    [SyncVar(hook = "OnChangeTalkingState")]
     public bool isTalking;
 
     public float talkingAmplitudeThreshold;
@@ -78,5 +81,15 @@ public class PlayerTalking : NetworkBehaviour {
 
     public void Unblock() {
         comms.IsMuted = false;
+    }
+
+
+    void OnChangeTalkingState(bool newTalkingState)
+    {
+        isTalking = newTalkingState;
+        if (isTalking)
+        {
+            speaker = gameObject;
+        }
     }
 }
