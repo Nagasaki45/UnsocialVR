@@ -20,6 +20,11 @@ public class LocalPlayer : NetworkBehaviour {
         GetComponent<Notifier>().enabled = true;
         GetComponent<LookAtSpeaker>().enabled = true;
 
+        // PubSub
+        GetComponent<PubSubClient>().enabled = true;
+        GetComponent<PlayerHeadNod>().enabled = true;
+        GetComponent<PlayerExpectsBackchannel>().enabled = true;
+
         foreach(var naturalMovement in GetComponentsInChildren<NaturalMovement>())
         {
             naturalMovement.enabled = true;

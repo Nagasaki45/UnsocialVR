@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Networking;
+﻿using UnityEngine;
 
-public class PlayerHeadNod : NetworkBehaviour {
+public class PlayerHeadNod : MonoBehaviour {
 
     public Transform headTransform;
     public int bufferSize;
@@ -10,104 +8,58 @@ public class PlayerHeadNod : NetworkBehaviour {
     public double noddingThreshold;  // the minimum movement to detect a nod
     public double notNoddingThreshold;  // epsilon value
 
+    private PubSubClient pubSubClient;
+
     private Interpolator interpolator;
     private Butterworth lowPassFilter;
     private Butterworth highPassFilter;
 
     private bool readyToNod;
 
-    private Animator animator;
-
-    private PubSub pubSub;
-
 
     void Start()
     {
+        pubSubClient = GetComponent<PubSubClient>();
+
         interpolator = new Interpolator(1.0 / sampleRate);
         lowPassFilter = new Butterworth(4, sampleRate, Butterworth.PassType.Lowpass);
         highPassFilter = new Butterworth(1, sampleRate, Butterworth.PassType.Highpass);
-
-        animator = GetComponent<Animator> ();
-
-        if (isServer)
-        {
-            pubSub = GameObject.FindGameObjectWithTag("PubSub").GetComponent<PubSub>();
-        }
-
     }
 
 
     void Update()
     {
-        if (isLocalPlayer)
+        float now = Time.time;
+        double value = (double) headTransform.position.y;
+        foreach (double val in interpolator.Interpolate(now, value))
         {
-            float now = Time.time;
-            double value = (double) headTransform.position.y;
-            foreach (double val in interpolator.Interpolate(now, value))
+            value = lowPassFilter.Filter(val);
+            value = highPassFilter.Filter(value);
+
+            // Nod happens upon negative movement, larger than threshold.
+            if (readyToNod && value < -noddingThreshold)
             {
-                value = lowPassFilter.Filter(val);
-                value = highPassFilter.Filter(value);
+                readyToNod = false;
 
-                // Nod happens upon negative movement, larger than threshold.
-                if (readyToNod && value < -noddingThreshold)
-                {
-                    readyToNod = false;
-
-                    // Tell all listeners to nod in 4 seconds delay.
-                    Debug.Log("NODDING!");
-                    Invoke("Nod", 4);
-                }
-
-                if (value < notNoddingThreshold && value > -notNoddingThreshold)
-                {
-                    readyToNod = true;
-                }
+                // Tell all listeners to nod in 4 seconds delay.
+                Debug.Log("Head nod");
+                Invoke("Nod", 4);
             }
 
+            if (value < notNoddingThreshold && value > -notNoddingThreshold)
+            {
+                readyToNod = true;
+            }
         }
     }
 
 
-    // A `CmdNod` wrapper that makes sure the user is still the speaker.
     private void Nod()
     {
         // Only the speaker publishes!
         if (PlayerTalking.speaker == gameObject)
         {
-            CmdNod();
+            pubSubClient.CmdPublish("mimicry");
         }
-    }
-
-
-    // Runs on the server (after 4 seconds delay). Tells the listeners to nod.
-    [Command]
-    private void CmdNod()
-    {
-        pubSub.Publish("mimicry");
-    }
-
-
-    [Command]
-    public void CmdSubscribeToHeadNods()
-    {
-        // TODO pick a theory in random.
-        string theory = "mimicry";
-
-        Debug.Log("Faking using " + theory);
-        pubSub.Subscribe(this, theory);
-    }
-
-
-    [Command]
-    public void CmdUnsubscribeFromHeadNods()
-    {
-        pubSub.Unsubscribe(this);
-    }
-
-
-    [ClientRpc]
-    public void RpcNod()
-    {
-        animator.SetTrigger("nodding");
     }
 }

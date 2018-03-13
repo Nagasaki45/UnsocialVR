@@ -14,13 +14,13 @@ public class PubSub : MonoBehaviour
     }
 
 
-    public void Subscribe(PlayerHeadNod subscriber, string topic)
+    public void Subscribe(PubSubClient subscriber, string topic)
     {
         subscribers.Add(new SubscriberTopicPair(subscriber, topic));
     }
 
 
-    public void Unsubscribe(PlayerHeadNod subscriber)
+    public void Unsubscribe(PubSubClient subscriber)
     {
         subscribers.RemoveAll(x => x.subscriber == subscriber);
     }
@@ -44,10 +44,10 @@ public class PubSub : MonoBehaviour
 
     class SubscriberTopicPair
     {
-        public PlayerHeadNod subscriber;
+        public PubSubClient subscriber;
         public string topic;
 
-        public SubscriberTopicPair(PlayerHeadNod subscriber, string topic)
+        public SubscriberTopicPair(PubSubClient subscriber, string topic)
         {
             this.subscriber = subscriber;
             this.topic = topic;

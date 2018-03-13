@@ -82,7 +82,10 @@ public class PlayerAutopilot : MonoBehaviour {
         SetFakingGenerators(true);
 
         // Register for head nods generation
-        GetComponent<PlayerHeadNod>().CmdSubscribeToHeadNods();
+        // TODO pick a theory in random.
+        string theory = "mimicry";
+        Debug.Log("Faking using " + theory);
+        GetComponent<PubSubClient>().CmdSubscribeToHeadNods(theory);
 
         // Instantiate the hidden player and control it
         hiddenPlayerObj = Instantiate (hiddenPlayerPrefab, transform.position, transform.rotation);
@@ -104,7 +107,7 @@ public class PlayerAutopilot : MonoBehaviour {
         flashScreen.Flash();
 
         // Unregister from head nods
-        GetComponent<PlayerHeadNod>().CmdUnsubscribeFromHeadNods();
+        GetComponent<PubSubClient>().CmdUnsubscribeFromHeadNods();
 
         // Turn off faking generators
         SetFakingGenerators(false);
