@@ -87,7 +87,7 @@ namespace LibPDBinding
 		{
 			//create the delegate with the method to call
 			PrintHook = new LibPDPrintHook(RaisePrintEvent);
-			set_printhook(PrintHook);
+			// set_printhook(PrintHook);
 
 			BangHook = new LibPDBangHook(RaiseBangEvent);
 			set_banghook(BangHook);
