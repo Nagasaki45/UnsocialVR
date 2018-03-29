@@ -24,6 +24,7 @@ public class LocalPlayer : NetworkBehaviour {
         GetComponent<PubSubClient>().enabled = true;
         GetComponent<PlayerHeadNod>().enabled = true;
         GetComponent<PlayerExpectsBackchannel>().enabled = true;
+        GetComponent<PlayerDisfluent>().enabled = true;
 
         foreach(var naturalMovement in GetComponentsInChildren<NaturalMovement>())
         {
