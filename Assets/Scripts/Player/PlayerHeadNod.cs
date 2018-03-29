@@ -42,7 +42,7 @@ public class PlayerHeadNod : MonoBehaviour {
                 readyToNod = false;
 
                 // Tell all listeners to nod in 4 seconds delay.
-                Debug.Log("Head nod");
+                Debug.Log("Player nods");
                 Invoke("Nod", 4);
             }
 
