@@ -22,11 +22,7 @@ public class PlayerDisfluent : MonoBehaviour, IMicrophoneSubscriber
     void Start()
     {
         pubSubClient = GetComponent<PubSubClient>();
-    }
 
-
-    void Awake()
-    {
         // Subscribe to dissonance microphone capture
         DissonanceComms comms = GameObject.FindGameObjectWithTag("DissonanceSetup").GetComponent<DissonanceComms>();
         comms.MicrophoneCapture.Subscribe(this);
@@ -60,14 +56,6 @@ public class PlayerDisfluent : MonoBehaviour, IMicrophoneSubscriber
             // Let the engine run for a frame.
             yield return null;
         }
-    }
-
-
-    void OnDestroy()
-    {
-        streamReader.Close();
-        networkStream.Close();
-        tcpClient.Close();
     }
 
 

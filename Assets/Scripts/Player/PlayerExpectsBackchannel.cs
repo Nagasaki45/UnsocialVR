@@ -17,10 +17,7 @@ public class PlayerExpectsBackchannel : MonoBehaviour
     {
         pubSubClient = GetComponent<PubSubClient>();
         playerTalking = GetComponent<PlayerTalking>();
-    }
 
-    void Awake()
-    {
         // Connect to TCP server
         tcpClient = new TcpClient(tcpServerAddress, tcpServerPort);
         networkStream = tcpClient.GetStream();
@@ -50,12 +47,5 @@ public class PlayerExpectsBackchannel : MonoBehaviour
             // Let the engine run for a frame.
             yield return null;
         }
-    }
-
-
-    void OnDestroy()
-    {
-        networkStream.Close();
-        tcpClient.Close();
     }
 }

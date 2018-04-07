@@ -21,7 +21,6 @@ public class LocalPlayer : NetworkBehaviour {
         GetComponent<LookAtSpeaker>().enabled = true;
 
         // PubSub
-        GetComponent<PubSubClient>().enabled = true;
         GetComponent<PlayerHeadNod>().enabled = true;
         GetComponent<PlayerExpectsBackchannel>().enabled = true;
         GetComponent<PlayerDisfluent>().enabled = true;
