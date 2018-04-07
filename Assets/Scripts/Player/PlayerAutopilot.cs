@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class PlayerAutopilot : MonoBehaviour {
 
     public string controllerTag;
+    public string[] fakingTheories;
     public GameObject hiddenPlayerPrefab;
 
     private GameObject hiddenPlayerObj;
@@ -36,35 +37,40 @@ public class PlayerAutopilot : MonoBehaviour {
     {
         if (SceneManager.GetActiveScene ().name != "Simulator")
         {
-            if (Controller.GetHairTriggerDown ())
+            if (Controller.GetHairTriggerDown())
             {
-                StartAutopilot ();
+                // TODO pick up a faking method in random
+                StartAutopilot("mimicry");
             }
-            else if (Controller.GetHairTriggerUp ())
+            else if (Controller.GetHairTriggerUp())
             {
-                StopAutopilot ();
+                StopAutopilot();
             }
         }
         else
         {
-            if (Input.GetButtonDown ("Autopilot"))
+            foreach (string theory in fakingTheories)
             {
-                if (hiddenPlayerObj == null)
+                string input = "Fake" + char.ToUpper(theory[0]) + theory.Substring(1);
+                if (Input.GetButtonDown(input))
                 {
-                    StartAutopilot ();
-                }
-                else
-                {
-                    StopAutopilot ();
+                    if (hiddenPlayerObj == null)
+                    {
+                        StartAutopilot(theory);
+                    }
+                    else
+                    {
+                        StopAutopilot();
+                    }
                 }
             }
         }
     }
 
 
-    private void StartAutopilot()
+    void StartAutopilot(string theory)
     {
-        Debug.Log("Local player starts autopilot!");
+        Debug.Log("Faking using " + theory);
 
         // Start spawning tokens
         tokenSpawner.active = true;
@@ -82,9 +88,6 @@ public class PlayerAutopilot : MonoBehaviour {
         SetFakingGenerators(true);
 
         // Register for head nods generation
-        // TODO pick a theory in random.
-        string theory = "mimicry";
-        Debug.Log("Faking using " + theory);
         GetComponent<PubSubClient>().CmdSubscribeToHeadNods(theory);
 
         // Instantiate the hidden player and control it
