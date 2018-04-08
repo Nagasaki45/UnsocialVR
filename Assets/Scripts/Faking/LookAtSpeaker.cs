@@ -20,7 +20,8 @@ public class LookAtSpeaker : MonoBehaviour {
             GameObject speaker = PlayerTalking.speaker;
             if (speaker != null)
             {
-                SlowlyRotateTowards(speaker.GetComponent<Transform>());
+                Transform speakerHead = speaker.transform.Find("HeadController");
+                SlowlyRotateTowards(speakerHead);
             }
         }
     }
