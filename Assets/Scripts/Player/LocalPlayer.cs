@@ -16,15 +16,13 @@ public class LocalPlayer : NetworkBehaviour {
         GetComponent<PlayerAccuses>().enabled = true;
         GetComponent<PlayerMovementControl>().SetControl (true);
 
-        // Faking generators
-        GetComponent<Notifier>().enabled = true;
-        GetComponent<LookAtSpeaker>().enabled = true;
-
         // PubSub
         GetComponent<PlayerHeadNod>().enabled = true;
         GetComponent<PlayerExpectsBackchannel>().enabled = true;
         GetComponent<PlayerDisfluent>().enabled = true;
 
+        // Faking generators
+        GetComponent<LookAtSpeaker>().enabled = true;
         foreach(var naturalMovement in GetComponentsInChildren<NaturalMovement>())
         {
             naturalMovement.enabled = true;
