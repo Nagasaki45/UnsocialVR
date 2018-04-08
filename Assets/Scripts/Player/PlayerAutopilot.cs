@@ -68,6 +68,15 @@ public class PlayerAutopilot : MonoBehaviour {
     }
 
 
+    void OnDestroy()
+    {
+        if (hiddenPlayerObj != null)
+        {
+            Destroy(hiddenPlayerObj);
+        }
+    }
+
+
     void StartAutopilot(string theory)
     {
         Debug.Log("Faking using " + theory);
