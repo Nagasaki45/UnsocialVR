@@ -12,8 +12,24 @@ There are some extra details [on my site](http://www.tomgurion.me/unsocial-vr.ht
 
 ## Running the project
 
-You will need:
+Make sure you have:
 
-- Unity 2017.3.0p2
-  - Dissonance Voice Chat 6.0.1. You will need to buy it from the assets store.
 - HTC Vive
+- Unity 2017.3.0p2.
+  - Dissonance Voice Chat 6.0.1. You will need to buy it from the assets store.
+- python 2.7
+- PureData 0.48.1.
+
+How to run:
+
+1. Clone the project with `git clone --recursive https://github.com/Nagasaki45/UnsocialVR.git`
+1. Install the deep_disfluency requirements with `cd deep_disfluency && pip install -r requirements` (using a virtual environment is highly recommended). See `deep_disfluency/README.md` for more info.
+1. In a separate terminal open the deep_disfluency TCP server with `cd deep_disfluency && python asr_tcp_server_demo.py`.
+1. Open the `backchannels/server_WardTsukahara2000.pd` PureData patch.
+1. Open Unity and load the project.
+1. Import the Dissonance Voice Chat with its HLAPI adapter.
+1. Run!
+
+### PureData Ward & Tsukahara server note
+
+This TCP server can serve only one client at a time. If you are running multiple clients on the same machine (with the Simulator scene, for development/debugging), go to the `Player.prefab` and change the port to something else. Create another copy of the Pd patch and update the port there as well. No build the project and you have a new client and a new server that work with their own port. Make sure not to commit these changes into version control!
