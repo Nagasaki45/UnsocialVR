@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
-public class PlayerAutopilot : MonoBehaviour {
+public class PlayerAutopilot : NetworkBehaviour {
+
+    [SyncVar]
+    public bool isFaking;
 
     public string controllerTag;
     public string[] fakingTheories;
@@ -54,13 +58,13 @@ public class PlayerAutopilot : MonoBehaviour {
                 string input = "Fake" + char.ToUpper(theory[0]) + theory.Substring(1);
                 if (Input.GetButtonDown(input))
                 {
-                    if (hiddenPlayerObj == null)
+                    if (isFaking)
                     {
-                        StartAutopilot(theory);
+                        StopAutopilot();
                     }
                     else
                     {
-                        StopAutopilot();
+                        StartAutopilot(theory);
                     }
                 }
             }
@@ -80,6 +84,8 @@ public class PlayerAutopilot : MonoBehaviour {
     void StartAutopilot(string theory)
     {
         Debug.Log("Faking using " + theory);
+
+        CmdSetFakingState(true);
 
         // Start spawning tokens
         tokenSpawner.active = true;
@@ -111,6 +117,8 @@ public class PlayerAutopilot : MonoBehaviour {
     private void StopAutopilot()
     {
         Debug.Log("Local player stops autopilot!");
+
+        CmdSetFakingState(false);
 
         // Stop spawning tokens
         tokenSpawner.active = false;
@@ -155,6 +163,7 @@ public class PlayerAutopilot : MonoBehaviour {
     private void SetFakingGenerators(bool onOff)
     {
         GetComponent<LookAtSpeaker>().active = onOff;
+        GetComponent<PlayerAccuses>().enabled = !onOff;
 
         foreach (var naturalMovement in GetComponentsInChildren<NaturalMovement>())
         {
@@ -182,5 +191,12 @@ public class PlayerAutopilot : MonoBehaviour {
         // Apply them all at once
         cameraRig.Rotate(eulerRotation);
         cameraRig.position += rigShift;
+    }
+
+
+    [Command]
+    void CmdSetFakingState (bool onOff)
+    {
+        isFaking = onOff;
     }
 }

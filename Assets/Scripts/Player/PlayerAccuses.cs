@@ -4,10 +4,9 @@ using UnityEngine.SceneManagement;
 public class PlayerAccuses : MonoBehaviour {
 
     public string controllerTag;
-    public AudioClip accusingNothing;
-    public AudioClip accusingPlayer;
 
     private PlayerGaze playerGaze;
+    private PlayerScore playerScore;
     private AudioSource audioSource;
     private SteamVR_TrackedObject trackedObj;
 
@@ -21,6 +20,7 @@ public class PlayerAccuses : MonoBehaviour {
     {
         audioSource = GetComponent<AudioSource> ();
         playerGaze = GetComponent<PlayerGaze> ();
+        playerScore = GetComponent<PlayerScore>();
     }
 
 
@@ -52,15 +52,10 @@ public class PlayerAccuses : MonoBehaviour {
 
     private void AccusePlayer(GameObject accusedPlayer)
     {
-        if (null == accusedPlayer)
+        if (null != accusedPlayer)
         {
-            audioSource.clip = accusingNothing;
-        }
-        else
-        {
-            audioSource.clip = accusingPlayer;
-
-            // TODO do something about it
+            int score = accusedPlayer.GetComponent<PlayerAutopilot>().isFaking ? 1 : -1;
+            playerScore.CmdAdd(score);
         }
 
         audioSource.Play ();

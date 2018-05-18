@@ -21,7 +21,7 @@ public class PlayerCollectingToken : MonoBehaviour {
         {
             Destroy (other.gameObject);
             collectSound.Play ();
-            LocalPlayer.localPlayer.GetComponent<PlayerScore>().Add(tokenWorth);
+            LocalPlayer.localPlayer.GetComponent<PlayerScore>().CmdAdd(tokenWorth);
             Debug.Log ("Local player collected token");
         }
     }
