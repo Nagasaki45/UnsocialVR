@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerCollectingToken : MonoBehaviour {
 
+    public int tokenWorth;
+
     private AudioSource collectSound;
 
 
@@ -19,9 +21,8 @@ public class PlayerCollectingToken : MonoBehaviour {
         {
             Destroy (other.gameObject);
             collectSound.Play ();
-
+            LocalPlayer.localPlayer.GetComponent<PlayerScore>().Add(tokenWorth);
             Debug.Log ("Local player collected token");
-            // TODO do something about it
         }
     }
 }
