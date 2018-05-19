@@ -47,8 +47,8 @@ public class PlayerAutopilot : NetworkBehaviour {
         {
             if (Controller.GetHairTriggerDown())
             {
-                // TODO pick up a faking method in random
-                StartAutopilot("mimicry");
+                int i = Random.Range(0, fakingTheories.Length);
+                StartAutopilot(fakingTheories[i]);
             }
             else if (Controller.GetHairTriggerUp())
             {
