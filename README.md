@@ -33,3 +33,7 @@ How to run:
 ### PureData Ward & Tsukahara server note
 
 This TCP server can serve only one client at a time. If you are running multiple clients on the same machine (with the Simulator scene, for development/debugging), go to the `Player.prefab` and change the port to something else. Create another copy of the Pd patch and update the port there as well. No build the project and you have a new client and a new server that work with their own port. Make sure not to commit these changes into version control!
+
+### Deep disfluency server note
+
+If you don't need it, or don't have enough "free minutes" on your IBM Watson plan, use the `deep_disfluency_mock.py` script. It will spin a TCP server that will consume the audio stream and do nothing about it.
