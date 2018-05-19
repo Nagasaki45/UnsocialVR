@@ -75,6 +75,10 @@ public class PlayerTalking : NetworkBehaviour {
     }
 
     public void Block() {
+        if (speaker == gameObject)
+        {
+            speaker = null;
+        }
         isTalking = false;
         comms.IsMuted = true;
     }
