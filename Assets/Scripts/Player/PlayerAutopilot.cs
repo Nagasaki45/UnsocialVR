@@ -16,6 +16,7 @@ public class PlayerAutopilot : NetworkBehaviour {
     public GameObject hiddenPlayerPrefab;
 
     private PlayerLogger logger;
+    private PlayerBody playerBody;
     private GameObject hiddenPlayerObj;
     private TokenSpawner tokenSpawner;
     private FlashScreen flashScreen;
@@ -30,6 +31,7 @@ public class PlayerAutopilot : NetworkBehaviour {
     void Start()
     {
         logger = GetComponent<PlayerLogger>();
+        playerBody = GetComponent<PlayerBody>();
         tokenSpawner = GameObject.FindGameObjectWithTag ("TokenSpawner").GetComponent<TokenSpawner> ();
         flashScreen = GameObject.FindGameObjectWithTag ("FlashScreen").GetComponent<FlashScreen> ();
         if (SceneManager.GetActiveScene ().name != "Simulator")
@@ -159,6 +161,7 @@ public class PlayerAutopilot : NetworkBehaviour {
         foreach (var r in gameObject.GetComponentsInChildren<MeshRenderer> ()) {
             r.enabled = onOff;
         }
+        playerBody.SetVisibility(onOff);
     }
 
 

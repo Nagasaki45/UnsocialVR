@@ -6,7 +6,6 @@ public class PlayerGaze : MonoBehaviour {
 
     public GameObject gazedObj = null;
     public float rayDistance;
-    public Transform headTransform;
 
     private Ray attentionRay;
     private RaycastHit attentionHit;
@@ -18,12 +17,12 @@ public class PlayerGaze : MonoBehaviour {
 
 
     private void Update () {
-        attentionRay.origin = headTransform.position;
-        attentionRay.direction = headTransform.forward;
+        attentionRay.origin = transform.position;
+        attentionRay.direction = transform.forward;
 
         if (Physics.Raycast (attentionRay, out attentionHit, rayDistance))
         {
-            gazedObj = attentionHit.collider.gameObject.transform.parent.gameObject;
+            gazedObj = attentionHit.collider.gameObject;
         }
         else
         {
