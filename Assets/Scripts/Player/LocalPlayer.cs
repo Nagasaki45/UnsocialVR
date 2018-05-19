@@ -19,6 +19,7 @@ public class LocalPlayer : NetworkBehaviour {
         GetComponent<PlayerAutopilot>().enabled = true;
         GetComponent<PlayerAccuses>().enabled = true;
         GetComponent<PlayerMovementControl>().SetControl (true);
+        GetComponent<PlayerLogger>().enabled = true;
 
         // PubSub
         GetComponent<PlayerHeadNod>().enabled = true;

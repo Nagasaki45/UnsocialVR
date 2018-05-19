@@ -15,6 +15,7 @@ public class PlayerAutopilot : NetworkBehaviour {
     public string[] fakingTheories;
     public GameObject hiddenPlayerPrefab;
 
+    private PlayerLogger logger;
     private GameObject hiddenPlayerObj;
     private TokenSpawner tokenSpawner;
     private FlashScreen flashScreen;
@@ -28,6 +29,7 @@ public class PlayerAutopilot : NetworkBehaviour {
 
     void Start()
     {
+        logger = GetComponent<PlayerLogger>();
         tokenSpawner = GameObject.FindGameObjectWithTag ("TokenSpawner").GetComponent<TokenSpawner> ();
         flashScreen = GameObject.FindGameObjectWithTag ("FlashScreen").GetComponent<FlashScreen> ();
         if (SceneManager.GetActiveScene ().name != "Simulator")
@@ -83,7 +85,7 @@ public class PlayerAutopilot : NetworkBehaviour {
 
     void StartAutopilot(string theory)
     {
-        Debug.Log("Faking using " + theory);
+        logger.Event("Faking starts using " + theory);
 
         CmdSetFakingState(true);
 
@@ -116,7 +118,7 @@ public class PlayerAutopilot : NetworkBehaviour {
 
     private void StopAutopilot()
     {
-        Debug.Log("Local player stops autopilot!");
+        logger.Event("Faking stops");
 
         CmdSetFakingState(false);
 

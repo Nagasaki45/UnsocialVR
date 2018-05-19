@@ -7,6 +7,7 @@ public class PlayerExpectsBackchannel : MonoBehaviour
     public string tcpServerAddress;
     public int tcpServerPort;
 
+    private PlayerLogger logger;
     private PubSubClient pubSubClient;
     private PlayerTalking playerTalking;
     private TcpClient tcpClient;
@@ -15,6 +16,7 @@ public class PlayerExpectsBackchannel : MonoBehaviour
 
     void Start()
     {
+        logger = GetComponent<PlayerLogger>();
         pubSubClient = GetComponent<PubSubClient>();
         playerTalking = GetComponent<PlayerTalking>();
 
@@ -41,7 +43,7 @@ public class PlayerExpectsBackchannel : MonoBehaviour
             {
                 byte[] throwaway = new byte[1024];
                 networkStream.Read(throwaway, 0, throwaway.Length);
-                Debug.Log("Player expects backchannel");
+                logger.Event("Expecting a backchannel");
                 pubSubClient.CmdPublish("backchannels");
             }
             // Let the engine run for a frame.

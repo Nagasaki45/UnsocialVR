@@ -13,6 +13,7 @@ public class PlayerDisfluent : MonoBehaviour, IMicrophoneSubscriber
     public string tcpServerAddress;
     public int tcpServerPort;
 
+    private PlayerLogger logger;
     private PubSubClient pubSubClient;
     private TcpClient tcpClient;
     private NetworkStream networkStream;
@@ -21,6 +22,7 @@ public class PlayerDisfluent : MonoBehaviour, IMicrophoneSubscriber
 
     void Start()
     {
+        logger = GetComponent<PlayerLogger>();
         pubSubClient = GetComponent<PubSubClient>();
 
         // Subscribe to dissonance microphone capture
@@ -43,12 +45,11 @@ public class PlayerDisfluent : MonoBehaviour, IMicrophoneSubscriber
             while (networkStream.DataAvailable)
             {
                 string line = streamReader.ReadLine();
-                // Debug.Log(line);
                 foreach (string repairTag in repairTags)
                 {
                     if (line.Contains(repairTag))
                     {
-                        Debug.Log("Player disfluent");
+                        logger.Event("Player disfluent");
                         pubSubClient.CmdPublish("disfluency");
                     }
                 }

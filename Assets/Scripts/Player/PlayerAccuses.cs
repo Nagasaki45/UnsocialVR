@@ -5,6 +5,7 @@ public class PlayerAccuses : MonoBehaviour {
 
     public string controllerTag;
 
+    private PlayerLogger logger;
     private PlayerGaze playerGaze;
     private PlayerScore playerScore;
     private AudioSource audioSource;
@@ -18,6 +19,7 @@ public class PlayerAccuses : MonoBehaviour {
 
     private void Awake()
     {
+        logger = GetComponent<PlayerLogger>();
         audioSource = GetComponent<AudioSource> ();
         playerGaze = GetComponent<PlayerGaze> ();
         playerScore = GetComponent<PlayerScore>();
@@ -54,7 +56,10 @@ public class PlayerAccuses : MonoBehaviour {
     {
         if (null != accusedPlayer)
         {
-            int score = accusedPlayer.GetComponent<PlayerAutopilot>().isFaking ? 1 : -1;
+            bool correct = accusedPlayer.GetComponent<PlayerAutopilot>().isFaking;
+            int score = correct ? 1 : -1;
+            string text = correct ? "Correctly" : "Mistakenly";
+            logger.Event(text + " accusing " + playerGaze.GetGazedNetId() + " for faking");
             playerScore.CmdAdd(score);
         }
 

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
 
 public class PlayerGaze : MonoBehaviour {
@@ -22,11 +23,25 @@ public class PlayerGaze : MonoBehaviour {
 
         if (Physics.Raycast (attentionRay, out attentionHit, rayDistance))
         {
-            gazedObj = attentionHit.collider.gameObject;
+            gazedObj = attentionHit.collider.gameObject.transform.parent.gameObject;
         }
         else
         {
             gazedObj = null;
         }
-	}
+    }
+
+
+    public int GetGazedNetId()
+    {
+        if (null != gazedObj)
+        {
+            NetworkIdentity id = gazedObj.GetComponent<NetworkIdentity>();
+            if (null != id)
+            {
+                return (int) id.netId.Value;
+            }
+        }
+        return -1;
+    }
 }

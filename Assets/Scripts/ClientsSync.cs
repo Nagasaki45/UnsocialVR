@@ -3,10 +3,12 @@ using UnityEngine.Networking;
 
 public class ClientsSync : NetworkBehaviour
 {
+    PlayerLogger logger;
     FlashScreen flashScreen;
 
     void Start()
     {
+        logger = GetComponent<PlayerLogger>();
         flashScreen = GameObject.FindGameObjectWithTag ("FlashScreen").GetComponent<FlashScreen> ();
     }
 
@@ -30,7 +32,7 @@ public class ClientsSync : NetworkBehaviour
     [ClientRpc]
     void RpcSync()
     {
-        Debug.Log("Clients sync (screen flashes)");
+        logger.Event("Clients sync");
         flashScreen.Flash ();
     }
 }
