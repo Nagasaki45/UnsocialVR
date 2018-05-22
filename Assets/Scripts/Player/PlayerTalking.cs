@@ -43,7 +43,7 @@ public class PlayerTalking : NetworkBehaviour {
         else
         {
             bool speechDetected = IsThereSpeechInAudio ();
-            if (speechDetected && !isTalking)
+            if (speechDetected && !isTalking && !comms.IsMuted)
             {
                 CmdSetTalkingState (true);
             }
@@ -79,7 +79,7 @@ public class PlayerTalking : NetworkBehaviour {
         {
             speaker = null;
         }
-        isTalking = false;
+        CmdSetTalkingState(false);
         comms.IsMuted = true;
     }
 
@@ -90,8 +90,7 @@ public class PlayerTalking : NetworkBehaviour {
 
     void OnChangeTalkingState(bool newTalkingState)
     {
-        isTalking = newTalkingState;
-        if (isTalking)
+        if (newTalkingState)
         {
             speaker = gameObject;
         }
