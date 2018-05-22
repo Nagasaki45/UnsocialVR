@@ -6,11 +6,11 @@ using System.Collections;
 using System.IO;
 using System.Net.Sockets;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class PlayerDisfluent : MonoBehaviour, IMicrophoneSubscriber
 {
     public string[] repairTags;
-    public string tcpServerAddress;
     public int tcpServerPort;
 
     private PlayerLogger logger;
@@ -30,7 +30,8 @@ public class PlayerDisfluent : MonoBehaviour, IMicrophoneSubscriber
         comms.MicrophoneCapture.Subscribe(this);
 
         // Connect to TCP server
-        tcpClient = new TcpClient(tcpServerAddress, tcpServerPort);
+        NetworkManager nm = GameObject.FindGameObjectWithTag("Network").GetComponent<NetworkManager>();
+        tcpClient = new TcpClient(nm.networkAddress, tcpServerPort);
         networkStream = tcpClient.GetStream();
         streamReader = new StreamReader(networkStream);
 
