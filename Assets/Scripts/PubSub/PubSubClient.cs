@@ -3,7 +3,7 @@ using UnityEngine.Networking;
 
 public class PubSubClient : NetworkBehaviour
 {
-    private Animator animator;
+    private PlayerAnimator playerAnimator;
     private PubSub pubSub;
     private PlayerLogger logger;
 
@@ -11,7 +11,7 @@ public class PubSubClient : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
-        animator = GetComponent<Animator>();
+        playerAnimator = GetComponent<PlayerAnimator>();
 
         if (isServer)
         {
@@ -53,6 +53,6 @@ public class PubSubClient : NetworkBehaviour
         {
             logger.Event("Faking nodding");
         }
-        animator.SetTrigger("nodding");
+        playerAnimator.Nod();
     }
 }
