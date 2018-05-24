@@ -56,7 +56,7 @@ public class PlayerAccuses : MonoBehaviour {
     {
         if (null != accusedPlayer)
         {
-            bool correct = accusedPlayer.GetComponent<PlayerAutopilot>().isFaking;
+            bool correct = accusedPlayer.GetComponent<PlayerState>().isFaking;
             int score = correct ? 1 : -1;
             string text = correct ? "Correctly" : "Mistakenly";
             logger.Event(text + " accusing " + playerGaze.GetGazedNetId() + " for faking");

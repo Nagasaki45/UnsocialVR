@@ -1,15 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
-public class PlayerAutopilot : NetworkBehaviour {
-
-    [SyncVar]
-    public bool isFaking;
+public class PlayerAutopilot : MonoBehaviour {
 
     public string controllerTag;
     public string[] fakingTheories;
@@ -17,6 +13,7 @@ public class PlayerAutopilot : NetworkBehaviour {
 
     private PlayerLogger logger;
     private PlayerBody playerBody;
+    private PlayerState playerState;
     private GameObject hiddenPlayerObj;
     private TokenSpawner tokenSpawner;
     private FlashScreen flashScreen;
@@ -32,6 +29,7 @@ public class PlayerAutopilot : NetworkBehaviour {
     {
         logger = GetComponent<PlayerLogger>();
         playerBody = GetComponent<PlayerBody>();
+        playerState = GetComponent<PlayerState>();
         tokenSpawner = GameObject.FindGameObjectWithTag ("TokenSpawner").GetComponent<TokenSpawner> ();
         flashScreen = GameObject.FindGameObjectWithTag ("FlashScreen").GetComponent<FlashScreen> ();
         if (SceneManager.GetActiveScene ().name != "Simulator")
@@ -62,7 +60,7 @@ public class PlayerAutopilot : NetworkBehaviour {
                 string input = "Fake" + char.ToUpper(theory[0]) + theory.Substring(1);
                 if (Input.GetButtonDown(input))
                 {
-                    if (isFaking)
+                    if (playerState.isFaking)
                     {
                         StopAutopilot();
                     }
@@ -89,7 +87,7 @@ public class PlayerAutopilot : NetworkBehaviour {
     {
         logger.Event("Faking starts using " + theory);
 
-        CmdSetFakingState(true);
+        playerState.CmdSetFakingState(true);
 
         // Start spawning tokens
         tokenSpawner.active = true;
@@ -122,7 +120,7 @@ public class PlayerAutopilot : NetworkBehaviour {
     {
         logger.Event("Faking stops");
 
-        CmdSetFakingState(false);
+        playerState.CmdSetFakingState(false);
 
         // Stop spawning tokens
         tokenSpawner.active = false;
@@ -196,12 +194,5 @@ public class PlayerAutopilot : NetworkBehaviour {
         // Apply them all at once
         cameraRig.Rotate(eulerRotation);
         cameraRig.position += rigShift;
-    }
-
-
-    [Command]
-    void CmdSetFakingState (bool onOff)
-    {
-        isFaking = onOff;
     }
 }
