@@ -28,11 +28,10 @@ public class PlayerTalking : NetworkBehaviour {
 
     private void Update ()
     {
-        if (!isLocalPlayer)
+        if (!isLocalPlayer || comms.IsMuted)
         {
             return;
         }
-
         if (SceneManager.GetActiveScene ().name == "Simulator")
         {
             if (Input.GetButtonUp ("Talk"))
@@ -43,7 +42,7 @@ public class PlayerTalking : NetworkBehaviour {
         else
         {
             bool speechDetected = IsThereSpeechInAudio ();
-            if (speechDetected && !isTalking && !comms.IsMuted)
+            if (speechDetected && !isTalking)
             {
                 CmdSetTalkingState (true);
             }
@@ -90,6 +89,7 @@ public class PlayerTalking : NetworkBehaviour {
 
     void OnChangeTalkingState(bool newTalkingState)
     {
+        isTalking = newTalkingState;
         if (newTalkingState)
         {
             speaker = gameObject;
