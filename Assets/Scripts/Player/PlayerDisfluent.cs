@@ -76,7 +76,7 @@ public class PlayerDisfluent : MonoBehaviour, IMicrophoneSubscriber
         }
 
         // Send the buffer to the deep disfluency tagger TCP server.
-        networkStream.Write(buffer, 0, buffer.Length);
+        networkStream.WriteAsync(buffer, 0, buffer.Length);
     }
 
     public void Reset() {}
