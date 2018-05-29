@@ -5,7 +5,6 @@ public class PubSubClient : NetworkBehaviour
 {
     private PlayerAnimator playerAnimator;
     private PubSub pubSub;
-    private PlayerLogger logger;
 
 
     // Use this for initialization
@@ -16,11 +15,6 @@ public class PubSubClient : NetworkBehaviour
         if (isServer)
         {
             pubSub = GameObject.FindGameObjectWithTag("PubSub").GetComponent<PubSub>();
-        }
-
-        if (isLocalPlayer)
-        {
-            logger = GetComponent<PlayerLogger>();
         }
     }
 
@@ -51,7 +45,7 @@ public class PubSubClient : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            logger.Event("Faking nodding");
+            Logger.Event("Faking nodding");
         }
         playerAnimator.Nod();
     }

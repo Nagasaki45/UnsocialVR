@@ -22,7 +22,7 @@ public class PlayerCollectingToken : MonoBehaviour {
             Destroy (other.gameObject);
             collectSound.Play ();
             LocalPlayer.localPlayer.GetComponent<PlayerState>().CmdAddScore(tokenWorth);
-            LocalPlayer.localPlayer.GetComponent<PlayerLogger>().Event("Collecting token");
+            Logger.Event("Collecting token");
         }
     }
 }

@@ -11,7 +11,6 @@ public class PlayerAutopilot : MonoBehaviour {
     public string[] fakingTheories;
     public GameObject hiddenPlayerPrefab;
 
-    private PlayerLogger logger;
     private PlayerState playerState;
     private GameObject hiddenPlayerObj;
     private TokenSpawner tokenSpawner;
@@ -26,7 +25,6 @@ public class PlayerAutopilot : MonoBehaviour {
 
     void Start()
     {
-        logger = GetComponent<PlayerLogger>();
         playerState = GetComponent<PlayerState>();
         tokenSpawner = GameObject.FindGameObjectWithTag ("TokenSpawner").GetComponent<TokenSpawner> ();
         flashScreen = GameObject.FindGameObjectWithTag ("FlashScreen").GetComponent<FlashScreen> ();
@@ -83,7 +81,7 @@ public class PlayerAutopilot : MonoBehaviour {
 
     void StartAutopilot(string theory)
     {
-        logger.Event("Faking starts using " + theory);
+        Logger.Event("Faking starts using " + theory);
 
         playerState.CmdSetFakingState(theory);
 
@@ -116,7 +114,7 @@ public class PlayerAutopilot : MonoBehaviour {
 
     private void StopAutopilot()
     {
-        logger.Event("Faking stops");
+        Logger.Event("Faking stops");
 
         playerState.CmdSetFakingState(null);
 

@@ -3,19 +3,17 @@ using UnityEngine.Networking;
 
 public class ClientsSync : NetworkBehaviour
 {
-    PlayerLogger logger;
     FlashScreen flashScreen;
 
     void Start()
     {
-        logger = GetComponent<PlayerLogger>();
         flashScreen = GameObject.FindGameObjectWithTag ("FlashScreen").GetComponent<FlashScreen> ();
     }
 
 
     void Update()
     {
-        if (Input.GetButtonDown("ClientsSync"))
+        if (isLocalPlayer && Input.GetButtonDown("ClientsSync"))
         {
             CmdSync();
         }
@@ -32,7 +30,7 @@ public class ClientsSync : NetworkBehaviour
     [ClientRpc]
     void RpcSync()
     {
-        logger.Event("Clients sync");
+        Logger.Event("Clients sync");
         flashScreen.Flash ();
     }
 }

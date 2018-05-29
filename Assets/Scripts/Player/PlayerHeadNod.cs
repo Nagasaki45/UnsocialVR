@@ -8,7 +8,6 @@ public class PlayerHeadNod : MonoBehaviour {
     public double noddingThreshold;  // the minimum movement to detect a nod
     public double notNoddingThreshold;  // epsilon value
 
-    private PlayerLogger logger;
     private PubSubClient pubSubClient;
 
     private Interpolator interpolator;
@@ -20,7 +19,6 @@ public class PlayerHeadNod : MonoBehaviour {
 
     void Start()
     {
-        logger = GetComponent<PlayerLogger>();
         pubSubClient = GetComponent<PubSubClient>();
 
         interpolator = new Interpolator(1.0 / sampleRate);
@@ -44,7 +42,7 @@ public class PlayerHeadNod : MonoBehaviour {
                 readyToNod = false;
 
                 // Tell all listeners to nod in 4 seconds delay.
-                logger.Event("Nodding");
+                Logger.Event("Nodding");
                 Invoke("Nod", 4);
             }
 

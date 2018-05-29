@@ -13,10 +13,8 @@ public class PlayerLogger : MonoBehaviour {
 
     private PlayerTalking playerTalking;
     private PlayerGaze playerGaze;
-    private NetworkIdentity networkIdentity;
 
     private StreamWriter continuousWriter;
-    private StreamWriter eventWriter;
     private string[] continuousHeader = {
         "t",
         "headX", "headY", "headZ",
@@ -40,8 +38,8 @@ public class PlayerLogger : MonoBehaviour {
     {
         string id = GetComponent<NetworkIdentity>().netId.ToString();
         string filename = DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_" + id;
+        Logger.filename = filename + ".log";
         continuousWriter = new StreamWriter(filename + ".csv");
-        eventWriter = new StreamWriter(filename + ".log");
         continuousWriter.WriteLine(String.Join(",", continuousHeader) + "\n");
         InvokeRepeating("WriteContinuously", 0f, 1 / frequency);
     }
@@ -77,22 +75,11 @@ public class PlayerLogger : MonoBehaviour {
     }
 
 
-    public void Event(string msg)
-    {
-        Debug.Log(msg);
-        eventWriter.WriteLine(Time.time.ToString() + ": " + msg + "\n");
-    }
-
-
     void OnDestroy()
     {
         if (null != continuousWriter)
         {
             continuousWriter.Close();
-        }
-        if (null != eventWriter)
-        {
-            eventWriter.Close();
         }
     }
 }
