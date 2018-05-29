@@ -11,6 +11,7 @@ public class PlayerAutopilot : MonoBehaviour {
     public string[] fakingTheories;
     public GameObject hiddenPlayerPrefab;
 
+    private PlayerBody playerBody;
     private PlayerState playerState;
     private GameObject hiddenPlayerObj;
     private TokenSpawner tokenSpawner;
@@ -25,6 +26,7 @@ public class PlayerAutopilot : MonoBehaviour {
 
     void Start()
     {
+        playerBody = GetComponent<PlayerBody>();
         playerState = GetComponent<PlayerState>();
         tokenSpawner = GameObject.FindGameObjectWithTag ("TokenSpawner").GetComponent<TokenSpawner> ();
         flashScreen = GameObject.FindGameObjectWithTag ("FlashScreen").GetComponent<FlashScreen> ();
@@ -155,10 +157,7 @@ public class PlayerAutopilot : MonoBehaviour {
         foreach (var r in gameObject.GetComponentsInChildren<MeshRenderer> ()) {
             r.enabled = onOff;
         }
-        foreach(var c in GetComponents<DetachedChild>())
-        {
-            c.SetVisibility(onOff);
-        }
+        playerBody.SetVisibility(onOff);
     }
 
 
