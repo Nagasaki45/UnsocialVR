@@ -7,6 +7,7 @@ public class LookAtSpeaker : MonoBehaviour {
     public float jitterFreq;
     public float jitterLerp;
     public float jitterScale;
+    public float blankGazeDistance;
 
     private Transform myTransform;
     private Vector3 randomValue;
@@ -31,17 +32,22 @@ public class LookAtSpeaker : MonoBehaviour {
         {
             randomValue = Vector3.Lerp(randomValue, randomTarget, Time.deltaTime * jitterLerp);
             GameObject speaker = PlayerTalking.speaker;
+            Vector3 target;
             if (speaker != null)
             {
-                Transform speakerHead = speaker.transform.Find("HeadController");
-                SlowlyRotateTowards(speakerHead);
+                target = speaker.transform.Find("HeadController").position;
             }
+            else
+            {
+                target = myTransform.position + myTransform.forward * blankGazeDistance;
+            }
+            SlowlyRotateTowards(target);
         }
     }
 
-    void SlowlyRotateTowards(Transform target)
+    void SlowlyRotateTowards(Vector3 target)
     {
-        Vector3 direction = (target.position - myTransform.position + randomValue * jitterScale).normalized;
+        Vector3 direction = (target - myTransform.position + randomValue * jitterScale).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         myTransform.rotation = Quaternion.Slerp(myTransform.rotation, lookRotation, Time.deltaTime * speed);
     }
