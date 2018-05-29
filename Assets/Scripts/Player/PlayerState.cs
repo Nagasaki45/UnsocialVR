@@ -4,15 +4,51 @@ using UnityEngine.Networking;
 public class PlayerState : NetworkBehaviour {
 
     [SyncVar]
-    public bool isFaking = false;
+    string fakingTheory;
+
+    [SyncVar]
+    int score;
 
 
-    void Start() {}
+    void Start()
+    {
+        fakingTheory = null;
+        score = 0;
+    }
 
 
     [Command]
-    public void CmdSetFakingState (bool onOff)
+    public void CmdSetFakingState(string newFakingTheory)
     {
-        isFaking = onOff;
+        fakingTheory = newFakingTheory;
+    }
+
+
+    [Command]
+    public void CmdAddScore(int value)
+    {
+        score += value;
+    }
+
+
+    public bool IsFaking()
+    {
+        return (fakingTheory != null);
+    }
+
+
+    void OnGUI()
+    {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+        GUI.BeginGroup(new Rect(Screen.width / 2 - 100, Screen.height - 100, 200, 200));
+        GUILayout.Label("Score: " + score);
+        if (IsFaking())
+        {
+            GUILayout.Label("Faking using " + fakingTheory);
+        }
+        GUI.EndGroup();
     }
 }

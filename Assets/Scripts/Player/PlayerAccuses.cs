@@ -7,7 +7,7 @@ public class PlayerAccuses : MonoBehaviour {
 
     private PlayerLogger logger;
     private PlayerGaze playerGaze;
-    private PlayerScore playerScore;
+    private PlayerState playerState;
     private AudioSource audioSource;
     private SteamVR_TrackedObject trackedObj;
 
@@ -22,7 +22,7 @@ public class PlayerAccuses : MonoBehaviour {
         logger = GetComponent<PlayerLogger>();
         audioSource = GetComponent<AudioSource> ();
         playerGaze = GetComponent<PlayerGaze> ();
-        playerScore = GetComponent<PlayerScore>();
+        playerState = GetComponent<PlayerState>();
     }
 
 
@@ -56,11 +56,11 @@ public class PlayerAccuses : MonoBehaviour {
     {
         if (null != accusedPlayer)
         {
-            bool correct = accusedPlayer.GetComponent<PlayerState>().isFaking;
+            bool correct = accusedPlayer.GetComponent<PlayerState>().IsFaking();
             int score = correct ? 1 : -1;
             string text = correct ? "Correctly" : "Mistakenly";
             logger.Event(text + " accusing " + playerGaze.GetGazedNetId() + " for faking");
-            playerScore.CmdAdd(score);
+            playerState.CmdAddScore(score);
         }
 
         audioSource.Play ();

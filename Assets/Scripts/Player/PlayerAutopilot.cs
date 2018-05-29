@@ -58,7 +58,7 @@ public class PlayerAutopilot : MonoBehaviour {
                 string input = "Fake" + char.ToUpper(theory[0]) + theory.Substring(1);
                 if (Input.GetButtonDown(input))
                 {
-                    if (playerState.isFaking)
+                    if (playerState.IsFaking())
                     {
                         StopAutopilot();
                     }
@@ -85,7 +85,7 @@ public class PlayerAutopilot : MonoBehaviour {
     {
         logger.Event("Faking starts using " + theory);
 
-        playerState.CmdSetFakingState(true);
+        playerState.CmdSetFakingState(theory);
 
         // Start spawning tokens
         tokenSpawner.active = true;
@@ -118,7 +118,7 @@ public class PlayerAutopilot : MonoBehaviour {
     {
         logger.Event("Faking stops");
 
-        playerState.CmdSetFakingState(false);
+        playerState.CmdSetFakingState(null);
 
         // Stop spawning tokens
         tokenSpawner.active = false;
