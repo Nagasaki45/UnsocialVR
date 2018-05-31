@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Networking;
 
 public class PlayerState : NetworkBehaviour {
@@ -33,7 +34,7 @@ public class PlayerState : NetworkBehaviour {
 
     public bool IsFaking()
     {
-        return (fakingTheory != null);
+        return !String.IsNullOrEmpty(fakingTheory);
     }
 
 
