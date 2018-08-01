@@ -14,8 +14,6 @@ public class PlayerAutopilot : MonoBehaviour {
     private PlayerBody playerBody;
     private PlayerState playerState;
     private GameObject hiddenPlayerObj;
-    private TokenSpawner tokenSpawner;
-    private FlashScreen flashScreen;
     private SteamVR_TrackedObject trackedObj;
 
     private SteamVR_Controller.Device Controller
@@ -28,8 +26,6 @@ public class PlayerAutopilot : MonoBehaviour {
     {
         playerBody = GetComponent<PlayerBody>();
         playerState = GetComponent<PlayerState>();
-        tokenSpawner = GameObject.FindGameObjectWithTag ("TokenSpawner").GetComponent<TokenSpawner> ();
-        flashScreen = GameObject.FindGameObjectWithTag ("FlashScreen").GetComponent<FlashScreen> ();
         if (SceneManager.GetActiveScene ().name != "Simulator")
         {
             trackedObj = GameObject.FindGameObjectWithTag (controllerTag).GetComponent<SteamVR_TrackedObject> ();
@@ -87,12 +83,6 @@ public class PlayerAutopilot : MonoBehaviour {
 
         playerState.CmdSetFakingState(theory);
 
-        // Start spawning tokens
-        tokenSpawner.active = true;
-
-        // Flash the screen
-        flashScreen.Flash();
-
         // Turn off body trackers and controllers
         GetComponent<PlayerMovementControl> ().SetControl (false);
 
@@ -119,12 +109,6 @@ public class PlayerAutopilot : MonoBehaviour {
         Logger.Event("Faking stops");
 
         playerState.CmdSetFakingState(null);
-
-        // Stop spawning tokens
-        tokenSpawner.active = false;
-
-        // Flash the screen
-        flashScreen.Flash();
 
         // Unregister from head nods
         GetComponent<PubSubClient>().CmdUnsubscribeFromHeadNods();
