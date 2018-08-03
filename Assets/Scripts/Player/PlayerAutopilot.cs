@@ -10,10 +10,12 @@ public class PlayerAutopilot : MonoBehaviour {
     public string controllerTag;
     public string[] fakingTheories;
     public GameObject hiddenPlayerPrefab;
+    public GameObject snakeGamePrefab;
 
     private PlayerBody playerBody;
     private PlayerState playerState;
     private GameObject hiddenPlayerObj;
+    private GameObject snakeGame;
     private SteamVR_TrackedObject trackedObj;
 
     private SteamVR_Controller.Device Controller
@@ -77,12 +79,18 @@ public class PlayerAutopilot : MonoBehaviour {
 
         // Hide me
         SetVisibility (false);
+
+        // Start the snake game
+        snakeGame = Instantiate(snakeGamePrefab, transform);
+        snakeGame.transform.parent = hiddenPlayerObj.transform.Find("HeadController");
     }
 
 
     private void StopAutopilot()
     {
         Logger.Event("Faking stops");
+
+        Destroy(snakeGame);
 
         playerState.CmdSetFakingState(null);
 
