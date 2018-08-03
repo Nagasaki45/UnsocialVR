@@ -26,44 +26,20 @@ public class PlayerAutopilot : MonoBehaviour {
     {
         playerBody = GetComponent<PlayerBody>();
         playerState = GetComponent<PlayerState>();
-        if (SceneManager.GetActiveScene ().name != "Simulator")
-        {
-            trackedObj = GameObject.FindGameObjectWithTag (controllerTag).GetComponent<SteamVR_TrackedObject> ();
-        }
+        trackedObj = GameObject.FindGameObjectWithTag (controllerTag).GetComponent<SteamVR_TrackedObject> ();
     }
 
 
     void Update()
     {
-        if (SceneManager.GetActiveScene ().name != "Simulator")
+        if (Controller.GetHairTriggerDown())
         {
-            if (Controller.GetHairTriggerDown())
-            {
-                int i = Random.Range(0, fakingTheories.Length);
-                StartAutopilot(fakingTheories[i]);
-            }
-            else if (Controller.GetHairTriggerUp())
-            {
-                StopAutopilot();
-            }
+            int i = Random.Range(0, fakingTheories.Length);
+            StartAutopilot(fakingTheories[i]);
         }
-        else
+        else if (Controller.GetHairTriggerUp())
         {
-            foreach (string theory in fakingTheories)
-            {
-                string input = "Fake" + char.ToUpper(theory[0]) + theory.Substring(1);
-                if (Input.GetButtonDown(input))
-                {
-                    if (playerState.IsFaking())
-                    {
-                        StopAutopilot();
-                    }
-                    else
-                    {
-                        StartAutopilot(theory);
-                    }
-                }
-            }
+            StopAutopilot();
         }
     }
 
@@ -117,10 +93,7 @@ public class PlayerAutopilot : MonoBehaviour {
         SetFakingGenerators(false);
 
         // Jump back into the faking avatar
-        if (SceneManager.GetActiveScene().name != "Simulator")
-        {
-            ResetCamera();
-        }
+        ResetCamera();
 
         // Allow the player to talk again
         GetComponent<PlayerTalking>().Unblock();

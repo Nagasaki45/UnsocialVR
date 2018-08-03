@@ -32,24 +32,14 @@ public class PlayerTalking : NetworkBehaviour {
         {
             return;
         }
-        if (SceneManager.GetActiveScene ().name == "Simulator")
+        bool speechDetected = IsThereSpeechInAudio();
+        if (speechDetected && !isTalking)
         {
-            if (Input.GetButtonUp ("Talk"))
-            {
-                CmdSetTalkingState (!isTalking);
-            }
+            CmdSetTalkingState(true);
         }
-        else
+        else if (!speechDetected && isTalking)
         {
-            bool speechDetected = IsThereSpeechInAudio ();
-            if (speechDetected && !isTalking)
-            {
-                CmdSetTalkingState (true);
-            }
-            else if (!speechDetected && isTalking)
-            {
-                CmdSetTalkingState (false);
-            }
+            CmdSetTalkingState(false);
         }
     }
 

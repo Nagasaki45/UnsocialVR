@@ -26,26 +26,14 @@ public class PlayerAccuses : MonoBehaviour {
 
     private void Start()
     {
-        if (SceneManager.GetActiveScene ().name != "Simulator")
-        {
-            trackedObj = GameObject.FindGameObjectWithTag (controllerTag).GetComponent<SteamVR_TrackedObject> ();
-        }
+        trackedObj = GameObject.FindGameObjectWithTag(controllerTag).GetComponent<SteamVR_TrackedObject>();
     }
 
 
     private void Update() {
-        if (SceneManager.GetActiveScene ().name == "Simulator")
+        if (Controller.GetHairTriggerDown())
         {
-            if (Input.GetButtonDown ("Accuse")) {
-                AccusePlayer (playerGaze.gazedObj);
-            }
-        }
-        else
-        {
-            if (Controller.GetHairTriggerDown ())
-            {
-                AccusePlayer (playerGaze.gazedObj);
-            }
+            AccusePlayer(playerGaze.gazedObj);
         }
     }
 
