@@ -3,9 +3,12 @@ using UnityEngine.Networking;
 
 public class ClientsSync : NetworkBehaviour
 {
+    public Light lights;
+
+
     void Update()
     {
-        if (isLocalPlayer && Input.GetButtonDown("ClientsSync"))
+        if (Input.GetButtonDown("ClientsSync"))
         {
             CmdSync();
         }
@@ -23,6 +26,13 @@ public class ClientsSync : NetworkBehaviour
     void RpcSync()
     {
         Logger.Event("Clients sync");
-        // TODO visual indication
+        ToggleLights();
+        Invoke("ToggleLights", 0.5f);
+    }
+
+
+    void ToggleLights()
+    {
+        lights.enabled = !lights.enabled;
     }
 }

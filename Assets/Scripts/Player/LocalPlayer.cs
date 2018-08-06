@@ -4,33 +4,31 @@ using UnityEngine.Networking;
 
 public class LocalPlayer : NetworkBehaviour {
 
-    public static GameObject localPlayer;
-
     public void Start()
     {
-        if (!isLocalPlayer)
+        if (isLocalPlayer)
         {
-            return;
+            // Faking generators
+            GetComponentInChildren<LookAtSpeaker>().enabled = true;
+            foreach(var naturalMovement in GetComponentsInChildren<NaturalMovement>())
+            {
+                naturalMovement.enabled = true;
+            }
+
+            // Hide performative
+            GameObject performative = transform.Find("Performative").gameObject;
+            foreach (var r in performative.GetComponentsInChildren<MeshRenderer>()) {
+                r.enabled = false;
+            }
+
+            // No collider for local performative to ensure I'm not gazing at myself.
+            performative.GetComponentInChildren<SphereCollider>().enabled = false;
+        }
+        else
+        {
+            // Destroy Self, only Performative is used
+            Destroy(transform.Find("Self").gameObject);
         }
 
-        localPlayer = gameObject;
-
-        // General local player scripts
-        GetComponent<PlayerAutopilot>().enabled = true;
-        GetComponent<PlayerAccuses>().enabled = true;
-        GetComponent<PlayerMovementControl>().SetControl (true);
-        GetComponent<PlayerLogger>().enabled = true;
-
-        // PubSub
-        GetComponent<PlayerHeadNod>().enabled = true;
-        GetComponent<PlayerExpectsBackchannel>().enabled = true;
-        GetComponent<PlayerDisfluent>().enabled = true;
-
-        // Faking generators
-        GetComponent<LookAtSpeaker>().enabled = true;
-        foreach(var naturalMovement in GetComponentsInChildren<NaturalMovement>())
-        {
-            naturalMovement.enabled = true;
-        }
     }
 }

@@ -15,6 +15,7 @@ public class SnakeController : MonoBehaviour {
     SnakeSpawner snakeSpawner;
     List<Transform> parts;
     Vector3 direction;
+    Vector3 previousDirection;
     bool shouldGrow;
     SteamVR_TrackedObject trackedObj;
 
@@ -37,6 +38,7 @@ public class SnakeController : MonoBehaviour {
         snakeSpawner = GetComponentInParent<SnakeSpawner>();
         parts = new List<Transform>();
         direction = Vector3.forward;
+        previousDirection = Vector3.forward;
         shouldGrow = false;
 
         for (int i = 1; i < initialSize; i++)
@@ -49,19 +51,19 @@ public class SnakeController : MonoBehaviour {
     void Update()
     {
         Vector2 touch = device.GetAxis();
-        if (touch.x > touchpadThreshold && direction != Vector3.left)
+        if (touch.x > touchpadThreshold && previousDirection != Vector3.left)
         {
             direction = Vector3.right;
         }
-        else if (touch.x < -touchpadThreshold && direction != Vector3.right)
+        else if (touch.x < -touchpadThreshold && previousDirection != Vector3.right)
         {
             direction = Vector3.left;
         }
-        else if (touch.y > touchpadThreshold && direction != Vector3.back)
+        else if (touch.y > touchpadThreshold && previousDirection != Vector3.back)
         {
             direction = Vector3.forward;
         }
-        else if (touch.y < -touchpadThreshold && direction != Vector3.forward)
+        else if (touch.y < -touchpadThreshold && previousDirection != Vector3.forward)
         {
             direction = Vector3.back;
         }
@@ -95,6 +97,7 @@ public class SnakeController : MonoBehaviour {
         transform.Translate(direction * transform.lossyScale[0]);
 
         shouldGrow = false;
+        previousDirection = direction;
     }
 
 

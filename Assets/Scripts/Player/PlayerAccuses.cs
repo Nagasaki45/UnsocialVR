@@ -19,7 +19,7 @@ public class PlayerAccuses : MonoBehaviour {
     private void Awake()
     {
         audioSource = GetComponent<AudioSource> ();
-        playerGaze = GetComponent<PlayerGaze> ();
+        playerGaze = GetComponentInChildren<PlayerGaze> ();
         playerState = GetComponent<PlayerState>();
     }
 

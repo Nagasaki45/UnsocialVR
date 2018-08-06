@@ -4,7 +4,6 @@
 public class BindTransform : MonoBehaviour {
 
     public string bindToTag;
-    public Transform bindedTransform;
 
     private Transform trackedTransform;
 
@@ -17,7 +16,7 @@ public class BindTransform : MonoBehaviour {
 
     void Update ()
     {
-        bindedTransform.position = trackedTransform.position;
-        bindedTransform.rotation = trackedTransform.rotation;
+        transform.position = trackedTransform.position;
+        transform.rotation = trackedTransform.rotation;
     }
 }

@@ -8,14 +8,14 @@ public class LookAtSpeaker : MonoBehaviour {
     public float jitterLerp;
     public float jitterScale;
     public float blankGazeDistance;
+    public Transform trackedTransform;
+    public float lerp;
 
-    private Transform myTransform;
     private Vector3 randomValue;
     private Vector3 randomTarget;
 
     void Start()
     {
-        myTransform = GetComponent<Transform>();
         InvokeRepeating("Repeatedly", 0, 1 / jitterFreq);
     }
 
@@ -33,22 +33,25 @@ public class LookAtSpeaker : MonoBehaviour {
             randomValue = Vector3.Lerp(randomValue, randomTarget, Time.deltaTime * jitterLerp);
             GameObject speaker = PlayerTalking.speaker;
             Vector3 target;
-            if (speaker != null)
+            if (speaker != null && speaker != transform.parent.parent.gameObject)
             {
                 target = speaker.transform.Find("HeadController").position;
             }
             else
             {
-                target = myTransform.position + myTransform.forward * blankGazeDistance;
+                target = transform.position + transform.forward * blankGazeDistance;
             }
             SlowlyRotateTowards(target);
+        } else {
+            transform.position = Vector3.Lerp(transform.position, trackedTransform.position, lerp * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, trackedTransform.rotation, lerp * Time.deltaTime);
         }
     }
 
     void SlowlyRotateTowards(Vector3 target)
     {
-        Vector3 direction = (target - myTransform.position + randomValue * jitterScale).normalized;
+        Vector3 direction = (target - transform.position + randomValue * jitterScale).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-        myTransform.rotation = Quaternion.Slerp(myTransform.rotation, lookRotation, Time.deltaTime * speed);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * speed);
     }
 }

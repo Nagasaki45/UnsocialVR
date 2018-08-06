@@ -15,7 +15,7 @@ public class PlayerMouthAnimation : MonoBehaviour {
 
     private void Start()
     {
-        playerTalking = GetComponent<PlayerTalking> ();
+        playerTalking = GetComponentInParent<PlayerTalking> ();
         target = mouthClose;
     }
 
