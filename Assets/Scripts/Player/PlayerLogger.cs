@@ -29,14 +29,14 @@ public class PlayerLogger : MonoBehaviour {
 
     void Awake()
     {
-        playerTalking = GetComponent<PlayerTalking>();
-        playerGaze = GetComponent<PlayerGaze>();
+        playerTalking = GetComponentInParent<PlayerTalking>();
+        playerGaze = GetComponentInChildren<PlayerGaze>();
     }
 
 
     void Start()
     {
-        string id = GetComponent<NetworkIdentity>().netId.ToString();
+        string id = GetComponentInParent<NetworkIdentity>().netId.ToString();
         string filename = DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_" + id;
         Logger.filename = filename + ".log";
         continuousWriter = new StreamWriter(filename + ".csv");
