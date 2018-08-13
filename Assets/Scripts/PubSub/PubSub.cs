@@ -36,7 +36,7 @@ public class PubSub : MonoBehaviour
         {
             if (gameObjectTheoryPair.topic.Equals(topic))
             {
-                gameObjectTheoryPair.subscriber.RpcNod();
+                gameObjectTheoryPair.subscriber.ServerSideNod();
             }
         }
     }

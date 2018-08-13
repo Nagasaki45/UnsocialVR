@@ -3,15 +3,15 @@ using UnityEngine.Networking;
 
 public class PubSubClient : NetworkBehaviour
 {
-    private PlayerAnimator playerAnimator;
-    private PubSub pubSub;
+    public Animator animator;
+    public string[] animations;
+    public float animationCrossfadeSeconds;
+
+    PubSub pubSub;
 
 
-    // Use this for initialization
     void Start()
     {
-        playerAnimator = GetComponentInChildren<PlayerAnimator>();
-
         if (isServer)
         {
             pubSub = GameObject.FindGameObjectWithTag("PubSub").GetComponent<PubSub>();
@@ -40,13 +40,20 @@ public class PubSubClient : NetworkBehaviour
     }
 
 
+    public void ServerSideNod()
+    {
+        int i = Random.Range(0, animations.Length);
+        RpcNod(animations[i]);
+    }
+
+
     [ClientRpc]
-    public void RpcNod()
+    public void RpcNod(string animation)
     {
         if (isLocalPlayer)
         {
-            Logger.Event("Faking nodding");
+            Logger.Event("Faking " + animation);
         }
-        playerAnimator.Nod();
+        animator.CrossFade(animation, animationCrossfadeSeconds);
     }
 }
