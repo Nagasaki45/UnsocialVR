@@ -19,7 +19,7 @@ public class PlayerHeadNod : MonoBehaviour {
 
     void Start()
     {
-        pubSubClient = GetComponent<PubSubClient>();
+        pubSubClient = GetComponentInParent<PubSubClient>();
 
         interpolator = new Interpolator(1.0 / sampleRate);
         lowPassFilter = new Butterworth(4, sampleRate, Butterworth.PassType.Lowpass);
@@ -57,7 +57,7 @@ public class PlayerHeadNod : MonoBehaviour {
     private void Nod()
     {
         // Only the speaker publishes!
-        if (PlayerTalking.speaker == gameObject)
+        if (PlayerTalking.speaker == transform.parent.gameObject)
         {
             pubSubClient.CmdPublish("mimicry");
         }
