@@ -35,7 +35,7 @@ public class LookAtSpeaker : MonoBehaviour {
             Vector3 target;
             if (speaker != null && speaker != transform.parent.parent.gameObject)
             {
-                target = speaker.transform.Find("HeadController").position;
+                target = speaker.transform.Find("Performative/Head").position;
             }
             else
             {
