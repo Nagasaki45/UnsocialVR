@@ -44,6 +44,7 @@ public class PlayerState : NetworkBehaviour {
         {
             return;
         }
+        GUI.contentColor = Color.black;
         GUI.BeginGroup(new Rect(Screen.width / 2 - 100, Screen.height - 100, 200, 200));
         GUILayout.Label("Score: " + score);
         if (IsFaking())
