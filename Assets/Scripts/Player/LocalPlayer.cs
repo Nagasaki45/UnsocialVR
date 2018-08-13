@@ -30,10 +30,6 @@ public class LocalPlayer : NetworkBehaviour {
             {
                 Destroy(x);
             }
-
-            // No need for animator
-            Destroy(GetComponentInChildren<PlayerAnimator>());
-            Destroy(GetComponentInChildren<Animator>());
         }
     }
 }

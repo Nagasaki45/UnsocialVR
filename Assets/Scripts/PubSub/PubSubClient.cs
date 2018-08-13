@@ -10,7 +10,7 @@ public class PubSubClient : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
-        playerAnimator = GetComponent<PlayerAnimator>();
+        playerAnimator = GetComponentInChildren<PlayerAnimator>();
 
         if (isServer)
         {
