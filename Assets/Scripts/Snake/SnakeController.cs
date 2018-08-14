@@ -9,7 +9,6 @@ public class SnakeController : MonoBehaviour {
     public GameObject foodPrefab;
     public float movementPeriod;
     public int initialSize;
-    public int score;
     public float touchpadThreshold;
 
     SnakeSpawner snakeSpawner;
@@ -117,7 +116,7 @@ public class SnakeController : MonoBehaviour {
 
     void Eat()
     {
-        score += 1;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerState>().CmdAddScore(1);
         shouldGrow = true;
         snakeSpawner.SpawnFood();
     }

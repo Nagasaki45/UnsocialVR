@@ -38,6 +38,12 @@ public class PlayerState : NetworkBehaviour {
     }
 
 
+    public int GetScore()
+    {
+        return score;
+    }
+
+
     void OnGUI()
     {
         if (!isLocalPlayer)
