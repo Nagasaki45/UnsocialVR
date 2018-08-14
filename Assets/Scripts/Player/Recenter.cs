@@ -63,7 +63,6 @@ public class Recenter : MonoBehaviour {
             }
             if (emptyChair)
             {
-                Debug.Log("Breaking!");
                 break;
             }
         }
