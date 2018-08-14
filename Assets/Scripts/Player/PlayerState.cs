@@ -4,11 +4,10 @@ using UnityEngine.Networking;
 
 public class PlayerState : NetworkBehaviour {
 
-    [SyncVar]
-    string fakingTheory;
+    public int score;
 
     [SyncVar]
-    int score;
+    string fakingTheory;
 
 
     void Start()
@@ -25,22 +24,9 @@ public class PlayerState : NetworkBehaviour {
     }
 
 
-    [Command]
-    public void CmdAddScore(int value)
-    {
-        score += value;
-    }
-
-
     public bool IsFaking()
     {
         return !String.IsNullOrEmpty(fakingTheory);
-    }
-
-
-    public int GetScore()
-    {
-        return score;
     }
 
 

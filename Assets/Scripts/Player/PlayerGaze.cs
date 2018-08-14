@@ -22,7 +22,8 @@ public class PlayerGaze : MonoBehaviour {
 
         if (Physics.Raycast (attentionRay, out attentionHit, rayDistance))
         {
-            gazedObj = attentionHit.collider.gameObject;
+            //                               Head                 Perf   Player
+            gazedObj = attentionHit.collider.gameObject.transform.parent.parent.gameObject;
         }
         else
         {
