@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 public class PlayerState : NetworkBehaviour {
 
     public int score;
+    public TextMesh scoreTextMesh;
 
     [SyncVar]
     string fakingTheory;
@@ -30,6 +31,12 @@ public class PlayerState : NetworkBehaviour {
     }
 
 
+    void Update()
+    {
+        scoreTextMesh.text = "Score: " + score;
+    }
+
+
     void OnGUI()
     {
         if (!isLocalPlayer)
@@ -38,7 +45,6 @@ public class PlayerState : NetworkBehaviour {
         }
         GUI.contentColor = Color.black;
         GUI.BeginGroup(new Rect(Screen.width / 2 - 100, Screen.height - 100, 200, 200));
-        GUILayout.Label("Score: " + score);
         if (IsFaking())
         {
             GUILayout.Label("Faking using " + fakingTheory);
