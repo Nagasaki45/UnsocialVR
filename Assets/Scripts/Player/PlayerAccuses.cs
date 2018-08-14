@@ -42,7 +42,7 @@ public class PlayerAccuses : MonoBehaviour {
         audioSource.Play();
 
         string text = correct ? "Correctly" : "Mistakenly";
-        Logger.Event(text + " accusing " + playerGaze.GetGazedNetId() + " for faking");
+        Logger.Event(text + " accusing " + playerGaze.GetGazedNetId());
     }
 
 }

@@ -52,7 +52,7 @@ public class PubSubClient : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            Logger.Event("Faking " + animation);
+            Logger.Event("Nodding fake " + animation);
         }
         animator.CrossFade(animation, animationCrossfadeSeconds);
     }
