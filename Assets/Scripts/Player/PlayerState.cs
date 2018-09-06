@@ -33,6 +33,10 @@ public class PlayerState : NetworkBehaviour {
 
     void Update()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
         scoreTextMesh.text = "Score: " + score;
     }
 
