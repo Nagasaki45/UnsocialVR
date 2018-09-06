@@ -118,7 +118,7 @@ public class SnakeController : MonoBehaviour {
     void Eat()
     {
         audioSource.Play();
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerState>().score += 1;
+        GetComponentInParent<PlayerState>().score += 1;
         shouldGrow = true;
         snakeSpawner.SpawnFood();
     }
