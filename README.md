@@ -23,8 +23,11 @@ Make sure you have:
 How to run:
 
 1. Clone the project with `git clone --recursive https://github.com/Nagasaki45/UnsocialVR.git`
-1. Install the deep_disfluency requirements with `cd deep_disfluency && pip install -r requirements` (using a virtual environment is highly recommended). See `deep_disfluency/README.md` for more info.
-1. In a separate terminal open the deep_disfluency TCP server with `cd deep_disfluency && python asr_tcp_server_demo.py`.
+1. Prepare your credentials from IBM Watson (free trials are available):
+    - Visit the [IBM Watson projects](https://console.bluemix.net/developer/watson/projects) page.
+    - Choose your project.
+    - Copy the credentials to `path/to/UnsocialVR/deep_disfluency_server/credentials.json`.
+1. In a separate terminal run the deep_disfluency_server with `cd deep_disfluency_server && pipenv run python server.py`.
 1. Open the `backchannels/server_WardTsukahara2000.pd` PureData patch.
 1. Open Unity and load the project.
 1. Import the Dissonance Voice Chat with its HLAPI adapter.
