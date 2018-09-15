@@ -1,3 +1,6 @@
 [submodule "backchannels"]
 	path = backchannels
 	url = https://github.com/Nagasaki45/backchannels.git
+[submodule "deep_disfluency_server"]
+	path = deep_disfluency_server
+	url = https://github.com/Nagasaki45/deep_disfluency_server.git

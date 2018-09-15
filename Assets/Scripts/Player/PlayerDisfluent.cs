@@ -10,23 +10,16 @@ using UnityEngine.Networking;
 
 public class PlayerDisfluent : MonoBehaviour, IMicrophoneSubscriber
 {
-    public string[] repairTags;
     public int tcpServerPort;
 
-    private PubSubClient pubSubClient;
     private TcpClient tcpClient;
     private NetworkStream networkStream;
     private StreamReader streamReader;
+    private bool ready = false;
 
 
     void Start()
     {
-        pubSubClient = GetComponent<PubSubClient>();
-
-        // Subscribe to dissonance microphone capture
-        DissonanceComms comms = GameObject.FindGameObjectWithTag("DissonanceSetup").GetComponent<DissonanceComms>();
-        comms.MicrophoneCapture.Subscribe(this);
-
         // Connect to TCP server
         NetworkManager nm = GameObject.FindGameObjectWithTag("Network").GetComponent<NetworkManager>();
         tcpClient = new TcpClient(nm.networkAddress, tcpServerPort);
@@ -44,13 +37,19 @@ public class PlayerDisfluent : MonoBehaviour, IMicrophoneSubscriber
             while (networkStream.DataAvailable)
             {
                 string line = streamReader.ReadLine();
-                foreach (string repairTag in repairTags)
-                {
-                    if (line.Contains(repairTag))
-                    {
-                        Logger.Event("Player disfluent");
-                        pubSubClient.CmdPublish("disfluency");
-                    }
+                if (ready) {
+                    Logger.Event("Player disfluent");
+                    GetComponentInParent<PubSubClient>().CmdPublish("disfluency");
+                } else {
+                    // First message should be a 'ready' message from the server
+                    ready = true;
+
+                    // Subscribe to dissonance microphone capture
+                    GameObject
+                        .FindGameObjectWithTag("DissonanceSetup")
+                        .GetComponent<DissonanceComms>()
+                        .MicrophoneCapture
+                        .Subscribe(this);
                 }
             }
             // Let the engine run for a frame.
