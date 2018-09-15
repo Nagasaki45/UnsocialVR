@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,8 +9,6 @@ public class Recenter : MonoBehaviour {
 
     GameObject me;
     Transform cameraRig;
-    Vector3 position;
-    Quaternion rotation;
 
 
     void Start()
@@ -24,48 +23,39 @@ public class Recenter : MonoBehaviour {
         if (Input.GetButtonDown("Recenter"))
         {
             Logger.Event("Recentering");
-            List<Vector3> occupiedPositions = GetOccupiedPositions();
-            FindEmptyChair(occupiedPositions);  // Sets the global position/rotation
+            List<int> occupiedChairs = GetOccupiedChairs();
+            int chair = FindEmptyChair(occupiedChairs);
+            me.GetComponent<PlayerState>().CmdSetChair(chair);
+            Vector3 position = Quaternion.Euler(0, 120 * chair, 0) * Vector3.right * radious;
+            Quaternion rotation = Quaternion.Euler(0, 120 * chair - 90, 0);
             ResetCamera(position, rotation);
         }
     }
 
 
-    List<Vector3> GetOccupiedPositions()
+    List<int> GetOccupiedChairs()
     {
-        List<Vector3> occupiedPositions = new List<Vector3>();
+        List<int> occupiedChairs = new List<int>();
         foreach (var otherPlayer in GameObject.FindGameObjectsWithTag("Player"))
         {
             if (otherPlayer != me)
             {
-                Transform otherPlayerHead = otherPlayer.transform.Find("Performative/Head");
-                occupiedPositions.Add(otherPlayerHead.position);
+                occupiedChairs.Add(otherPlayer.GetComponent<PlayerState>().GetChair());
             }
         }
-        return occupiedPositions;
+        return occupiedChairs;
     }
 
-
-    void FindEmptyChair(List<Vector3> occupiedPositions)
+    int FindEmptyChair(List<int> occupiedChairs)
     {
         for (int i = 0; i < 3; i++)
         {
-            position = Quaternion.Euler(0, 120 * i, 0) * Vector3.right * radious;
-            rotation = Quaternion.Euler(0, 120 * i - 90, 0);
-            bool emptyChair = true;
-            foreach (var occupiedPosition in occupiedPositions)
-            {
-                if (Vector3.Distance(position, occupiedPosition) < 1)
-                {
-                    emptyChair = false;
-                    break;
-                }
-            }
-            if (emptyChair)
-            {
-                break;
+            if (!occupiedChairs.Contains(i)) {
+                return i;
             }
         }
+        return 0;  // This should never happen, but throwing an exception is just
+                   // too complicated in c# :(
     }
 
 

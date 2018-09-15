@@ -10,6 +10,9 @@ public class PlayerState : NetworkBehaviour {
     [SyncVar]
     string fakingTheory;
 
+    [SyncVar]
+    int chair;
+
 
     void Start()
     {
@@ -22,6 +25,17 @@ public class PlayerState : NetworkBehaviour {
     public void CmdSetFakingState(string newFakingTheory)
     {
         fakingTheory = newFakingTheory;
+    }
+
+    [Command]
+    public void CmdSetChair(int x)
+    {
+        chair = x;
+    }
+
+    public int GetChair()
+    {
+        return chair;
     }
 
 
