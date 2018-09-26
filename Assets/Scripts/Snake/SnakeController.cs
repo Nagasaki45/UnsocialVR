@@ -11,6 +11,7 @@ public class SnakeController : MonoBehaviour {
     public int initialSize;
     public float touchpadThreshold;
     public AudioSource audioSource;
+    public int foodScoreValue;
 
     SnakeSpawner snakeSpawner;
     List<Transform> parts;
@@ -118,7 +119,7 @@ public class SnakeController : MonoBehaviour {
     void Eat()
     {
         audioSource.Play();
-        GetComponentInParent<PlayerState>().score += 1;
+        GetComponentInParent<PlayerState>().score += foodScoreValue;
         shouldGrow = true;
         snakeSpawner.SpawnFood();
     }
