@@ -43,7 +43,7 @@ public class PlayerHeadNod : MonoBehaviour {
 
                 // Tell all listeners to nod in 4 seconds delay.
                 Logger.Event("Nodding real");
-                Invoke("Nod", 4);
+                Invoke("Nod", 0.6f);
             }
 
             if (value < notNoddingThreshold && value > -notNoddingThreshold)
