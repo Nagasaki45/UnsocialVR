@@ -19,6 +19,7 @@ Make sure you have:
   - Dissonance Voice Chat 6.0.1. You will need to buy it from the assets store.
 - python 2.7
 - PureData 0.48.1.
+- blender (2.79b is known to be working, but it shouldn't realy matter).
 
 How to run:
 
