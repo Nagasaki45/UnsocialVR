@@ -8,10 +8,11 @@ using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class PlayerDisfluent : MonoBehaviour, IMicrophoneSubscriber
+public class Disfluency : MonoBehaviour, IMicrophoneSubscriber
 {
     public int tcpServerPort;
 
+    private PlayerPartner playerPartner;
     private TcpClient tcpClient;
     private NetworkStream networkStream;
     private StreamReader streamReader;
@@ -20,6 +21,8 @@ public class PlayerDisfluent : MonoBehaviour, IMicrophoneSubscriber
 
     void Start()
     {
+        playerPartner = GetComponent<PlayerPartner>();
+
         // Connect to TCP server
         NetworkManager nm = GameObject.FindGameObjectWithTag("Network").GetComponent<NetworkManager>();
         tcpClient = new TcpClient(nm.networkAddress, tcpServerPort);
@@ -39,7 +42,7 @@ public class PlayerDisfluent : MonoBehaviour, IMicrophoneSubscriber
                 string line = streamReader.ReadLine();
                 if (ready) {
                     Logger.Event("Player disfluent");
-                    GetComponentInParent<PubSubClient>().CmdPublish("disfluency");
+                    playerPartner.Nod("disfluency");
                 } else {
                     // First message should be a 'ready' message from the server
                     ready = true;

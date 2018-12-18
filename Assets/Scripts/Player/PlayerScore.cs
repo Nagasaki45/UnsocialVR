@@ -1,8 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class PlayerScore : NetworkBehaviour {
 
+public class PlayerScore : MonoBehaviour {
+
+    int score;
+    TextMesh scoreTextMesh;
+
+
+    void Start()
+    {
+        score = 0;
+        scoreTextMesh = GetComponent<TextMesh>();
+    }
+
+
+    void Update()
+    {
+        scoreTextMesh.text = "Score: " + score;
+    }
+
+
+    public void Add(int value)
+    {
+        score += value;
+    }
 }

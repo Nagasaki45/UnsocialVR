@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class PlayerMouthAnimation : MonoBehaviour {
 
-    public Transform mouth;
     public float mouthClose;
     public float mouthOpen;
     public float speed;
@@ -24,11 +23,11 @@ public class PlayerMouthAnimation : MonoBehaviour {
     {
         if (playerTalking.isTalking)
         {
-            if (mouth.localScale.y > mouthOpen - epsilon)
+            if (transform.localScale.y > mouthOpen - epsilon)
             {
                 target = mouthClose;
             }
-            else if (mouth.localScale.y < mouthClose + epsilon)
+            else if (transform.localScale.y < mouthClose + epsilon)
             {
                 target = mouthOpen;
             }
@@ -37,7 +36,7 @@ public class PlayerMouthAnimation : MonoBehaviour {
         {
             target = mouthClose;
         }
-        Vector3 targetVector = new Vector3 (mouth.localScale.x, target, mouth.localScale.z);
-        mouth.localScale = Vector3.Lerp (mouth.localScale, targetVector, speed * Time.deltaTime);
+        Vector3 targetVector = new Vector3 (transform.localScale.x, target, transform.localScale.z);
+        transform.localScale = Vector3.Lerp (transform.localScale, targetVector, speed * Time.deltaTime);
     }
 }

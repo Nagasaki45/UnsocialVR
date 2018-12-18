@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-public class ClientsSync : NetworkBehaviour
+public class PlayerSync : NetworkBehaviour
 {
-    public Light lights;
-
-
     void Update()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+
         if (Input.GetButtonDown("ClientsSync"))
         {
             CmdSync();
@@ -26,13 +28,14 @@ public class ClientsSync : NetworkBehaviour
     void RpcSync()
     {
         Logger.Event("Clients sync");
-        ToggleLights();
-        Invoke("ToggleLights", 0.5f);
+        ToggleLight();
+        Invoke("ToggleLight", 0.5f);
     }
 
 
-    void ToggleLights()
+    void ToggleLight()
     {
-        lights.enabled = !lights.enabled;
+        Light light = GameObject.FindGameObjectWithTag("Light").GetComponent<Light>();
+        light.enabled = !light.enabled;
     }
 }

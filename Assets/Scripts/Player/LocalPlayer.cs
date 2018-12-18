@@ -4,29 +4,22 @@ using UnityEngine.Networking;
 
 public class LocalPlayer : NetworkBehaviour {
 
-    public GameObject performative;
-    public GameObject self;
+    public GameObject local;
+    public GameObject remote;
+
 
     public void Start()
     {
         if (isLocalPlayer)
         {
-            // Hide performative
-            foreach (var x in performative.GetComponentsInChildren<MeshRenderer>()) {
-                Destroy(x);
-            }
-
-            // No collider for local performative to ensure I'm not gazing at myself.
-            Destroy(performative.GetComponentInChildren<SphereCollider>());
+            Destroy(remote);
         }
         else
         {
-            // Destroy Self, only Performative is used
-            Destroy(self);
+            Destroy(local);
 
-            // No faking generators
-            Destroy(GetComponentInChildren<LookAtSpeaker>());
-            foreach(var x in GetComponentsInChildren<NaturalMovement>())
+            // Non local player shouldn't bind to VR setup but get transforms from network.
+            foreach(var x in GetComponentsInChildren<BindTransform>())
             {
                 Destroy(x);
             }

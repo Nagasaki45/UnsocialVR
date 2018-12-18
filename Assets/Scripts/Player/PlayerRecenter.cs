@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Recenter : MonoBehaviour {
+public class PlayerRecenter : MonoBehaviour {
 
+    public Transform headTransform;
     public float radious;
 
     GameObject me;
@@ -13,7 +14,7 @@ public class Recenter : MonoBehaviour {
 
     void Start()
     {
-        me = transform.parent.parent.gameObject;  // Player/Self/Head
+        me = headTransform.parent.gameObject;
         cameraRig = GameObject.FindGameObjectWithTag("CameraRig").transform;
     }
 
@@ -25,7 +26,7 @@ public class Recenter : MonoBehaviour {
             Logger.Event("Recentering");
             List<int> occupiedChairs = GetOccupiedChairs();
             int chair = FindEmptyChair(occupiedChairs);
-            me.GetComponent<PlayerState>().CmdSetChair(chair);
+            me.GetComponentInParent<PlayerChair>().CmdSetChair(chair);
             Vector3 position = Quaternion.Euler(0, 120 * chair, 0) * Vector3.right * radious;
             Quaternion rotation = Quaternion.Euler(0, 120 * chair - 90, 0);
             ResetCamera(position, rotation);
@@ -40,7 +41,7 @@ public class Recenter : MonoBehaviour {
         {
             if (otherPlayer != me)
             {
-                occupiedChairs.Add(otherPlayer.GetComponent<PlayerState>().GetChair());
+                occupiedChairs.Add(otherPlayer.GetComponent<PlayerChair>().GetChair());
             }
         }
         return occupiedChairs;
@@ -54,6 +55,7 @@ public class Recenter : MonoBehaviour {
                 return i;
             }
         }
+        // TODO Log error
         return 0;  // This should never happen, but throwing an exception is just
                    // too complicated in c# :(
     }
@@ -62,12 +64,12 @@ public class Recenter : MonoBehaviour {
     void ResetCamera(Vector3 targetPos, Quaternion targetRot)
     {
         // Calculate changes in advance
-        float angle = transform.rotation.eulerAngles.y - targetRot.eulerAngles.y;
+        float angle = headTransform.rotation.eulerAngles.y - targetRot.eulerAngles.y;
         Vector3 eulerRotation = new Vector3(0f, -angle, 0f);
-        Vector3 relativePositionBeforeRotation = transform.position - cameraRig.position;
+        Vector3 relativePositionBeforeRotation = headTransform.position - cameraRig.position;
         Vector3 relativePositionAfterRotation = Quaternion.Euler(eulerRotation) * relativePositionBeforeRotation;
         //                 Shifting to fix the rotation offset                                final shift to move to the player head
-        Vector3 rigShift = (relativePositionBeforeRotation - relativePositionAfterRotation) + (targetPos - transform.position);
+        Vector3 rigShift = (relativePositionBeforeRotation - relativePositionAfterRotation) + (targetPos - headTransform.position);
         rigShift.y = 0;
 
         // Apply them all at once

@@ -2,11 +2,12 @@ using System.Collections;
 using System.Net.Sockets;
 using UnityEngine;
 
-public class PlayerExpectsBackchannel : MonoBehaviour
+public class Backchannels : MonoBehaviour
 {
     public string tcpServerAddress;
     public int tcpServerPort;
 
+    private PlayerPartner playerPartner;
     private PlayerTalking playerTalking;
     private TcpClient tcpClient;
     private NetworkStream networkStream;
@@ -14,6 +15,7 @@ public class PlayerExpectsBackchannel : MonoBehaviour
 
     void Start()
     {
+        playerPartner = GetComponent<PlayerPartner>();
         playerTalking = GetComponentInParent<PlayerTalking>();
 
         // Connect to TCP server
@@ -40,7 +42,7 @@ public class PlayerExpectsBackchannel : MonoBehaviour
                 byte[] throwaway = new byte[1024];
                 networkStream.Read(throwaway, 0, throwaway.Length);
                 Logger.Event("Expecting a backchannel");
-                GetComponentInParent<PubSubClient>().CmdPublish("backchannels");
+                playerPartner.Nod("backchannels");
             }
             // Let the engine run for a frame.
             yield return null;

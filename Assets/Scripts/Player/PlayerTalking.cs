@@ -9,10 +9,7 @@ using Dissonance.VAD;
 
 public class PlayerTalking : NetworkBehaviour {
 
-    // Static speaker is set whenever a player starts talking.
-    static public GameObject speaker;
-
-    [SyncVar(hook = "OnChangeTalkingState")]
+    [SyncVar]
     public bool isTalking;
 
     public float talkingAmplitudeThreshold;
@@ -28,7 +25,7 @@ public class PlayerTalking : NetworkBehaviour {
 
     private void Update ()
     {
-        if (!isLocalPlayer || comms.IsMuted)
+        if (!isLocalPlayer)
         {
             return;
         }
@@ -52,37 +49,14 @@ public class PlayerTalking : NetworkBehaviour {
 
 
     bool IsThereSpeechInAudio () {
-				foreach (VoicePlayerState voicePlayerState in comms.Players)
-				{
+        foreach (VoicePlayerState voicePlayerState in comms.Players)
+        {
             // UglyHack (c) to check the type of a private class.
             if (voicePlayerState.GetType ().Name == "LocalVoicePlayerState")
             {
                 return voicePlayerState.IsSpeaking && (voicePlayerState.Amplitude > talkingAmplitudeThreshold);
             }
-				}
+        }
         return false;
-    }
-
-    public void Block() {
-        if (speaker == gameObject)
-        {
-            speaker = null;
-        }
-        CmdSetTalkingState(false);
-        comms.IsMuted = true;
-    }
-
-    public void Unblock() {
-        comms.IsMuted = false;
-    }
-
-
-    void OnChangeTalkingState(bool newTalkingState)
-    {
-        isTalking = newTalkingState;
-        if (newTalkingState)
-        {
-            speaker = gameObject;
-        }
     }
 }

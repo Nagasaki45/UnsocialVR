@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerHeadNod : MonoBehaviour {
+public class Mimicry : MonoBehaviour {
 
     public Transform headTransform;
     public int bufferSize;
@@ -8,8 +8,7 @@ public class PlayerHeadNod : MonoBehaviour {
     public double noddingThreshold;  // the minimum movement to detect a nod
     public double notNoddingThreshold;  // epsilon value
 
-    private PubSubClient pubSubClient;
-
+    private PlayerPartner playerPartner;
     private Interpolator interpolator;
     private Butterworth lowPassFilter;
     private Butterworth highPassFilter;
@@ -19,8 +18,7 @@ public class PlayerHeadNod : MonoBehaviour {
 
     void Start()
     {
-        pubSubClient = GetComponentInParent<PubSubClient>();
-
+        playerPartner = GetComponent<PlayerPartner>();
         interpolator = new Interpolator(1.0 / sampleRate);
         lowPassFilter = new Butterworth(4, sampleRate, Butterworth.PassType.Lowpass);
         highPassFilter = new Butterworth(1, sampleRate, Butterworth.PassType.Highpass);
@@ -41,7 +39,7 @@ public class PlayerHeadNod : MonoBehaviour {
             {
                 readyToNod = false;
 
-                // Tell all listeners to nod in 4 seconds delay.
+                // Tell all listeners to nod after delay.
                 Logger.Event("Nodding real");
                 Invoke("Nod", 0.6f);
             }
@@ -56,10 +54,6 @@ public class PlayerHeadNod : MonoBehaviour {
 
     private void Nod()
     {
-        // Only the speaker publishes!
-        if (PlayerTalking.speaker == transform.parent.gameObject)
-        {
-            pubSubClient.CmdPublish("mimicry");
-        }
+        playerPartner.Nod("mimicry");
     }
 }

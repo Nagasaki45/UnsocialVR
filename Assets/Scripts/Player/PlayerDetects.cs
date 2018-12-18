@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerAccuses : MonoBehaviour {
+public class PlayerDetects : MonoBehaviour {
 
     public string controllerTag;
-    public PlayerGaze playerGaze;
-    public PlayerState playerState;
-    public AudioSource audioSource;
+    public PlayerScore playerScore;
     public AudioClip correctAudioClip;
     public AudioClip incorrectAudioClip;
 
     SteamVR_TrackedObject trackedObj;
+    PlayerPartner playerPartner;
+    AudioSource audioSource;
 
     SteamVR_Controller.Device Controller
     {
@@ -21,28 +21,31 @@ public class PlayerAccuses : MonoBehaviour {
     void Start()
     {
         trackedObj = GameObject.FindGameObjectWithTag(controllerTag).GetComponent<SteamVR_TrackedObject>();
+        playerPartner = GetComponent<PlayerPartner>();
+        audioSource = GetComponent<AudioSource>();
     }
 
 
     void Update() {
-        if (Controller.GetHairTriggerDown() && playerGaze.gazedObj != null)
+        if (Controller.GetHairTriggerDown())
         {
-            AccusePlayer(playerGaze.gazedObj);
+            DetectPartner();
         }
     }
 
 
-    void AccusePlayer(GameObject accusedPlayer)
+    void DetectPartner()
     {
-        bool correct = accusedPlayer.GetComponent<PlayerState>().IsFaking();
+        bool correct = playerPartner.IsFaking();
 
-        playerState.score += correct ? 1 : -1;
-
+        playerScore.Add(correct ? 1 : -1);
         audioSource.clip = correct? correctAudioClip : incorrectAudioClip;
         audioSource.Play();
 
+        playerPartner.StopFaking();
+
         string text = correct ? "Correctly" : "Mistakenly";
-        Logger.Event(text + " accusing " + playerGaze.GetGazedNetId());
+        Logger.Event(text + " accusing");
     }
 
 }
