@@ -15,7 +15,7 @@ There are some extra details [on my site](http://www.tomgurion.me/unsocial-vr.ht
 Make sure you have:
 
 - HTC Vive
-- Unity 2018.2.20f1.
+- Unity 2018.3.0f2.
   - Dissonance Voice Chat 6.0.1. You will need to buy it from the assets store.
 - python 2.7
 - PureData 0.48.1.
