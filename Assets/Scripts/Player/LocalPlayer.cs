@@ -19,7 +19,7 @@ public class LocalPlayer : NetworkBehaviour {
             Destroy(local);
 
             // Non local player shouldn't bind to VR setup but get transforms from network.
-            foreach(var x in GetComponentsInChildren<BindTransform>())
+            foreach(var x in GetComponentsInChildren<BindTransformToTag>())
             {
                 Destroy(x);
             }

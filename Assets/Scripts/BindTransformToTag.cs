@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-public class BindTransform : MonoBehaviour {
+public class BindTransformToTag : MonoBehaviour {
 
     public string bindToTag;
 

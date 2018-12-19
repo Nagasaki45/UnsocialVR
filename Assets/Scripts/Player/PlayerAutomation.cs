@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerAutomation : MonoBehaviour {
 
     public string fakingTheory;
+    public Transform trueHead;
+    public Transform remoteHead;
 
 
     void Start()
@@ -14,5 +16,10 @@ public class PlayerAutomation : MonoBehaviour {
 
     void Update()
     {
+        if (true)  // TODO While not automated
+        {
+            remoteHead.position = trueHead.position;
+            remoteHead.rotation = trueHead.rotation;
+        }
     }
 }
