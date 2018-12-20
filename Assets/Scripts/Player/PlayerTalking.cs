@@ -12,7 +12,7 @@ public class PlayerTalking : NetworkBehaviour {
     [SyncVar]
     public bool isTalking;
 
-    [SyncVar]
+    [SyncVar(hook = "OnSpeakerChange")]
     public bool speaker;
 
     public double talkingRatio;
@@ -73,6 +73,16 @@ public class PlayerTalking : NetworkBehaviour {
     void CmdSetTalkingState (bool onOff)
     {
         isTalking = onOff;
+    }
+
+
+    void OnSpeakerChange(bool newState)
+    {
+        speaker = newState;
+        if (isLocalPlayer)
+        {
+            GetComponentInChildren<PlayerPartner>().StopFaking();
+        }
     }
 
 
