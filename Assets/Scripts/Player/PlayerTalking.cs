@@ -57,6 +57,7 @@ public class PlayerTalking : NetworkBehaviour {
                 return voicePlayerState.IsSpeaking && (voicePlayerState.Amplitude > talkingAmplitudeThreshold);
             }
         }
+        Debug.LogError("Failed to detect talking state");
         return false;
     }
 }
