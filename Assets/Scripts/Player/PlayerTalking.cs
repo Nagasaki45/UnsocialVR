@@ -9,7 +9,7 @@ using Dissonance.VAD;
 
 public class PlayerTalking : NetworkBehaviour {
 
-    [SyncVar]
+    [SyncVar(hook = "OnTalkingChange")]
     public bool isTalking;
 
     [SyncVar(hook = "OnSpeakerChange")]
@@ -76,12 +76,23 @@ public class PlayerTalking : NetworkBehaviour {
     }
 
 
+    void OnTalkingChange(bool newState)
+    {
+        isTalking = newState;
+        if (isLocalPlayer)
+        {
+            Logger.Event("Talking change to " + newState);
+        }
+    }
+
+
     void OnSpeakerChange(bool newState)
     {
         speaker = newState;
         if (isLocalPlayer)
         {
-            GetComponentInChildren<PlayerPartner>().StopFaking();
+            Logger.Event("Speaker change to " + newState);
+            GetComponentInChildren<PlayerPartner>().ToggleAutomation();
         }
     }
 

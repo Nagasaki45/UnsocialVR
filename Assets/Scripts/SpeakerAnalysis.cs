@@ -6,6 +6,7 @@ using UnityEngine;
 public class SpeakerAnalysis : MonoBehaviour
 {
     public float minRatioForSpeakerChange;
+    public float hysteresis;
 
     PlayerTalking speaker;
 
@@ -24,7 +25,7 @@ public class SpeakerAnalysis : MonoBehaviour
                 talker.speaker = true;
                 speaker = talker;
             }
-            else if ((talker.talkingRatio > speaker.talkingRatio) && (talker.talkingRatio > minRatioForSpeakerChange))
+            else if ((talker.talkingRatio > speaker.talkingRatio + hysteresis) && (talker.talkingRatio > minRatioForSpeakerChange))
             {
                 speaker.speaker = false;
                 talker.speaker = true;

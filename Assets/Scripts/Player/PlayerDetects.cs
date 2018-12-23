@@ -36,13 +36,13 @@ public class PlayerDetects : MonoBehaviour {
 
     void DetectPartner()
     {
-        bool correct = playerPartner.IsFaking();
+        bool correct = playerPartner.IsAutomated();
 
         playerScore.Add(correct ? 1 : -1);
         audioSource.clip = correct? correctAudioClip : incorrectAudioClip;
         audioSource.Play();
 
-        playerPartner.StopFaking();
+        playerPartner.StopAutomation();
 
         string text = correct ? "Correctly" : "Mistakenly";
         Logger.Event(text + " accusing");

@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerPartner : MonoBehaviour {
+    // An interface for PlayerAutomation, which is a script on Remote,
+    // from Local part.
 
 
-    private GameObject GetPartner(GameObject me)
+    public GameObject GetPartner()
     {
+        GameObject me = transform.parent.gameObject;  // Player/Local
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject p in players) {
             if (p != me)
@@ -18,16 +21,34 @@ public class PlayerPartner : MonoBehaviour {
     }
 
 
-    public bool IsFaking()
+    public bool IsAutomated()
     {
-        // TODO
-        return true;
+        GameObject partner = GetPartner();
+        if (partner != null)
+        {
+            return partner.GetComponentInChildren<PlayerAutomation>().IsAutomated();
+        }
+        return false;
     }
 
 
-    public void StopFaking()
+    public void StopAutomation()
     {
-        // TODO
+        GameObject partner = GetPartner();
+        if (partner != null)
+        {
+            partner.GetComponentInChildren<PlayerAutomation>().StopAutomation();
+        }
+    }
+
+
+    public void ToggleAutomation()
+    {
+        GameObject partner = GetPartner();
+        if (partner != null)
+        {
+            partner.GetComponentInChildren<PlayerAutomation>().ToggleAutomation();
+        }
     }
 
 
