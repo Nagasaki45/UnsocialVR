@@ -13,7 +13,7 @@ public class PlayerNodding : MonoBehaviour {
     {
         int i = Random.Range(0, animations.Length);
         string animation = animations[i];
-        Logger.Event("Nodding fake " + animation);
+        Logger.Event("Automatic nod " + animation);
         animator.CrossFade(animation, animationCrossfadeSeconds);
     }
 }

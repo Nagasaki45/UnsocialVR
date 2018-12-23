@@ -14,10 +14,12 @@ public class PlayerAutomation : MonoBehaviour {
     public Transform remoteHead;
 
     private float lastAutomationFinished = 0.0f;
+    private PlayerNodding playerNodding;
 
 
     void Start()
     {
+        playerNodding = GetComponent<PlayerNodding>();
     }
 
 
@@ -76,6 +78,15 @@ public class PlayerAutomation : MonoBehaviour {
             automationModel = null;
             lastAutomationFinished = Time.time;
             Logger.Event("Partner automation stopped");
+        }
+    }
+
+
+    public void Nod(string model)
+    {
+        if (IsAutomated() && automationModel == model)
+        {
+            playerNodding.Nod();
         }
     }
 }

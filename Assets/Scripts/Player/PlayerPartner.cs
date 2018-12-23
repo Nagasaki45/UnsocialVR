@@ -6,6 +6,8 @@ public class PlayerPartner : MonoBehaviour {
     // An interface for PlayerAutomation, which is a script on Remote,
     // from Local part.
 
+    public bool disable;
+
 
     public GameObject GetPartner()
     {
@@ -24,7 +26,7 @@ public class PlayerPartner : MonoBehaviour {
     public bool IsAutomated()
     {
         GameObject partner = GetPartner();
-        if (partner != null)
+        if (!disable && partner != null)
         {
             return partner.GetComponentInChildren<PlayerAutomation>().IsAutomated();
         }
@@ -35,7 +37,7 @@ public class PlayerPartner : MonoBehaviour {
     public void StopAutomation()
     {
         GameObject partner = GetPartner();
-        if (partner != null)
+        if (!disable && partner != null)
         {
             partner.GetComponentInChildren<PlayerAutomation>().StopAutomation();
         }
@@ -45,15 +47,19 @@ public class PlayerPartner : MonoBehaviour {
     public void ToggleAutomation()
     {
         GameObject partner = GetPartner();
-        if (partner != null)
+        if (!disable && partner != null)
         {
             partner.GetComponentInChildren<PlayerAutomation>().ToggleAutomation();
         }
     }
 
 
-    public void Nod(string theory)
+    public void Nod(string model)
     {
-        // TODO
+        GameObject partner = GetPartner();
+        if (!disable && partner != null)
+        {
+            partner.GetComponentInChildren<PlayerAutomation>().Nod(model);
+        }
     }
 }
