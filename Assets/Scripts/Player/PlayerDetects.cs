@@ -38,14 +38,14 @@ public class PlayerDetects : MonoBehaviour {
     {
         bool correct = playerPartner.IsAutomated();
 
-        playerScore.Add(correct ? 1 : -1);
+        playerScore.Add(correct ? 1 : -1);  // TODO more points for correct accusation
         audioSource.clip = correct? correctAudioClip : incorrectAudioClip;
         audioSource.Play();
 
-        playerPartner.StopAutomation();
-
         string text = correct ? "Correctly" : "Mistakenly";
         Logger.Event(text + " accusing");
+
+        playerPartner.StopAutomation();
     }
 
 }

@@ -3,7 +3,6 @@
 public class Mimicry : MonoBehaviour {
 
     public Transform headTransform;
-    public int bufferSize;
     public int sampleRate;
     public double noddingThreshold;  // the minimum movement to detect a nod
     public double notNoddingThreshold;  // epsilon value

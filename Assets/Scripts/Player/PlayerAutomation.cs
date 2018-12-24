@@ -6,21 +6,16 @@ using UnityEngine;
 public class PlayerAutomation : MonoBehaviour {
 
     public int minimumTimeBetweenAutomations;
-    public float chanceToStartAutomation;
     public string[] automationModels;
+    public string[] animations;
+    public float animationCrossfadeSeconds;
 
     public string automationModel;
     public Transform trueHead;
     public Transform remoteHead;
+    public Animator animator;
 
     private float lastAutomationFinished = 0.0f;
-    private PlayerNodding playerNodding;
-
-
-    void Start()
-    {
-        playerNodding = GetComponent<PlayerNodding>();
-    }
 
 
     void Update()
@@ -47,8 +42,7 @@ public class PlayerAutomation : MonoBehaviour {
     {
         if (!IsAutomated())
         {
-            float rand = UnityEngine.Random.Range(0, 1);
-            if (Time.time - lastAutomationFinished > minimumTimeBetweenAutomations && rand < chanceToStartAutomation)
+            if (Time.time - lastAutomationFinished > minimumTimeBetweenAutomations)
             {
                 StartAutomation();
             }
@@ -64,9 +58,10 @@ public class PlayerAutomation : MonoBehaviour {
     {
         if (!IsAutomated())
         {
+            bool speaker = GetComponentInParent<PlayerTalking>().speaker;
             int i = UnityEngine.Random.Range(0, automationModels.Length);
             automationModel = automationModels[i];
-            Logger.Event("Partner automation started using " + automationModel);
+            Logger.Event($"Partner automation started - Model: {automationModel}. Speaker: {speaker}");
         }
     }
 
@@ -84,9 +79,14 @@ public class PlayerAutomation : MonoBehaviour {
 
     public void Nod(string model)
     {
-        if (IsAutomated() && automationModel == model)
+        if (automationModel != model)
         {
-            playerNodding.Nod();
+            return;
         }
+        bool speaker = GetComponentInParent<PlayerTalking>().speaker;
+        int i = UnityEngine.Random.Range(0, animations.Length);
+        string animation = animations[i];
+        Logger.Event($"Partner automatic nod - Model: {automationModel}. Speaker: {speaker}. Animation: {animation}");
+        animator.CrossFade(animation, animationCrossfadeSeconds);
     }
 }
