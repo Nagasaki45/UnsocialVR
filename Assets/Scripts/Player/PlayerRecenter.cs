@@ -7,6 +7,7 @@ public class PlayerRecenter : MonoBehaviour {
 
     public Transform headTransform;
     public float radious;
+    public int numOfPlayers;
 
     GameObject me;
     Transform cameraRig;
@@ -27,8 +28,8 @@ public class PlayerRecenter : MonoBehaviour {
             List<int> occupiedChairs = GetOccupiedChairs();
             int chair = FindEmptyChair(occupiedChairs);
             me.GetComponentInParent<PlayerChair>().CmdSetChair(chair);
-            Vector3 position = Quaternion.Euler(0, 120 * chair, 0) * Vector3.right * radious;
-            Quaternion rotation = Quaternion.Euler(0, 120 * chair - 90, 0);
+            Vector3 position = Quaternion.Euler(0, (360 / numOfPlayers) * chair, 0) * Vector3.right * radious;
+            Quaternion rotation = Quaternion.Euler(0, (360 / numOfPlayers) * chair - 90, 0);
             ResetCamera(position, rotation);
         }
     }
@@ -49,7 +50,7 @@ public class PlayerRecenter : MonoBehaviour {
 
     int FindEmptyChair(List<int> occupiedChairs)
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < numOfPlayers; i++)
         {
             if (!occupiedChairs.Contains(i)) {
                 return i;
