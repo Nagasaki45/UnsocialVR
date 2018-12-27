@@ -55,7 +55,7 @@ public class PlayerRecenter : MonoBehaviour {
                 return i;
             }
         }
-        // TODO Log error
+        Debug.LogError("Cannot find empty chair");
         return 0;  // This should never happen, but throwing an exception is just
                    // too complicated in c# :(
     }
