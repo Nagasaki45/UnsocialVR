@@ -42,8 +42,7 @@ public class PlayerDetects : MonoBehaviour {
         audioSource.clip = correct? correctAudioClip : incorrectAudioClip;
         audioSource.Play();
 
-        string text = correct ? "Correctly" : "Mistakenly";
-        Logger.Event(text + " accusing");
+        Logger.Event($"Detecting - Correct: {correct}");
 
         playerPartner.StopAutomation();
     }

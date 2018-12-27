@@ -41,7 +41,6 @@ public class Disfluency : MonoBehaviour, IMicrophoneSubscriber
             {
                 string line = streamReader.ReadLine();
                 if (ready) {
-                    Logger.Event("Player disfluent");
                     playerPartner.Nod("disfluency");
                 } else {
                     // First message should be a 'ready' message from the server

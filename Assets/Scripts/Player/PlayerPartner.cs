@@ -56,6 +56,7 @@ public class PlayerPartner : MonoBehaviour {
 
     public void Nod(string model)
     {
+        Logger.Event($"Player initiates nod in partner - Model: {model}");
         GameObject partner = GetPartner();
         if (!disable && partner != null)
         {

@@ -81,7 +81,7 @@ public class PlayerTalking : NetworkBehaviour {
         isTalking = newState;
         if (isLocalPlayer)
         {
-            Logger.Event("Talking change to " + newState);
+            Logger.Event($"Talking - State: {newState}");
         }
     }
 
@@ -91,7 +91,7 @@ public class PlayerTalking : NetworkBehaviour {
         speaker = newState;
         if (isLocalPlayer)
         {
-            Logger.Event("Speaker change to " + newState);
+            Logger.Event($"Speaking - State: {newState}");
             GetComponentInChildren<PlayerPartner>().ToggleAutomation();
         }
     }

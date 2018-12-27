@@ -27,7 +27,7 @@ public class PlayerSync : NetworkBehaviour
     [ClientRpc]
     void RpcSync()
     {
-        Logger.Event("Clients sync");
+        Logger.Event("Syncing");
         ToggleLight();
         Invoke("ToggleLight", 0.5f);
     }

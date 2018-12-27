@@ -38,8 +38,9 @@ public class Mimicry : MonoBehaviour {
             {
                 readyToNod = false;
 
+                Logger.Event("Nodding");
+
                 // Tell all listeners to nod after delay.
-                Logger.Event("Nodding real");
                 Invoke("Nod", 0.6f);
             }
 

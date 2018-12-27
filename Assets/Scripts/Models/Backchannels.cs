@@ -41,7 +41,6 @@ public class Backchannels : MonoBehaviour
             {
                 byte[] throwaway = new byte[1024];
                 networkStream.Read(throwaway, 0, throwaway.Length);
-                Logger.Event("Expecting a backchannel");
                 playerPartner.Nod("backchannels");
             }
             // Let the engine run for a frame.
