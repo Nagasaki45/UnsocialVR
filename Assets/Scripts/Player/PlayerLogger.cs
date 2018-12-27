@@ -11,8 +11,6 @@ public class PlayerLogger : MonoBehaviour {
     public Transform leftHand;
     public Transform rightHand;
 
-    private PlayerTalking playerTalking;
-
     private StreamWriter continuousWriter;
     private string[] continuousHeader = {
         "t",
@@ -22,14 +20,7 @@ public class PlayerLogger : MonoBehaviour {
         "leftHandRotX", "leftHandRotY", "leftHandRotZ",
         "rightHandX", "rightHandY", "rightHandZ",
         "rightHandRotX", "rightHandRotY", "rightHandRotZ",
-        "talking",
     };
-
-
-    void Awake()
-    {
-        playerTalking = GetComponentInParent<PlayerTalking>();
-    }
 
 
     void Start()
@@ -65,7 +56,6 @@ public class PlayerLogger : MonoBehaviour {
             rightHand.eulerAngles.x.ToString(),
             rightHand.eulerAngles.y.ToString(),
             rightHand.eulerAngles.z.ToString(),
-            playerTalking.isTalking ? "1" : "0",
         };
         string csv = String.Join(",", values);
         continuousWriter.WriteLine(csv + "\n");
