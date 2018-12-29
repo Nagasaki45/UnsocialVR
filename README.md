@@ -16,7 +16,7 @@ Make sure you have:
 
 - HTC Vive
 - Unity 2018.3.0f2.
-  - Dissonance Voice Chat 6.0.1. You will need to buy it from the assets store.
+  - Dissonance Voice Chat 6.2.6. You will need to buy it from the assets store.
 - python 2.7
 - PureData 0.48.1.
 - blender (2.79b is known to be working, but it shouldn't realy matter).
