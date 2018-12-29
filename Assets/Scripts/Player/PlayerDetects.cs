@@ -38,7 +38,7 @@ public class PlayerDetects : MonoBehaviour {
     {
         bool correct = playerPartner.IsAutomated();
 
-        playerScore.Add(correct ? 1 : -1);  // TODO more points for correct accusation
+        playerScore.Add(correct ? 5 : -1);
         audioSource.clip = correct? correctAudioClip : incorrectAudioClip;
         audioSource.Play();
 
