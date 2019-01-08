@@ -6,7 +6,6 @@ using UnityEngine.Networking;
 
 public class PlayerLogger : MonoBehaviour {
 
-    public float frequency;
     public Transform head;
     public Transform leftHand;
     public Transform rightHand;
@@ -30,11 +29,10 @@ public class PlayerLogger : MonoBehaviour {
         Logger.filename = filename + ".log";
         continuousWriter = new StreamWriter(filename + ".csv");
         continuousWriter.WriteLine(String.Join(",", continuousHeader) + "\n");
-        InvokeRepeating("WriteContinuously", 0f, 1 / frequency);
     }
 
 
-    void WriteContinuously()
+    void Update()
     {
         string[] values = {
             Time.time.ToString(),
