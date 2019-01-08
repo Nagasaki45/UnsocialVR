@@ -41,3 +41,11 @@ This TCP server can serve only one client at a time. If you are running multiple
 ### Deep disfluency server note
 
 If you don't need it, or don't have enough "free minutes" on your IBM Watson plan, use the `deep_disfluency_mock.py` script. It will spin a TCP server that will consume the audio stream and do nothing about it.
+
+### Enable and disable avatar automation and automation detection
+
+The system currently support two types of studies. One in which there's no automation and no detection (pilot study, or study 3), and one with automation and detection (study 4). To disable automation and detection:
+
+- Turn off Player/Local/Head/UIPlane.
+- Turn off the PlayerDetects script on Player/Local.
+- Check the PlayerPartner.disable on Player/Local.
