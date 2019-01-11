@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAutomation : MonoBehaviour {
 
-    public int minimumTimeBetweenAutomations;
+    public bool disabled;
+    public int minimumAutomationDuration;
+    public int maximumAutomationDuration;
+    public float realPerAutomationDuration;
+    public int initialRealDuration;
+
     public string[] automationModels;
     public string[] animations;
     public float animationCrossfadeSeconds;
@@ -15,8 +19,6 @@ public class PlayerAutomation : MonoBehaviour {
     public Transform trueHead;
     public Transform remoteHead;
     public Animator animator;
-
-    private float lastAutomationFinished = 0.0f;
 
     // Notch in head movement data between 1 and 4 hertz
     private int sampleRate = 100;
@@ -38,6 +40,11 @@ public class PlayerAutomation : MonoBehaviour {
         pitchInterpolator = new Interpolator(1.0 / sampleRate);
         pitchLowpassFilter = new Butterworth(lowPassFreq, sampleRate, Butterworth.PassType.Lowpass);
         pitchHighpassFilter = new Butterworth(lowPassFreq, sampleRate, Butterworth.PassType.Highpass);
+
+        if (!disabled)
+        {
+            Invoke("StartAutomation", initialRealDuration);
+        }
     }
 
 
@@ -78,25 +85,15 @@ public class PlayerAutomation : MonoBehaviour {
     }
 
 
-    public bool IsAutomated()
+    float AutomationDuration()
     {
-        return !String.IsNullOrEmpty(automationModel);
+        return Random.Range(minimumAutomationDuration, maximumAutomationDuration);
     }
 
 
-    public void ToggleAutomation()
+    public bool IsAutomated()
     {
-        if (!IsAutomated())
-        {
-            if (Time.time - lastAutomationFinished > minimumTimeBetweenAutomations)
-            {
-                StartAutomation();
-            }
-        }
-        else
-        {
-            StopAutomation();
-        }
+        return !System.String.IsNullOrEmpty(automationModel);
     }
 
 
@@ -104,10 +101,11 @@ public class PlayerAutomation : MonoBehaviour {
     {
         if (!IsAutomated())
         {
-            bool speaker = GetComponentInParent<PlayerTalking>().speaker;
             int i = UnityEngine.Random.Range(0, automationModels.Length);
             automationModel = automationModels[i];
-            Logger.Event($"Partner automation started - Model: {automationModel}. Speaker: {speaker}");
+            Logger.Event($"Partner automation started - Model: {automationModel}");
+
+            Invoke("StopAutomation", AutomationDuration());
         }
     }
 
@@ -117,8 +115,9 @@ public class PlayerAutomation : MonoBehaviour {
         if (IsAutomated())
         {
             automationModel = null;
-            lastAutomationFinished = Time.time;
             Logger.Event("Partner automation stopped");
+
+            Invoke("StartAutomation", AutomationDuration() * realPerAutomationDuration);
         }
     }
 
@@ -129,10 +128,9 @@ public class PlayerAutomation : MonoBehaviour {
         {
             return;
         }
-        bool speaker = GetComponentInParent<PlayerTalking>().speaker;
         int i = UnityEngine.Random.Range(0, animations.Length);
         string animation = animations[i];
-        Logger.Event($"Partner automatic nod - Model: {automationModel}. Speaker: {speaker}. Animation: {animation}");
+        Logger.Event($"Partner automatic nod - Model: {automationModel}. Animation: {animation}");
         animator.CrossFade(animation, animationCrossfadeSeconds);
     }
 }

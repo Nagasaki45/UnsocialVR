@@ -48,4 +48,4 @@ The system currently support two types of studies. One in which there's no autom
 
 - Turn off Player/Local/Head/UIPlane.
 - Turn off the PlayerDetects script on Player/Local.
-- Check the PlayerPartner.disable on Player/Local.
+- Check the PlayerAutomation.disabled on Player/Remote.
